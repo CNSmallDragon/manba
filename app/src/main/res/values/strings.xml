@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 登陆 -->
+    <string name="app_name">漫吧</string>
+    <string name="login">登陆</string>
+    <string name="regist">注册</string>
+    <string name="login_num">请输入手机号</string>
+    <string name="login_pwd">请输入6-16位数字密码</string>
+    <string name="login_forget_pwd">忘记密码？</string>
+    <string name="login_thrid">第三方登录</string>
+    <string name="login_weixin">微信</string>
+    <string name="login_qq">QQ</string>
+    <string name="login_xinlang">微博</string>
+    
+    <!-- 注册 -->
+    <string name="forget_password">忘记密码</string>
+    <string name="regist_nicheng">输入昵称</string>
+    <string name="regist_man">男</string>
+    <string name="regist_woman">女</string>
+    <string name="regist_lingyu">锁定自己的领域</string>
+    <string name="regist_dongman">动漫</string>
+    <string name="regist_manhua">漫画</string>
+    <string name="regist_youxi">游戏</string>
+    <string name="regist_xiaoshuo">小说</string>
+    <string name="regist_cosplay">cosplay</string>
+    <string name="regist_tongren">同人</string>
+    <string name="regist_finish">开启</string>
+    
+    <string name="home">主页</string>
+    <string name="home_jiequ">街区</string>
+    <string name="home_fayan">发言</string>
+    <string name="home_gonghui">公会</string>
+    <string name="home_jia">家</string>
+
+    <string name="home_xinxian">新鲜</string>
+    <string name="home_remen">热门</string>
+    <string name="home_guanzhu">关注</string>
+    
+    <!-- 设置界面 -->
+    <string name="my_fensi">粉丝</string>
+    <string name="my_guanzhu">关注</string>
+    <string name="my_gonghui">我的公会</string>
+    <string name="my_qianbao">我的钱包</string>
+    <string name="my_shoucang">我的收藏</string>
+    <string name="my_dongtai">我的动态</string>
+    <string name="my_xiaoxi">消息</string>
+    <string name="my_haiwan">嗨玩</string>
+    <string name="my_shezhi">设置</string>
+    
+    <!-- 公会 -->
+    <string name="gonghui_hot">热门公会</string>
+    <string name="gonghui_join">加入</string>
+    <string name="gonghui_dongtai">动态</string>
+    <string name="gonghui_chengyuan">成员</string>
+    <string name="gonghui_shenqingjiaru">申请加入</string>
+    
+    <string name="test_more">22222222222222222222222222222222222222222222222223333333333333333333333333333</string>
+</resources>

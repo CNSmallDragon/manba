@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="login_icon_top">50dp</dimen>
+    <dimen name="login_num_side">10dp</dimen>
+    <dimen name="display_password">15dp</dimen>
+    <dimen name="regist_pic">10dp</dimen>
+    
+    <dimen name="regist_text_to_pic">5dp</dimen>
+    <dimen name="regist_padding_to_side">20dp</dimen>
+
+    <dimen name="regist_lingyu_weight">120dp</dimen>
+
+    <dimen name="icon_width">40dp</dimen>
+    <dimen name="home_to_side">5dp</dimen>
+
+    <dimen name="home_to_topside">20dp</dimen>
+    
+    <dimen name="small_textsize">14sp</dimen>
+    <dimen name="common_textsize">16sp</dimen>
+    <dimen name="username_textsize">18sp</dimen>
+    
+    
+    <dimen name="common_to_side">10dp</dimen>
+    
+    <dimen name="common_text_side">5dp</dimen>
+    <dimen name="common_to_top">15dp</dimen>
+    <dimen name="gonghui_icon_width">65dp</dimen>
+    
+    <dimen name="line_height">0.5dp</dimen>
+    
+    
+</resources>

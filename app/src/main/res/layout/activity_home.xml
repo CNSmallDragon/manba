@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+     android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/fl_home"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    </FrameLayout>
+
+    <RadioGroup
+        android:id="@+id/rg_main"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/regist_text_to_pic"
+        android:background="@android:color/background_light"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/rb_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/select_home_icon"
+            android:gravity="center"
+            android:text="@string/home"
+            android:textColor="@color/bottom_text_color"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/rb_jiequ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/select_jiequ_icon"
+            android:gravity="center"
+            android:text="@string/home_jiequ"
+            android:textColor="@color/bottom_text_color"
+            android:textSize="12sp" />
+
+        <!-- <RadioButton
+            android:id="@+id/rb_fayan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:button="@drawable/tab_icon_fayan"
+            android:gravity="center" /> -->
+
+        <ImageView
+            android:id="@+id/rb_fayan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/tab_icon_fayan" />
+
+        <RadioButton
+            android:id="@+id/rb_gonghui"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/select_gonghui_icon"
+            android:gravity="center"
+            android:text="@string/home_gonghui"
+            android:textColor="@color/bottom_text_color"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/rb_jia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/select_jia_icon"
+            android:gravity="center"
+            android:text="@string/home_jia"
+            android:textColor="@color/bottom_text_color"
+            android:textSize="12sp" />
+    </RadioGroup>
+
+</LinearLayout>
