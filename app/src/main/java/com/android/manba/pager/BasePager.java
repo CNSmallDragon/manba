@@ -28,10 +28,10 @@ public abstract class BasePager {
 	public View getRootView(){
 		return view;
 	}
-	
-	// 加载数据
+
+	// 鍔犺浇鏁版嵁
 	public void loadData(){
-		// TODO 加载数据
+		// TODO 鍔犺浇鏁版嵁
 	}
 	
 	public abstract View initView();

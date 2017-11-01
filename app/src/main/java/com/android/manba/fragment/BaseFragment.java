@@ -1,24 +1,20 @@
 package com.android.manba.fragment;
 
-import com.android.manba.util.LogUtil;
-
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.manba.util.LogUtil;
+
 public abstract class BaseFragment extends Fragment {
 	
 	private static final String TAG = "BaseFragment";
 	public View view;
-	public Context context;
-	
-	public BaseFragment(Context context) {
-		this.context = context;
-	}
 
+	public BaseFragment(){}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub

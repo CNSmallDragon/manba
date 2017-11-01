@@ -1,13 +1,5 @@
 package com.android.manba.activity;
 
-import com.android.manba.R;
-import com.android.manba.adapter.SociationListAdapter;
-import com.android.manba.fragment.HomeFragment;
-import com.android.manba.fragment.MineFragment;
-import com.android.manba.fragment.SociationFragment;
-import com.android.manba.fragment.StreetFragment;
-import com.android.manba.util.LogUtil;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +14,13 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Toast;
+
+import com.android.manba.R;
+import com.android.manba.fragment.HomeFragment;
+import com.android.manba.fragment.MineFragment;
+import com.android.manba.fragment.SociationFragment;
+import com.android.manba.fragment.StreetFragment;
+import com.android.manba.util.LogUtil;
 
 public class HomeActivity extends FragmentActivity implements OnClickListener {
 
@@ -85,7 +84,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.rb_fayan:
 			// TODO
-			Toast.makeText(this, "·¢ÑÔ", 0).show();
+			Toast.makeText(this, "ï¿½ï¿½ï¿½ï¿½", Toast.LENGTH_SHORT).show();
 			break;
 
 		default:
@@ -106,16 +105,16 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 			Fragment fragment = null;
 			switch (arg0) {
 			case 0:
-				fragment = new HomeFragment(context);
+				fragment = new HomeFragment();
 				break;
 			case 1:
-				fragment = new StreetFragment(context);
+				fragment = new StreetFragment();
 				break;
 			case 2:
-				fragment = new SociationFragment(context);
+				fragment = new SociationFragment();
 				break;
 			case 3:
-				fragment = new MineFragment(context);
+				fragment = new MineFragment();
 				break;
 			}
 			return fragment;
@@ -126,7 +125,7 @@ public class HomeActivity extends FragmentActivity implements OnClickListener {
 		switch (requestCode) {
 		case SociationFragment.DETAIL:
 			if (resultCode == RESULT_OK) {
-				Toast.makeText(context, "ÒÑ¼ÓÈë", 0).show();
+				Toast.makeText(context, "ï¿½Ñ¼ï¿½ï¿½ï¿½", Toast.LENGTH_SHORT).show();
 			}
 			break;
 		}

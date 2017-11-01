@@ -1,24 +1,19 @@
 package com.android.manba.adapter;
 
-import java.util.List;
-
-import com.android.manba.R;
-import com.android.manba.pager.BasePager;
-
-import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+
+import com.android.manba.pager.BasePager;
+
+import java.util.List;
 
 public class TabPagerAdapter extends PagerAdapter {
 	
 	private List<BasePager> list = null;
-	private Context context;
-	
-	public TabPagerAdapter(Context context,List<BasePager> list) {
+
+	public TabPagerAdapter(List<BasePager> list) {
 		this.list = list;
-		this.context = context;
 	}
 
 	@Override

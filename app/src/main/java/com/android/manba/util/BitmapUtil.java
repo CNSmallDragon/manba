@@ -30,9 +30,9 @@ public class BitmapUtil {
 		canvas.drawBitmap(source, 0, 0, paint);
 		return target;
 	}
-	
+
 	/**
-	 * ת��ͼƬΪԲ��
+	 * 转化图片为圆形
 	 * @param bitmap
 	 * @return
 	 */

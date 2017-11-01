@@ -1,17 +1,6 @@
 package com.android.manba.adapter;
 
-import java.util.List;
-
-import com.android.manba.Appconstant;
-import com.android.manba.R;
-import com.android.manba.activity.SociationDetailActivity;
-import com.android.manba.bean.SociationBean;
-import com.android.manba.util.BitmapUtil;
-import com.android.manba.util.LogUtil;
-
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
@@ -22,6 +11,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.manba.R;
+import com.android.manba.bean.SociationBean;
+import com.android.manba.util.BitmapUtil;
+import com.android.manba.util.LogUtil;
+
+import java.util.List;
 
 public class SociationListAdapter extends BaseAdapter {
 	
@@ -74,17 +70,17 @@ public class SociationListAdapter extends BaseAdapter {
 		//bitmap.recycle();
 		//viewHolder.gonghui_pic.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_launcher));
 		viewHolder.gonghui_name.setText(list.get(position).getName());
-		viewHolder.gonghui_member_num.setText("³ÉÔ±Êý£º" + list.get(position).getMemberNum());
-		viewHolder.gonghui_hot_num.setText("»îÔ¾¶È" + list.get(position).getMemberNum());
+		viewHolder.gonghui_member_num.setText("ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½" + list.get(position).getMemberNum());
+		viewHolder.gonghui_hot_num.setText("ï¿½ï¿½Ô¾ï¿½ï¿½" + list.get(position).getMemberNum());
 		viewHolder.gonghui_join.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(context, "ÒÑ¼ÓÈë", 0).show();
+				Toast.makeText(context, "ï¿½Ñ¼ï¿½ï¿½ï¿½", Toast.LENGTH_SHORT).show();
 			}
 		});
 		
-		// ÅÐ¶ÏÊÇ·ñÏÔÊ¾top123Í¼±ê
+		// ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ê¾top123Í¼ï¿½ï¿½
 		if(position == 0){
 			viewHolder.gonghui_top.setBackground(context.getResources().getDrawable(R.drawable.guild_label_first));
 			viewHolder.gonghui_top.setVisibility(View.VISIBLE);

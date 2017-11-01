@@ -24,6 +24,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
     compile files('libs/open_sdk_r5793.jar')
-    compile files('libs/android-support-v4.jar')
     compile files('libs/mta-sdk-1.6.2.jar')
 }

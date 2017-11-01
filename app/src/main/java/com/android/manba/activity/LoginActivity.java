@@ -1,11 +1,5 @@
 package com.android.manba.activity;
 
-import com.android.manba.Appconstant;
-import com.android.manba.R;
-import com.tencent.tauth.IUiListener;
-import com.tencent.tauth.Tencent;
-import com.tencent.tauth.UiError;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,6 +18,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.manba.Appconstant;
+import com.android.manba.R;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
 
 public class LoginActivity extends Activity implements OnClickListener {
 	
@@ -59,7 +59,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 				}else{
 					login_pwd.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 				}
-				// ½«¹â±êÒÆ¶¯µ½×îºó
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				login_pwd.setSelection(login_pwd.getText().toString().length());
 			}
 		});
@@ -121,11 +121,11 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private boolean checkLoginNum() {
 		inputNumber = login_number.getText().toString();
 		if(TextUtils.isEmpty(inputNumber)){
-			Toast.makeText(this, "ÇëÊäÈëÊÖ»úºÅ", 0).show();
+			Toast.makeText(this, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½", Toast.LENGTH_SHORT).show();
 			return false;
 		}
 		if(inputNumber.length() != 11){
-			Toast.makeText(this, "ÇëÊäÈëÍêÕûµÄÊÖ»úºÅ", 0).show();
+			Toast.makeText(this, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½", Toast.LENGTH_SHORT).show();
 			return false;
 		}
 		Log.e(TAG, "inputNumber===========" + inputNumber);
@@ -135,11 +135,11 @@ public class LoginActivity extends Activity implements OnClickListener {
 	private boolean checkPassWord(){
 		inputPWD = login_pwd.getText().toString();
 		if(TextUtils.isEmpty(inputPWD)){
-			Toast.makeText(this, "ÃÜÂë²»ÄÜÎª¿Õ", 0).show();
+			Toast.makeText(this, "ï¿½ï¿½ï¿½ë²»ï¿½ï¿½Îªï¿½ï¿½", Toast.LENGTH_SHORT).show();
 			return false;
 		}
 		if(inputPWD.length() < 6 || inputPWD.length() > 16){
-			Toast.makeText(this, "ÄúÊäÈëµÄÃÜÂë²»·ûºÏ¹æ·¶£¬ÇëÖØÐÂÊäÈë!", 0).show();
+			Toast.makeText(this, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë²»ï¿½ï¿½ï¿½Ï¹æ·¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!", Toast.LENGTH_SHORT).show();
 			return false;
 		}
 		return true;
@@ -161,12 +161,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 		@Override
 		public void onCancel() {
-			Log.d(TAG, "È¡Ïû-----------------");
+			Log.d(TAG, "È¡ï¿½ï¿½-----------------");
 		}
 
 		@Override
 		public void onComplete(Object response) {
-			Log.d(TAG, "³É¹¦-----------------");
+			Log.d(TAG, "ï¿½É¹ï¿½-----------------");
 			Log.d(TAG, response.toString());
 		}
 

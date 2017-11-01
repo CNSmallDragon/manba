@@ -1,12 +1,5 @@
 package com.android.manba.activity;
 
-import com.android.manba.R;
-import com.android.manba.fragment.HomeFragment;
-import com.android.manba.fragment.MineFragment;
-import com.android.manba.fragment.SociationFragment;
-import com.android.manba.fragment.StreetFragment;
-import com.android.manba.util.LogUtil;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -19,6 +12,13 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Toast;
+
+import com.android.manba.R;
+import com.android.manba.fragment.HomeFragment;
+import com.android.manba.fragment.MineFragment;
+import com.android.manba.fragment.SociationFragment;
+import com.android.manba.fragment.StreetFragment;
+import com.android.manba.util.LogUtil;
 
 public class HomeActivity_bak extends FragmentActivity implements OnClickListener {
 
@@ -62,7 +62,7 @@ public class HomeActivity_bak extends FragmentActivity implements OnClickListene
 					LogUtil.d(TAG, "---home");
 					if (null == homeFragment) {
 						LogUtil.d(TAG, "--new-home");
-						homeFragment = new HomeFragment(getApplicationContext());
+						homeFragment = new HomeFragment();
 					}
 					mFragmentTransaction.replace(R.id.fl_home, homeFragment, HOME).commit();
 					break;
@@ -70,7 +70,7 @@ public class HomeActivity_bak extends FragmentActivity implements OnClickListene
 					LogUtil.d(TAG, "---jiequ");
 					if (null == streetFragment) {
 						LogUtil.d(TAG, "--new-jiequ");
-						streetFragment = new StreetFragment(context);
+						streetFragment = new StreetFragment();
 					}
 					mFragmentTransaction.replace(R.id.fl_home, streetFragment, STREET).commit();
 					break;
@@ -81,16 +81,16 @@ public class HomeActivity_bak extends FragmentActivity implements OnClickListene
 				case R.id.rb_gonghui:
 					LogUtil.d(TAG, "---gonghui");
 					if (null == sociationFragment) {
-						LogUtil.d(TAG, "--new-¹«»á");
-						sociationFragment = new SociationFragment(context);
+						LogUtil.d(TAG, "--new-ï¿½ï¿½ï¿½ï¿½");
+						sociationFragment = new SociationFragment();
 					}
 					mFragmentTransaction.replace(R.id.fl_home, sociationFragment, SOCIATION).commit();
 					break;
 				case R.id.rb_jia:
 					LogUtil.d(TAG, "---jia");
 					if (null == mineFragment) {
-						LogUtil.d(TAG, "--new-¼Ò");
-						mineFragment = new MineFragment(context);
+						LogUtil.d(TAG, "--new-ï¿½ï¿½");
+						mineFragment = new MineFragment();
 					}
 					mFragmentTransaction.replace(R.id.fl_home, mineFragment, MINE).commit();
 					break;
@@ -99,7 +99,7 @@ public class HomeActivity_bak extends FragmentActivity implements OnClickListene
 		});
 
 		mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-		homeFragment = new HomeFragment(getApplicationContext());
+		homeFragment = new HomeFragment();
 		mFragmentTransaction.add(R.id.fl_home, homeFragment, HOME).commit();
 	}
 
@@ -108,7 +108,7 @@ public class HomeActivity_bak extends FragmentActivity implements OnClickListene
 		switch (v.getId()) {
 		case R.id.rb_fayan:
 			// TODO
-			Toast.makeText(this, "·¢ÑÔ", 0).show();
+			Toast.makeText(this, "ï¿½ï¿½ï¿½ï¿½", Toast.LENGTH_SHORT).show();
 			break;
 
 		default:

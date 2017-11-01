@@ -1,11 +1,10 @@
 package com.android.manba.pager;
 
-import com.android.manba.R;
-
 import android.content.Context;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.android.manba.R;
 
 public class GuanZhuPager extends BasePager {
 	
@@ -17,7 +16,7 @@ public class GuanZhuPager extends BasePager {
 	@Override
 	public View initView() {
 		TextView view = new TextView(context);
-		view.setText("¹Ø×¢");
+		view.setText(context.getResources().getString(R.string.home_guanzhu));
 		return view;
 	}
 
