@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.manba.R;
+
 public class StreetFragment extends BaseFragment {
 
 
@@ -13,7 +15,7 @@ public class StreetFragment extends BaseFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		TextView view = new TextView(getActivity());
-		view.setText("����");
+		view.setText(getResources().getString(R.string.home_jiequ));
 		return view;
 	}
 

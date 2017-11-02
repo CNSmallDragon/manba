@@ -24,112 +24,127 @@ import com.android.manba.util.LogUtil;
 
 public class HomeActivity extends FragmentActivity implements OnClickListener {
 
-	protected static final String TAG = "HomeActivity";
-	private Context context;
-	private FrameLayout fl_home;
-	private RadioGroup rg_main;
-	private ImageView rb_fayan;
+    protected static final String TAG = "HomeActivity";
 
-	private int index;
+    private Context context;
+    private FrameLayout fl_home;
+    private RadioGroup rg_main;
+    private ImageView rb_fayan;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_home);
+    private int index;
+    private long firstTime = 0;
 
-		this.context = getApplicationContext();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_home);
 
-		fl_home = (FrameLayout) findViewById(R.id.fl_home);
-		rg_main = (RadioGroup) findViewById(R.id.rg_main);
-		rb_fayan = (ImageView) findViewById(R.id.rb_fayan);
-		rb_fayan.setOnClickListener(this);
+        this.context = getApplicationContext();
 
-		rg_main.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        fl_home = (FrameLayout) findViewById(R.id.fl_home);
+        rg_main = (RadioGroup) findViewById(R.id.rg_main);
+        rb_fayan = (ImageView) findViewById(R.id.rb_fayan);
+        rb_fayan.setOnClickListener(this);
 
-			@Override
-			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				switch (checkedId) {
-				case R.id.rb_home:
-					index = 0;
-					LogUtil.d(TAG, "---home");
-					break;
-				case R.id.rb_jiequ:
-					index = 1;
-					LogUtil.d(TAG, "---jiequ");
-					break;
-				case R.id.rb_fayan:
-					// delete
-					LogUtil.d(TAG, "---fayan");
-					break;
-				case R.id.rb_gonghui:
-					index = 2;
-					LogUtil.d(TAG, "---gonghui");
-					break;
-				case R.id.rb_jia:
-					index = 3;
-					LogUtil.d(TAG, "---jia");
-					break;
-				}
-				Fragment fragment = (Fragment) adapter.instantiateItem(fl_home, index);
-				adapter.setPrimaryItem(fl_home, 0, fragment);
-				adapter.finishUpdate(fl_home);
-			}
-		});
-		rg_main.check(R.id.rb_home);
-	}
+        rg_main.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.rb_fayan:
-			// TODO
-			Toast.makeText(this, "����", Toast.LENGTH_SHORT).show();
-			break;
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rb_home:
+                        index = 0;
+                        LogUtil.d(TAG, "---home");
+                        break;
+                    case R.id.rb_jiequ:
+                        index = 1;
+                        LogUtil.d(TAG, "---jiequ");
+                        break;
+                    case R.id.rb_fayan:
+                        // delete
+                        LogUtil.d(TAG, "---fayan");
+                        break;
+                    case R.id.rb_gonghui:
+                        index = 2;
+                        LogUtil.d(TAG, "---gonghui");
+                        break;
+                    case R.id.rb_jia:
+                        index = 3;
+                        LogUtil.d(TAG, "---jia");
+                        break;
+                }
+                Fragment fragment = (Fragment) adapter.instantiateItem(fl_home, index);
+                adapter.setPrimaryItem(fl_home, 0, fragment);
+                adapter.finishUpdate(fl_home);
+            }
+        });
+        rg_main.check(R.id.rb_home);
+    }
 
-		default:
-			break;
-		}
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rb_fayan:
+                // TODO
+                Toast.makeText(this, "发言", Toast.LENGTH_SHORT).show();
+                break;
 
-	}
+            default:
+                break;
+        }
 
-	FragmentStatePagerAdapter adapter = new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+    }
 
-		@Override
-		public int getCount() {
-			return 4;
-		}
+    FragmentStatePagerAdapter adapter = new FragmentStatePagerAdapter(getSupportFragmentManager()) {
 
-		@Override
-		public Fragment getItem(int arg0) {
-			Fragment fragment = null;
-			switch (arg0) {
-			case 0:
-				fragment = new HomeFragment();
-				break;
-			case 1:
-				fragment = new StreetFragment();
-				break;
-			case 2:
-				fragment = new SociationFragment();
-				break;
-			case 3:
-				fragment = new MineFragment();
-				break;
-			}
-			return fragment;
-		}
-	};
+        @Override
+        public int getCount() {
+            return 4;
+        }
 
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch (requestCode) {
-		case SociationFragment.DETAIL:
-			if (resultCode == RESULT_OK) {
-				Toast.makeText(context, "�Ѽ���", Toast.LENGTH_SHORT).show();
-			}
-			break;
-		}
+        @Override
+        public Fragment getItem(int arg0) {
+            Fragment fragment = null;
+            switch (arg0) {
+                case 0:
+                    fragment = new HomeFragment();
+                    break;
+                case 1:
+                    fragment = new StreetFragment();
+                    break;
+                case 2:
+                    fragment = new SociationFragment();
+                    break;
+                case 3:
+                    fragment = new MineFragment();
+                    break;
+            }
+            return fragment;
+        }
+    };
 
-	};
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        switch (requestCode) {
+            case SociationFragment.DETAIL:
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(context, "已加入", Toast.LENGTH_SHORT).show();
+                }
+                break;
 
+        }
+
+    };
+
+    @Override
+    public void onBackPressed() {
+        long currentTime = System.currentTimeMillis();
+        if((currentTime - firstTime) > 2000){
+            firstTime = currentTime;
+            Toast.makeText(HomeActivity.this, getResources().getString(R.string.back_launcher), Toast.LENGTH_SHORT).show();
+        }else{
+            finish();
+            super.onBackPressed();
+        }
+    }
 }

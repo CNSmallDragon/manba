@@ -10,7 +10,7 @@
 
     <dimen name="regist_lingyu_weight">120dp</dimen>
 
-    <dimen name="icon_width">40dp</dimen>
+    <dimen name="icon_width">70dp</dimen>
     <dimen name="home_to_side">5dp</dimen>
 
     <dimen name="home_to_topside">20dp</dimen>
@@ -18,7 +18,8 @@
     <dimen name="small_textsize">14sp</dimen>
     <dimen name="common_textsize">16sp</dimen>
     <dimen name="username_textsize">18sp</dimen>
-    
+    <dimen name="large_textsize">26sp</dimen>
+
     
     <dimen name="common_to_side">10dp</dimen>
     
@@ -27,6 +28,14 @@
     <dimen name="gonghui_icon_width">65dp</dimen>
     
     <dimen name="line_height">0.5dp</dimen>
-    
-    
+
+    <!--  个人中心界面顶部区域高度 -->
+    <dimen name="mine_top">150dp</dimen>
+    <dimen name="mine_login_side">15dp</dimen>
+    <dimen name="mine_welcome_side">40dp</dimen>
+
+    <dimen name="mine_user_height">100dp</dimen>
+    <dimen name="mine_fans_height">50dp</dimen>
+
+
 </resources>

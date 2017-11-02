@@ -70,13 +70,13 @@ public class SociationListAdapter extends BaseAdapter {
 		//bitmap.recycle();
 		//viewHolder.gonghui_pic.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_launcher));
 		viewHolder.gonghui_name.setText(list.get(position).getName());
-		viewHolder.gonghui_member_num.setText("��Ա����" + list.get(position).getMemberNum());
-		viewHolder.gonghui_hot_num.setText("��Ծ��" + list.get(position).getMemberNum());
+		viewHolder.gonghui_member_num.setText("成员数：" + list.get(position).getMemberNum());
+		viewHolder.gonghui_hot_num.setText("活跃度" + list.get(position).getMemberNum());
 		viewHolder.gonghui_join.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(context, "�Ѽ���", Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "已加入", Toast.LENGTH_SHORT).show();
 			}
 		});
 		

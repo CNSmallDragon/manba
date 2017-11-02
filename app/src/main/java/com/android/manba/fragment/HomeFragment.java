@@ -25,10 +25,8 @@ public class HomeFragment extends BaseFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-//		TextView view = new TextView(getActivity());
-//		view.setText("��ҳ");
 		View view = inflater.inflate(R.layout.fragment_home, null);
-		// ��ʼ��tab����
+		// 初始化tab标题
 		initData();
 		TabPagerAdapter adapter = new TabPagerAdapter(tabs);
 

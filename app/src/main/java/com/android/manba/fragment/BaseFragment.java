@@ -13,8 +13,6 @@ public abstract class BaseFragment extends Fragment {
 	private static final String TAG = "BaseFragment";
 	public View view;
 
-	public BaseFragment(){}
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -37,7 +35,7 @@ public abstract class BaseFragment extends Fragment {
 		initData(savedInstanceState);
 		super.onActivityCreated(savedInstanceState);
 	}
-	
+
 	@Override
 	public void setMenuVisibility(boolean menuVisible) {
 		if(null != getView()){
@@ -45,7 +43,7 @@ public abstract class BaseFragment extends Fragment {
 		}
 		super.setMenuVisibility(menuVisible);
 	}
-	
+
 	public abstract View initView(LayoutInflater inflater);
 	public abstract void initData(Bundle savedInstanceState);
 

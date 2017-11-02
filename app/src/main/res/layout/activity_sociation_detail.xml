@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <com.android.manba.ui.ActionTitleView
         android:id="@id/atv_title"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-    </com.android.manba.ui.ActionTitleView>
+        android:layout_height="wrap_content"></com.android.manba.ui.ActionTitleView>
 
     <RelativeLayout
         android:id="@+id/rl_gonghui"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/atv_title"
-        android:paddingBottom="@dimen/home_to_topside" >
+        android:paddingBottom="@dimen/home_to_topside">
 
         <ImageView
             android:id="@+id/iv_gonghui_pic"
             android:layout_width="@dimen/gonghui_icon_width"
             android:layout_height="@dimen/gonghui_icon_width"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/test" />
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:id="@+id/tv_gonghui_name"
@@ -40,7 +38,7 @@
             android:layout_below="@id/tv_gonghui_name"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/common_to_side"
-            android:gravity="center_horizontal" >
+            android:gravity="center_horizontal">
 
             <TextView
                 android:id="@+id/tv_gonghui_member_num"
@@ -83,7 +81,7 @@
         android:layout_below="@id/tv_gonghui_desc"
         android:layout_marginTop="@dimen/common_to_top"
         android:background="@android:color/background_light"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <RadioButton
             android:layout_width="0dp"
@@ -117,8 +115,7 @@
         android:id="@+id/fl_gonghui_content"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/background_light" >
-    </FrameLayout>
+        android:background="@android:color/background_light"></FrameLayout>
 
     <TextView
         android:id="@+id/tv_join"

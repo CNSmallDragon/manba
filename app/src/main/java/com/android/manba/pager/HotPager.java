@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
-import com.android.manba.R;
-
 public class HotPager extends BasePager {
 
 	
@@ -16,7 +14,7 @@ public class HotPager extends BasePager {
 	@Override
 	public View initView() {
 		TextView view = new TextView(context);
-		view.setText(context.getResources().getString(R.string.home_remen));
+		view.setText(title);
 		return view;
 	}
 

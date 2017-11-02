@@ -47,7 +47,8 @@
     <string name="my_xiaoxi">消息</string>
     <string name="my_haiwan">嗨玩</string>
     <string name="my_shezhi">设置</string>
-    
+    <string name="my_login">欢迎来到漫吧</string>
+
     <!-- 公会 -->
     <string name="gonghui_hot">热门公会</string>
     <string name="gonghui_join">加入</string>
@@ -56,4 +57,10 @@
     <string name="gonghui_shenqingjiaru">申请加入</string>
     
     <string name="test_more">22222222222222222222222222222222222222222222222223333333333333333333333333333</string>
+
+    <!--  主界面   -->
+    <string name="back_launcher">再按一次退出</string>
+
+
+
 </resources>

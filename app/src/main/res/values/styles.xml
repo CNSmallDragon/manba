@@ -55,9 +55,12 @@
 
     <!-- 个人中心界面样式 -->
     <style name="mine_item">
-        <item name="android:background">@android:color/background_light</item>
-        <item name="android:clickable">true</item>
-        <item name="android:padding">@dimen/home_to_side</item>
+        <item name="android:layout_marginLeft">@dimen/common_to_side</item>
+        <item name="android:layout_marginRight">@dimen/common_to_side</item>
+        <item name="android:paddingTop">@dimen/home_to_side</item>
+        <item name="android:paddingBottom">@dimen/home_to_side</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/common_textsize</item>
     </style>
 
 </resources>
