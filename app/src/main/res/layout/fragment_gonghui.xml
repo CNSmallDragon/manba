@@ -2,21 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:gravity="center"
+    android:orientation="vertical">
 
-    <com.android.manba.ui.ActionTitleView
-        android:id="@id/atv_title"
+    <com.minyou.manba.ui.ActionTitleView
+        android:id="@+id/atv_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/background_light" >
-    </com.android.manba.ui.ActionTitleView>
+        android:background="@android:color/background_light"></com.minyou.manba.ui.ActionTitleView>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/background_light"
         android:orientation="horizontal"
-        android:padding="@dimen/common_to_side" >
+        android:padding="@dimen/common_to_side">
 
         <ImageView
             android:layout_width="1dp"
@@ -30,11 +30,23 @@
             android:textSize="@dimen/common_textsize" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/lv_gonghui_list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/background_light" >
-    </ListView>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--<ListView-->
+            <!--android:id="@+id/lv_gonghui_list"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:visibility="gone"-->
+            <!--android:background="@android:color/background_light">-->
+        <!--</ListView>-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_gonghui_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light"></android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

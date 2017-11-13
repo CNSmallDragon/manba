@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.android.manba.ui.ActionTitleView
+    <com.minyou.manba.ui.ActionTitleView
         android:id="@id/atv_title"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"></com.android.manba.ui.ActionTitleView>
+        android:layout_height="wrap_content"></com.minyou.manba.ui.ActionTitleView>
 
     <RelativeLayout
         android:id="@+id/rl_gonghui"

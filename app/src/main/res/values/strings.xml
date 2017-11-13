@@ -55,7 +55,9 @@
     <string name="gonghui_dongtai">动态</string>
     <string name="gonghui_chengyuan">成员</string>
     <string name="gonghui_shenqingjiaru">申请加入</string>
-    
+    <string name="gonghui_loadmore">上拉加载更多...</string>
+    <string name="gonghui_loading">正在加载...</string>
+
     <string name="test_more">22222222222222222222222222222222222222222222222223333333333333333333333333333</string>
 
     <!--  主界面   -->

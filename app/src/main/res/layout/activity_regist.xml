@@ -9,11 +9,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <com.android.manba.ui.ActionTitleView
+        <com.minyou.manba.ui.ActionTitleView
             android:id="@+id/atv_title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
-        </com.android.manba.ui.ActionTitleView>
+        </com.minyou.manba.ui.ActionTitleView>
 
         <LinearLayout
             android:layout_width="match_parent"

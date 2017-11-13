@@ -11,7 +11,7 @@
         android:background="@android:color/background_light"
         android:paddingLeft="@dimen/login_num_side"
         android:paddingRight="@dimen/login_num_side"
-        android:paddingTop="@dimen/home_to_topside"
+        android:paddingTop="@dimen/mine_login_side"
         android:visibility="visible">
 
         <ImageView
