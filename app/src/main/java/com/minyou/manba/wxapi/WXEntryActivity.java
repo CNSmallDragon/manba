@@ -28,7 +28,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Created by Administrator on 2017/11/13.
+ * Created by Administrator on 2017/11/13.aaa
  */
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
