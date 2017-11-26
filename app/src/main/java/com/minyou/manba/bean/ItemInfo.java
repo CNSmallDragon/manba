@@ -3,12 +3,10 @@ package com.minyou.manba.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 /**
  * Created by Administrator on 2017/11/6.
  */
-public class ItemInfo implements Serializable,Parcelable{
+public class ItemInfo implements Parcelable{
     private String userName;
     private String familyName;
     private String userPic;
@@ -18,6 +16,7 @@ public class ItemInfo implements Serializable,Parcelable{
     private int sharedCount;
     private int zanCount;
     private int commentCount;
+    private int sex;
 
     public ItemInfo(Parcel parcel) {
         userName = parcel.readString();
@@ -29,6 +28,7 @@ public class ItemInfo implements Serializable,Parcelable{
         sharedCount = parcel.readInt();
         zanCount = parcel.readInt();
         commentCount = parcel.readInt();
+        sex = parcel.readInt();
     }
 
     public ItemInfo() {
@@ -106,6 +106,14 @@ public class ItemInfo implements Serializable,Parcelable{
         this.commentCount = commentCount;
     }
 
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -122,6 +130,7 @@ public class ItemInfo implements Serializable,Parcelable{
         parcel.writeInt(sharedCount);
         parcel.writeInt(zanCount);
         parcel.writeInt(commentCount);
+        parcel.writeInt(sex);
     }
 
     public static final Creator<ItemInfo> CREATOR = new Creator<ItemInfo>() {

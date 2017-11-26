@@ -1,16 +1,21 @@
 package com.minyou.manba.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
+import com.minyou.manba.activity.DongTaiDetailActivity;
 import com.minyou.manba.adapter.NewRecyclerAdapter;
 import com.minyou.manba.bean.ItemInfo;
+import com.minyou.manba.util.OnItemClickLitener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +35,13 @@ public class NewFragment extends BaseFragment implements SwipeRefreshLayout.OnRe
     private NewRecyclerAdapter adapter;
     private List<ItemInfo> list;
 
+    public static Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        }
+    };
+
     @Override
     public int getContentViewId() {
         return R.layout.fragment_new;
@@ -41,7 +53,7 @@ public class NewFragment extends BaseFragment implements SwipeRefreshLayout.OnRe
     }
 
     public void getData() {
-        new Handler().postDelayed(new Runnable() {
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 list.clear();
@@ -76,6 +88,13 @@ public class NewFragment extends BaseFragment implements SwipeRefreshLayout.OnRe
         new_recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new NewRecyclerAdapter(getActivity(), list);
         new_recyclerview.setAdapter(adapter);
+
+        initListener();
+
+
+    }
+
+    private void initListener() {
 
         new_recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             int lastVisibleItem ;
@@ -116,10 +135,26 @@ public class NewFragment extends BaseFragment implements SwipeRefreshLayout.OnRe
                 lastVisibleItem = manager.findLastVisibleItemPosition();
             }
         });
+
+        adapter.setOnItemClick(new OnItemClickLitener() {
+            @Override
+            public void onItemClick(int position) {
+                ItemInfo info = list.get(position);
+                Intent intent = new Intent(getActivity(), DongTaiDetailActivity.class);
+                intent.putExtra(Appconstant.ITEM_INFO,info);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     public void onRefresh() {
         getData();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        handler.removeCallbacksAndMessages(null);
     }
 }

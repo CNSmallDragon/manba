@@ -47,6 +47,15 @@
         <activity
             android:name="com.minyou.manba.activity.SociationDetailActivity"
             android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.minyou.manba.activity.PersonContentActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.minyou.manba.activity.DongTaiDetailActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name="com.minyou.manba.activity.ImageViewerActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
 
         <!-- qq官方申请的key的配置 -->
         <activity

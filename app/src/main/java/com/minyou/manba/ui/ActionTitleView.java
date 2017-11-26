@@ -46,7 +46,7 @@ public class ActionTitleView extends LinearLayout implements OnClickListener {
 		iv_back.setOnClickListener(this);
 	}
 
-	// ���ñ���
+	// 设置标题
 	public void setTitle(String title) {
 		tv_title = (TextView) view.findViewById(R.id.tv_title);
 		if (!TextUtils.isEmpty(title)) {
@@ -58,15 +58,15 @@ public class ActionTitleView extends LinearLayout implements OnClickListener {
 	}
 
 	/**
-	 * �����Ҳఴť��ʾ���¼�
-	 * 
+	 * 设置右侧按钮显示及事件
+	 *
 	 * @param id
-	 *            �����ҲఴťҪ��ʾ��resource id
+	 *            传入右侧按钮要显示的resource id
 	 * @param theme
-	 *            ��ť��ʽ����
+	 *            按钮样式主题
 	 * @param listener
-	 *            ��ť����¼�
-	 * 
+	 *            按钮点击事件
+	 *
 	 */
 	@SuppressLint("NewApi")
 	public void setRightToDo(int id, Theme theme, OnClickListener listener) {

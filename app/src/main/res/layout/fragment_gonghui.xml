@@ -8,7 +8,8 @@
     <com.minyou.manba.ui.ActionTitleView
         android:id="@+id/atv_title"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/common_title_height"
+        android:gravity="center_vertical"
         android:background="@android:color/background_light"></com.minyou.manba.ui.ActionTitleView>
 
     <LinearLayout

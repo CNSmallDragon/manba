@@ -80,5 +80,10 @@
         <item name="android:textSize">@dimen/common_textsize</item>
     </style>
 
+    <style name="ImageTranslucentTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
 </resources>
 

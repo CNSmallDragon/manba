@@ -25,6 +25,7 @@ public class MainActivity extends Activity implements OnClickListener {
     @BindView(R.id.iv_welcome)
     ImageView iv_welcome;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +42,7 @@ public class MainActivity extends Activity implements OnClickListener {
         int height = dm.heightPixels;       // 屏幕高度（像素）
 
         Glide.with(this)
-                .load(R.drawable.test)
+                .load(R.drawable.test_welcome)
                 .override(width,height)
                 .into(iv_welcome);
 
@@ -72,5 +73,11 @@ public class MainActivity extends Activity implements OnClickListener {
 
     @Override
     public void onBackPressed() {
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 }

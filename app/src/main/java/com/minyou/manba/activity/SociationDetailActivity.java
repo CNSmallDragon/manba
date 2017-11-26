@@ -46,7 +46,7 @@ public class SociationDetailActivity extends Activity {
 			pic_path = intent.getStringExtra(Appconstant.SOCIATION_PIC_PATH);
 			//bitmap = BitmapUtil.createCircleImage(BitmapFactory.decodeResource(getResources(), R.drawable.test));
 			glideRequest = Glide.with(this);
-			glideRequest.load(R.drawable.test).transform(new GlideCircleTransform(this)).into(iv_gonghui_pic);
+			glideRequest.load(R.drawable.test_welcome).transform(new GlideCircleTransform(this)).into(iv_gonghui_pic);
 			//iv_gonghui_pic.setImageBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.test));
 
 			tv_gonghui_name.setText(intent.getStringExtra(Appconstant.SOCIATION_NAME));

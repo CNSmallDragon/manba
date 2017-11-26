@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -16,17 +16,22 @@ import android.widget.Toast;
 
 import com.minyou.manba.R;
 import com.minyou.manba.bean.ManBaUserInfo;
+import com.minyou.manba.fragment.BaseFragment;
 import com.minyou.manba.fragment.HomeFragment;
 import com.minyou.manba.fragment.MineFragment;
 import com.minyou.manba.fragment.SociationFragment;
 import com.minyou.manba.fragment.StreetFragment;
 import com.minyou.manba.util.LogUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomeActivity extends FragmentActivity {
 
     protected static final String TAG = "HomeActivity";
 
-
+    private boolean[] fragmentsUpdateFlag = {false,false,false,true};
+    private List<BaseFragment> fragments = new ArrayList<BaseFragment>();
 
     //private Unbinder unbinder;
     private Context context;
@@ -41,6 +46,7 @@ public class HomeActivity extends FragmentActivity {
     private long firstTime = 0;
 
     private ManBaUserInfo mManBaUserInfo;
+    private FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,12 @@ public class HomeActivity extends FragmentActivity {
         fl_home = (FrameLayout)findViewById(R.id.fl_home);
         rg_main = (RadioGroup) findViewById(R.id.rg_main);
         rb_fayan = (ImageView) findViewById(R.id.rb_fayan);
+        fm = getSupportFragmentManager();
+        fragments.clear();
+        fragments.add(new HomeFragment());
+        fragments.add(new StreetFragment());
+        fragments.add(new SociationFragment());
+        fragments.add(new MineFragment());
         rg_main.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             @Override
@@ -86,15 +98,6 @@ public class HomeActivity extends FragmentActivity {
         rg_main.check(R.id.rb_home);
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-//        ManBaUserInfo manBaUserInfo = intent.getParcelableExtra("user_info");
-//        mManBaUserInfo = manBaUserInfo;
-        Log.i(TAG, "onNewIntent: ");
-        rg_main.check(R.id.rb_jia);
-
-    }
 
     //    @OnClick(R.id.rb_fayan)
 //    public void fayan(){
@@ -105,28 +108,34 @@ public class HomeActivity extends FragmentActivity {
 
         @Override
         public int getCount() {
-            return 4;
+            return fragments.size();
         }
 
         @Override
         public Fragment getItem(int arg0) {
-            Fragment fragment = null;
-            switch (arg0) {
-                case 0:
-                    fragment = new HomeFragment();
-                    break;
-                case 1:
-                    fragment = new StreetFragment();
-                    break;
-                case 2:
-                    fragment = new SociationFragment();
-                    break;
-                case 3:
-                    fragment = new MineFragment();
-                    break;
-            }
-            return fragment;
+            return fragments.get(arg0);
         }
+
+//        @Override
+//        public Object instantiateItem(ViewGroup container, int position) {
+//            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+//            String tag = fragment.getTag();
+//            LogUtil.d(TAG, "---position====" + position);
+//            LogUtil.d(TAG, "---tag====" + tag);
+//            LogUtil.d(TAG, "---fragmentsUpdateFlag[position]====" + fragmentsUpdateFlag[position]);
+//            if(fragmentsUpdateFlag[position]){
+//                FragmentTransaction ft = fm.beginTransaction();
+//                ft.remove(fragment);
+//                LogUtil.d(TAG, "---container.getId====" + container.getId());
+//                fragment = fragments.get(position);
+//                ft.add(container.getId(),fragment,tag);
+//                ft.attach(fragment);
+//                ft.commitAllowingStateLoss();
+//            }
+//
+//            return fragment;
+//
+//        }
     };
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -21,8 +21,10 @@ import android.widget.Toast;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.bean.ManBaUserInfo;
+import com.minyou.manba.event.MessageEvent;
 import com.minyou.manba.fragment.MineFragment;
 import com.minyou.manba.util.LogUtil;
+import com.minyou.manba.util.SharedPreferencesUtil;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.auth.QQToken;
 import com.tencent.connect.common.Constants;
@@ -33,6 +35,9 @@ import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -105,6 +110,7 @@ public class LoginActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
         unbinder = ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
 
         cb_display_pwd.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -126,16 +132,15 @@ public class LoginActivity extends Activity {
     }
 
 
-
     @OnClick(R.id.bt_login)
-    public void inputLogin(){
+    public void inputLogin() {
         if (checkLoginNum() && checkPassWord()) {
             login();
         }
     }
 
     @OnClick(R.id.tv_forget_pwd)
-    public void forgetPwd(){
+    public void forgetPwd() {
         if (checkLoginNum()) {
             tv_forget_pwd.setTextColor(Color.BLUE);
             Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
@@ -154,14 +159,15 @@ public class LoginActivity extends Activity {
     @OnClick(R.id.tv_weixin)
     public void loginWeiXin() {
         // TODO Auto-generated method stub
-        IWXAPI mApi = WXAPIFactory.createWXAPI(this,Appconstant.WEIXIN_APP_ID,true);
+        IWXAPI mApi = WXAPIFactory.createWXAPI(this, Appconstant.WEIXIN_APP_ID, true);
+        mApi.unregisterApp();
         mApi.registerApp(Appconstant.WEIXIN_APP_ID);
-        if(null != mApi && mApi.isWXAppInstalled()){
+        if (null != mApi && mApi.isWXAppInstalled()) {
             SendAuth.Req req = new SendAuth.Req();
             req.scope = "snsapi_userinfo";
             req.state = "wechat_sdk_demo_test_neng";
             mApi.sendReq(req);
-        }else{
+        } else {
             Toast.makeText(LoginActivity.this, "未安装微信", Toast.LENGTH_SHORT).show();
         }
     }
@@ -238,6 +244,34 @@ public class LoginActivity extends Activity {
         Tencent.onActivityResultData(requestCode, resultCode, data, myIUiListener);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onWXReturn(MessageEvent messageEvent) {
+
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(messageEvent.getMessage());
+            ManBaUserInfo mUserInfo = new ManBaUserInfo();
+            mUserInfo.setNickName(jsonObject.get(Appconstant.LOGIN_WEIXIN_NAME).toString().trim());
+            mUserInfo.setSex(Integer.parseInt(jsonObject.get(Appconstant.LOGIN_WEIXIN_SEX).toString().trim()));
+            mUserInfo.setPhotoUrl(jsonObject.get(Appconstant.LOGIN_WEIXIN_PHOTO).toString().trim());
+            Intent data = new Intent();
+//            data.putExtra(Appconstant.LOGIN_RETURN_TYPE,Appconstant.LOGIN_WEIXIN);
+            data.putExtra(Appconstant.LOGIN_USER_INFO, mUserInfo);
+            setResult(RESULT_OK, data);
+            finish();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     @OnClick(R.id.tv_qq)
     public void loginQQ() {
         mAppid = Appconstant.QQ_APP_ID;
@@ -251,7 +285,6 @@ public class LoginActivity extends Activity {
 
         @Override
         public void onComplete(Object response) {
-            Toast.makeText(LoginActivity.this, "登陆完成", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "登陆完成-----------------");
             Log.d(TAG, response.toString());
             JSONObject jsonObject = (JSONObject) response;
@@ -277,6 +310,7 @@ public class LoginActivity extends Activity {
                 String token = jsonObject.getString(Constants.PARAM_ACCESS_TOKEN);
                 String expires = jsonObject.getString(Constants.PARAM_EXPIRES_IN);
                 if (!TextUtils.isEmpty(openId) && !TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires)) {
+                    SharedPreferencesUtil.getInstance(LoginActivity.this.getApplicationContext()).putSP(Appconstant.LOGIN_QQ_ID, openId);
                     mTencent.setAccessToken(token, expires);
                     mTencent.setOpenId(openId);
                 }
@@ -296,13 +330,15 @@ public class LoginActivity extends Activity {
                         Log.d(TAG, o.toString());
                         JSONObject userInfoJson = new JSONObject(o.toString());
                         mUserInfo = new ManBaUserInfo();
-                        mUserInfo.setNickName(userInfoJson.getString("nickname"));
-                        mUserInfo.setPhotoUrl(userInfoJson.getString("figureurl_qq_2"));
+                        mUserInfo.setNickName(userInfoJson.getString(Appconstant.LOGIN_QQ_NAME));
+                        mUserInfo.setPhotoUrl(userInfoJson.getString(Appconstant.LOGIN_QQ_PHOTO));
                         // TODO 获取用户信息后发后台注册
-
+                        SharedPreferencesUtil.getInstance(LoginActivity.this.getApplicationContext()).putSP(Appconstant.LOGIN_USER_INFO_QQ, o.toString());
+                        SharedPreferencesUtil.getInstance(LoginActivity.this.getApplicationContext()).putSP(Appconstant.LOGIN_LAST_TYPE, Appconstant.LOGIN_QQ);
+                        SharedPreferencesUtil.getInstance(LoginActivity.this.getApplicationContext()).putBoolean(Appconstant.LOGIN_OR_NOT, true);
                         Intent data = new Intent();
-                        data.putExtra("nickname", userInfoJson.getString("nickname"));
-                        data.putExtra("figureurl_qq_2", userInfoJson.getString("figureurl_qq_2"));
+//                        data.putExtra(Appconstant.LOGIN_RETURN_TYPE,Appconstant.LOGIN_QQ);
+                        data.putExtra(Appconstant.LOGIN_USER_INFO, mUserInfo);
                         setResult(RESULT_OK, data);
                         finish();
                         /*

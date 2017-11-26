@@ -1,6 +1,7 @@
 package com.minyou.manba.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -9,12 +10,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.minyou.manba.R;
+import com.minyou.manba.activity.ImageViewerActivity;
+import com.minyou.manba.activity.LoginActivity;
+import com.minyou.manba.activity.PersonContentActivity;
 import com.minyou.manba.bean.ItemInfo;
+import com.minyou.manba.util.CommonUtil;
 import com.minyou.manba.util.GlideCircleTransform;
 import com.minyou.manba.util.OnItemClickLitener;
 
@@ -23,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -50,6 +58,9 @@ public class NewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private RequestManager glideRequest;
 
+    @BindString(R.string.home_guanzhu_done)
+    String home_guanzhu_done;
+
 
     public NewRecyclerAdapter(Context context, List<ItemInfo> list) {
         this.context = context;
@@ -75,34 +86,96 @@ public class NewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
-            ItemViewHolder viewHolder = (ItemViewHolder) holder;
+            final ItemViewHolder mItemViewHolder = (ItemViewHolder) holder;
             // 加载用户图片
             glideRequest = Glide.with(context);
-            if(TextUtils.isEmpty(list.get(position).getUserPic())){
-                glideRequest.load(R.drawable.login_icon_qq).transform(new GlideCircleTransform(context)).into(viewHolder.iv_user_pic);
-            }else{
-                glideRequest.load(list.get(position).getUserPic()).transform(new GlideCircleTransform(context)).into(viewHolder.iv_user_pic);
+            if (TextUtils.isEmpty(list.get(position).getUserPic())) {
+                glideRequest.load(R.drawable.login_icon_qq).transform(new GlideCircleTransform(context)).into(mItemViewHolder.iv_user_pic);
+            } else {
+                glideRequest.load(list.get(position).getUserPic()).transform(new GlideCircleTransform(context)).into(mItemViewHolder.iv_user_pic);
+            }
+            // 加载用户性别
+            if (list.get(position).getSex() == 1) {
+                glideRequest.load(R.drawable.home_icon_nan).into(mItemViewHolder.iv_sex);
+            } else {
+                glideRequest.load(R.drawable.home_icon_women).into(mItemViewHolder.iv_sex);
             }
             // 加载用户名字
-            viewHolder.tv_username.setText(list.get(position).getUserName());
+            mItemViewHolder.tv_username.setText(list.get(position).getUserName());
             // 加载发布时间
-            SimpleDateFormat format=new SimpleDateFormat("yy/MM/dd HH:mm");
-            Date date=new Date(list.get(position).getDate());
-            viewHolder.tv_pub_time.setText(format.format(date));
+            SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd HH:mm");
+            Date date = new Date(list.get(position).getDate());
+            mItemViewHolder.tv_pub_time.setText(format.format(date));
             // 加载家族名称
-            viewHolder.tv_familyname.setText(list.get(position).getFamilyName());
+            mItemViewHolder.tv_familyname.setText(list.get(position).getFamilyName());
             // 加载发布图片
-            if(TextUtils.isEmpty(list.get(position).getPhotoUrl())){
-                glideRequest.load(R.drawable.test).into(viewHolder.iv_content_pic);
-            }else{
-                glideRequest.load(list.get(position).getPhotoUrl()).into(viewHolder.iv_content_pic);
+            if (TextUtils.isEmpty(list.get(position).getPhotoUrl())) {
+                glideRequest.load(R.drawable.test_home_item).into(mItemViewHolder.iv_content_pic);
+            } else {
+                glideRequest.load(list.get(position).getPhotoUrl()).into(mItemViewHolder.iv_content_pic);
             }
             // 加载内容
-            viewHolder.tv_content_desc.setText(list.get(position).getContentStr());
+            mItemViewHolder.tv_content_desc.setText(list.get(position).getContentStr());
             // 加载次数
-            viewHolder.tv_content_fenxiang.setText(list.get(position).getSharedCount() + "");
-            viewHolder.tv_content_zan.setText(list.get(position).getZanCount() + "");
-            viewHolder.tv_content_comment.setText(list.get(position).getCommentCount() + "");
+            mItemViewHolder.tv_content_fenxiang.setText(list.get(position).getSharedCount() + "");
+            mItemViewHolder.tv_content_zan.setText(list.get(position).getZanCount() + "");
+            mItemViewHolder.tv_content_comment.setText(list.get(position).getCommentCount() + "");
+            // 设置点击事件
+            // 关注按钮点击事件
+            mItemViewHolder.tv_guanzhu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (CommonUtil.isLogin(context.getApplicationContext())) {
+                        // 已经登陆
+                        mItemViewHolder.tv_guanzhu.setText(context.getResources().getString(R.string.home_guanzhu_done));
+                        mItemViewHolder.tv_guanzhu.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                        Toast.makeText(context, "已加入", Toast.LENGTH_SHORT).show();
+                        // TODO
+                    } else {
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        context.startActivity(intent);
+                    }
+                }
+            });
+            // 头像点击事件
+            mItemViewHolder.rl_user_pic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, PersonContentActivity.class);
+                    context.startActivity(intent);
+                }
+            });
+            // 点击图片
+            mItemViewHolder.iv_content_pic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "点击图片", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, ImageViewerActivity.class);
+                    context.startActivity(intent);
+
+                }
+            });
+            // 点击分享按钮
+            mItemViewHolder.tv_content_fenxiang.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "点击分享", Toast.LENGTH_SHORT).show();
+                }
+            });
+            // 点击赞按钮
+            mItemViewHolder.tv_content_zan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "点击赞按钮", Toast.LENGTH_SHORT).show();
+                }
+            });
+            // 点击评论按钮
+            mItemViewHolder.tv_content_comment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "点击评论按钮", Toast.LENGTH_SHORT).show();
+                }
+            });
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
             switch (mLoadMoreStatus) {
@@ -117,7 +190,7 @@ public class NewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     break;
             }
         }
-        if(null != mOnItemClickLitener){
+        if (null != mOnItemClickLitener) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -142,7 +215,7 @@ public class NewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public void setOnItemClick(OnItemClickLitener listener){
+    public void setOnItemClick(OnItemClickLitener listener) {
         this.mOnItemClickLitener = listener;
     }
 
@@ -153,8 +226,12 @@ public class NewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.rl_user_pic)
+        RelativeLayout rl_user_pic;
         @BindView(R.id.iv_user_pic)
         ImageView iv_user_pic;
+        @BindView(R.id.iv_sex)
+        ImageView iv_sex;
         @BindView(R.id.tv_username)
         TextView tv_username;
         @BindView(R.id.tv_pub_time)
@@ -173,6 +250,7 @@ public class NewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tv_content_zan;
         @BindView(R.id.tv_content_comment)
         TextView tv_content_comment;
+
 
 
         public ItemViewHolder(View itemView) {

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.minyou.manba.ui.ActionTitleView
+        android:id="@+id/atv_title"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/common_title_height"
+        android:background="@android:color/background_light"
+        android:gravity="center_vertical"></com.minyou.manba.ui.ActionTitleView>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/atv_title">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/item_home_new"
+                android:background="@android:color/background_light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_to_top"
+                android:background="@android:color/background_light"
+                android:orientation="horizontal"
+                android:padding="@dimen/common_to_side">
+
+                <TextView
+                    android:id="@+id/tv_count_zan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableBottom="@drawable/details_icon_zan"
+                    android:text="1008"
+                    android:textSize="@dimen/small_textsize" />
+
+                <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_zan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light"
+                android:layout_marginTop="@dimen/common_to_top"></android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/background_light"
+        android:padding="@dimen/common_to_top">
+
+        <TextView
+            android:id="@+id/tv_shoucang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_to_side"
+            android:drawableLeft="@drawable/details_icon_shouchang"
+            android:drawablePadding="@dimen/common_text_side"
+            android:text="20" />
+
+        <TextView
+            android:id="@+id/tv_zan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableLeft="@drawable/details_icon_dazan"
+            android:drawablePadding="@dimen/common_text_side"
+            android:text="168" />
+
+        <TextView
+            android:id="@+id/tv_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/common_to_side"
+            android:drawableLeft="@drawable/details_icon_pinglun"
+            android:drawablePadding="@dimen/common_text_side"
+            android:text="20" />
+    </RelativeLayout>
+
+</RelativeLayout>

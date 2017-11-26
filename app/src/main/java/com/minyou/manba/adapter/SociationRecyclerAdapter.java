@@ -1,6 +1,7 @@
 package com.minyou.manba.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,13 +12,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.minyou.manba.R;
+import com.minyou.manba.activity.LoginActivity;
 import com.minyou.manba.bean.SociationBean;
+import com.minyou.manba.util.CommonUtil;
 import com.minyou.manba.util.GlideCircleTransform;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.OnItemClickLitener;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +93,13 @@ public class SociationRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
 
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "已加入", Toast.LENGTH_SHORT).show();
+                    if(CommonUtil.isLogin(context.getApplicationContext())){
+                        // 已经登陆
+                        Toast.makeText(context, "已加入", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        context.startActivity(intent);
+                    }
                 }
             });
 

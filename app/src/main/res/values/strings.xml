@@ -36,7 +36,8 @@
     <string name="home_xinxian">新鲜</string>
     <string name="home_remen">热门</string>
     <string name="home_guanzhu">关注</string>
-    
+    <string name="home_guanzhu_done">已关注</string>
+
     <!-- 设置界面 -->
     <string name="my_fensi">粉丝</string>
     <string name="my_guanzhu">关注</string>
@@ -62,6 +63,16 @@
 
     <!--  主界面   -->
     <string name="back_launcher">再按一次退出</string>
+
+
+    <!--  主页条目界面   -->
+    <string name="person_pick">撩一下</string>
+    <string name="person_guanzhu">关注</string>
+    <string name="person_gallery">相册</string>
+    <string name="person_dongtai">动态</string>
+
+    <!--  动态详情界面   -->
+    <string name="detail_title">动态详情</string>
 
 
 

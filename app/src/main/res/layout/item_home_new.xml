@@ -3,11 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/common_to_side"
-    android:paddingLeft="@dimen/common_to_side"
-    android:paddingRight="@dimen/common_to_side"
     android:background="@android:color/background_light"
-    android:orientation="vertical">
-<!--android:background="@drawable/card_background_selector"-->
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/common_to_side"
+    android:paddingRight="@dimen/common_to_side">
+    <!--android:background="@drawable/card_background_selector"-->
 
     <RelativeLayout
         android:id="@+id/rl_after_login"
@@ -15,19 +15,33 @@
         android:layout_height="@dimen/mine_user_height"
         android:visibility="visible">
 
-        <ImageView
-            android:id="@+id/iv_user_pic"
+        <RelativeLayout
+            android:id="@+id/rl_user_pic"
             android:layout_width="@dimen/icon_width"
             android:layout_height="@dimen/icon_width"
-            android:layout_centerVertical="true"
-            android:src="@drawable/login_icon_qq" />
+            android:layout_centerVertical="true">
+            <ImageView
+                android:id="@+id/iv_user_pic"
+                android:layout_width="@dimen/icon_width"
+                android:layout_height="@dimen/icon_width"
+                android:layout_centerVertical="true"
+                android:src="@drawable/login_icon_qq" />
+            <ImageView
+                android:id="@+id/iv_sex"
+                android:layout_width="@dimen/icon_sex_width"
+                android:layout_height="@dimen/icon_sex_width"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/home_icon_nan"/>
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/home_to_side"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/iv_user_pic"
+            android:layout_marginLeft="@dimen/home_to_side"
+            android:layout_toRightOf="@id/rl_user_pic"
             android:orientation="vertical">
 
             <TextView
@@ -85,8 +99,8 @@
     <ImageView
         android:id="@+id/iv_content_pic"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/new_item_height"
-        android:background="@drawable/ic_launcher" />
+        android:scaleType="fitXY"
+        android:layout_height="@dimen/new_item_height" />
 
     <TextView
         android:id="@+id/tv_content_desc"
@@ -98,6 +112,7 @@
         android:text="@string/test_more" />
 
     <LinearLayout
+        android:id="@+id/ll_count_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/login_num_side"
