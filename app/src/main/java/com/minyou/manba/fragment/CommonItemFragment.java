@@ -23,9 +23,9 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- * Created by Administrator on 2017/11/6.
+ * Created by Administrator on 2017/11/28.
  */
-public class HotFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class CommonItemFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.new_swiper)
     SwipeRefreshLayout new_swiper;
@@ -51,7 +51,6 @@ public class HotFragment extends BaseFragment implements SwipeRefreshLayout.OnRe
     public void initView(Bundle savedInstanceState) {
 
     }
-
 
     public void getData() {
         handler.postDelayed(new Runnable() {
@@ -158,4 +157,5 @@ public class HotFragment extends BaseFragment implements SwipeRefreshLayout.OnRe
         super.onDestroyView();
         handler.removeCallbacksAndMessages(null);
     }
+
 }

@@ -55,6 +55,15 @@ public class SociationFragment extends BaseFragment implements SwipeRefreshLayou
     @Override
     public void initView(Bundle savedInstanceState) {
         atv_title.setTitle(home_gonghui);
+        atv_title.hideBackIcon();
+        atv_title.setRightToDo(R.drawable.guild_nav_icon_add, null, new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub  添加公会
+
+            }
+        });
     }
 
     @Override
@@ -82,7 +91,8 @@ public class SociationFragment extends BaseFragment implements SwipeRefreshLayou
                 intent.putExtra(Appconstant.SOCIATION_MEMBER_NUM, "成员数：" + list.get(position).getMemberNum());
                 intent.putExtra(Appconstant.SOCIATION_HOT_NUM, "活跃度" + list.get(position).getMemberNum());
                 intent.putExtra(Appconstant.SOCIATION_PIC_PATH, list.get(position).getPicPath());
-                getActivity().startActivityForResult(intent, DETAIL);
+                //getActivity().startActivityForResult(intent, DETAIL);
+                getActivity().startActivity(intent);
             }
         });
 
@@ -143,14 +153,7 @@ public class SociationFragment extends BaseFragment implements SwipeRefreshLayou
         });
         */
         // 设置添加公会按钮事件
-        atv_title.setRightToDo(R.drawable.guild_nav_icon_add, null, new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub  添加公会
-
-            }
-        });
     }
 
     private void getData() {
@@ -192,7 +195,6 @@ public class SociationFragment extends BaseFragment implements SwipeRefreshLayou
                 mSwiper.setRefreshing(false);
             }
         }, 3000);
-
-
     }
+
 }

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.minyou.manba.R;
+import com.minyou.manba.activity.ImageViewerActivity;
 
 import java.util.List;
 
@@ -47,14 +48,15 @@ public class ImageViewerAdapter extends PagerAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((Activity)context).finish();
-                ((Activity)context).overridePendingTransition(R.anim.activity_alpha_out,0);
+                ((ImageViewerActivity)context).finish();
+                ((ImageViewerActivity)context).overridePendingTransition(0,R.anim.activity_alpha_out);
             }
         });
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 Toast.makeText(((Activity)context), "position="+position, Toast.LENGTH_SHORT).show();
+                ((ImageViewerActivity)context).showPupWindowMenu(view);
                 return true;
             }
         });

@@ -29,6 +29,7 @@
     
     <string name="home">主页</string>
     <string name="home_jiequ">街区</string>
+    <string name="home_xiaoxi">消息</string>
     <string name="home_fayan">发言</string>
     <string name="home_gonghui">公会</string>
     <string name="home_jia">家</string>
@@ -56,6 +57,7 @@
     <string name="gonghui_dongtai">动态</string>
     <string name="gonghui_chengyuan">成员</string>
     <string name="gonghui_shenqingjiaru">申请加入</string>
+    <string name="gonghui_exit">退出公会</string>
     <string name="gonghui_loadmore">上拉加载更多...</string>
     <string name="gonghui_loading">正在加载...</string>
 
@@ -73,6 +75,11 @@
 
     <!--  动态详情界面   -->
     <string name="detail_title">动态详情</string>
+
+    <!--  查看图片界面   -->
+    <string name="image_sendto_friend">发送给好友</string>
+    <string name="image_save">保存图片</string>
+    <string name="image_cancel">取消</string>
 
 
 

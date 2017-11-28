@@ -82,4 +82,5 @@ public class BitmapUtil {
 		
 		return output;
 	}
+
 }

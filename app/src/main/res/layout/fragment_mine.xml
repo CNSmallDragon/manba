@@ -180,13 +180,13 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/mine_gonghui"
+            style="@style/mine_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/mine_item"
             android:drawableLeft="@drawable/me_icon_gonghui"
             android:drawableRight="@drawable/me_icon_go"
-            android:text="@string/my_gonghui"
-             />
+            android:text="@string/my_gonghui" />
 
         <ImageView
             android:layout_width="fill_parent"
@@ -195,12 +195,13 @@
             android:background="@android:color/darker_gray" />
 
         <TextView
+            android:id="@+id/mine_qianbao"
+            style="@style/mine_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/me_icon_qianbao"
             android:drawableRight="@drawable/me_icon_go"
-            android:text="@string/my_qianbao"
-            style="@style/mine_item" />
+            android:text="@string/my_qianbao" />
 
         <ImageView
             android:layout_width="fill_parent"
@@ -209,12 +210,13 @@
             android:background="@android:color/darker_gray" />
 
         <TextView
+            android:id="@+id/mine_shoucang"
+            style="@style/mine_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/me_icon_shouc"
             android:drawableRight="@drawable/me_icon_go"
-            android:text="@string/my_shoucang"
-            style="@style/mine_item"/>
+            android:text="@string/my_shoucang" />
 
         <ImageView
             android:layout_width="fill_parent"
@@ -223,13 +225,14 @@
             android:background="@android:color/darker_gray" />
 
         <TextView
+            android:id="@+id/mine_dongtai"
+            style="@style/mine_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/common_text_side"
             android:drawableLeft="@drawable/me_icon_dongtai"
             android:drawableRight="@drawable/me_icon_go"
-            android:text="@string/my_dongtai"
-            style="@style/mine_item" />
+            android:paddingBottom="@dimen/common_text_side"
+            android:text="@string/my_dongtai" />
     </LinearLayout>
 
     <LinearLayout
@@ -240,12 +243,13 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/mine_xiaoxi"
+            style="@style/mine_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/me_icon_xiaoxi"
             android:drawableRight="@drawable/me_icon_go"
-            android:text="@string/my_xiaoxi"
-            style="@style/mine_item" />
+            android:text="@string/my_xiaoxi" />
 
         <ImageView
             android:layout_width="fill_parent"
@@ -254,27 +258,29 @@
             android:background="@android:color/darker_gray" />
 
         <TextView
+            android:id="@+id/mine_haiwan"
+            style="@style/mine_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/common_text_side"
             android:drawableLeft="@drawable/me_icon_haiwan"
             android:drawableRight="@drawable/me_icon_go"
-            android:text="@string/my_haiwan"
-            style="@style/mine_item" />
+            android:paddingBottom="@dimen/common_text_side"
+            android:text="@string/my_haiwan" />
     </LinearLayout>
 
     <TextView
+        android:id="@+id/mine_setting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/background_light"
-        android:paddingLeft="@dimen/common_to_side"
-        android:paddingRight="@dimen/common_to_side"
-        android:paddingTop="@dimen/common_text_side"
-        android:paddingBottom="@dimen/common_text_side"
         android:layout_marginTop="@dimen/home_to_topside"
+        android:background="@android:color/background_light"
         android:drawableLeft="@drawable/me_icon_shehiz"
         android:drawableRight="@drawable/me_icon_go"
         android:gravity="center_vertical"
+        android:paddingBottom="@dimen/common_text_side"
+        android:paddingLeft="@dimen/common_to_side"
+        android:paddingRight="@dimen/common_to_side"
+        android:paddingTop="@dimen/common_text_side"
         android:text="@string/my_shezhi"
         android:textSize="@dimen/common_textsize" />
 

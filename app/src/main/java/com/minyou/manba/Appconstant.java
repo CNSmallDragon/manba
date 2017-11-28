@@ -34,4 +34,8 @@ public class Appconstant {
 	// 首页进入动态详情页面表示
 	public static String ITEM_INFO = "item_info";
 
+	// 个人中心进入公会
+	public static String FROM_WHERE = "from_where";
+	public static String MINE2GONGHUI = "mine2gonghui";
+
 }

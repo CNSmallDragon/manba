@@ -26,6 +26,7 @@
 
     <!--  顶部导航高度 -->
     <dimen name="common_title_height">40dp</dimen>
+    <dimen name="common_title_height_wallet">60dp</dimen>
 
     <dimen name="common_text_side">5dp</dimen>
     <dimen name="common_to_top">15dp</dimen>
@@ -56,5 +57,14 @@
 
     <!--   大图界面   -->
     <dimen name="image_height">500dp</dimen>
+    <dimen name="image_menu_icon_height">20dp</dimen>
+    <dimen name="image_menu_height">60dp</dimen>
+
+    <!--   公会详情   -->
+    <dimen name="sociation_head_height">200dp</dimen>
+
+    <!--   收藏界面   -->
+    <dimen name="shouc_user_pic">30dp</dimen>  <!--  收藏界面用户图片宽高 -->
+    <dimen name="shouc_content_pic">80dp</dimen>   <!--  收藏界面内容图片宽高 -->
 
 </resources>

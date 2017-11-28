@@ -1,7 +1,6 @@
 package com.minyou.manba.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -61,8 +60,8 @@ public class HomeActivity extends FragmentActivity {
         fm = getSupportFragmentManager();
         fragments.clear();
         fragments.add(new HomeFragment());
-        fragments.add(new StreetFragment());
         fragments.add(new SociationFragment());
+        fragments.add(new StreetFragment());
         fragments.add(new MineFragment());
         rg_main.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -73,17 +72,17 @@ public class HomeActivity extends FragmentActivity {
                         index = 0;
                         LogUtil.d(TAG, "---home");
                         break;
-                    case R.id.rb_jiequ:
+                    case R.id.rb_gonghui:
                         index = 1;
-                        LogUtil.d(TAG, "---jiequ");
+                        LogUtil.d(TAG, "---gonghui");
                         break;
                     case R.id.rb_fayan:
                         // delete
                         LogUtil.d(TAG, "---fayan");
                         break;
-                    case R.id.rb_gonghui:
+                    case R.id.rb_jiequ:
                         index = 2;
-                        LogUtil.d(TAG, "---gonghui");
+                        LogUtil.d(TAG, "---jiequ");
                         break;
                     case R.id.rb_jia:
                         index = 3;
@@ -138,18 +137,6 @@ public class HomeActivity extends FragmentActivity {
 //        }
     };
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
-        switch (requestCode) {
-            case SociationFragment.DETAIL:
-                if (resultCode == RESULT_OK) {
-                    Toast.makeText(context, "已加入", Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-        }
-
-    };
 
     @Override
     public void onBackPressed() {
@@ -167,11 +154,6 @@ public class HomeActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         //unbinder.unbind();
-    }
-
-    @Override
-    public void onActivityReenter(int resultCode, Intent data) {
-        super.onActivityReenter(resultCode, data);
     }
 
     public ManBaUserInfo getManBaUserInfo() {

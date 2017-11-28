@@ -3,22 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.minyou.manba.ui.ActionTitleView
-        android:id="@id/atv_title"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"></com.minyou.manba.ui.ActionTitleView>
-
     <RelativeLayout
         android:id="@+id/rl_gonghui"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/atv_title"
-        android:paddingBottom="@dimen/home_to_topside">
+        android:layout_height="@dimen/sociation_head_height"
+        android:paddingBottom="@dimen/common_to_side">
+
+        <com.minyou.manba.ui.ActionTitleView
+            android:id="@id/atv_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"></com.minyou.manba.ui.ActionTitleView>
 
         <ImageView
             android:id="@+id/iv_gonghui_pic"
             android:layout_width="@dimen/gonghui_icon_width"
             android:layout_height="@dimen/gonghui_icon_width"
+            android:layout_below="@id/atv_title"
             android:layout_centerHorizontal="true" />
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/common_to_side"
             android:text="漫吧开心公会"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/common_textsize" />
 
         <LinearLayout
@@ -46,13 +46,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/common_to_side"
                 android:text="成员数：1200"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/small_textsize" />
 
             <ImageView
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/white" />
 
             <TextView
                 android:id="@+id/tv_gonghui_hot_num"
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/common_to_side"
                 android:text="活跃度：100"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/small_textsize" />
         </LinearLayout>
     </RelativeLayout>
@@ -84,6 +84,7 @@
         android:orientation="horizontal">
 
         <RadioButton
+            android:id="@+id/rb_dongtai"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -94,6 +95,7 @@
             android:textColor="@color/bottom_text_color" />
 
         <RadioButton
+            android:id="@+id/rb_member"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -111,12 +113,6 @@
         android:layout_below="@id/ll_dongtai_chengyuan"
         android:background="@android:color/darker_gray" />
 
-    <FrameLayout
-        android:id="@+id/fl_gonghui_content"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/background_light"></FrameLayout>
-
     <TextView
         android:id="@+id/tv_join"
         android:layout_width="fill_parent"
@@ -129,5 +125,11 @@
         android:gravity="center"
         android:text="@string/gonghui_shenqingjiaru"
         android:textColor="@android:color/white" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/tv_join"
+        android:layout_below="@id/iv_line"></android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

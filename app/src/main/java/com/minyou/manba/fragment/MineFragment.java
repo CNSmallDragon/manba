@@ -19,6 +19,8 @@ import com.bumptech.glide.RequestManager;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.activity.LoginActivity;
+import com.minyou.manba.activity.MyWalletActivity;
+import com.minyou.manba.activity.SociationDetailActivity;
 import com.minyou.manba.bean.ManBaUserInfo;
 import com.minyou.manba.event.MessageEvent;
 import com.minyou.manba.util.GlideCircleTransform;
@@ -88,6 +90,40 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
     }
 
+    @OnClick({R.id.mine_gonghui,R.id.mine_qianbao,R.id.mine_shoucang,R.id.mine_dongtai,R.id.mine_xiaoxi,R.id.mine_haiwan,R.id.mine_setting})
+    public void itemOnClick(TextView button){
+        Intent intent;
+        switch (button.getId()){
+            case R.id.mine_gonghui:
+                // 我的公会
+                Toast.makeText(getActivity(), "我的公会", Toast.LENGTH_SHORT).show();
+                intent = new Intent(getActivity(), SociationDetailActivity.class);
+                intent.putExtra(Appconstant.FROM_WHERE,Appconstant.MINE2GONGHUI);
+                startActivity(intent);
+                break;
+            case R.id.mine_qianbao:
+                // 我的钱包
+                intent = new Intent(getActivity(), MyWalletActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.mine_shoucang:
+                // 我的收藏
+                break;
+            case R.id.mine_dongtai:
+                // 我的动态
+                break;
+            case R.id.mine_xiaoxi:
+                // 消息
+                break;
+            case R.id.mine_haiwan:
+                // 嗨玩
+                break;
+            case R.id.mine_setting:
+                // 设置
+                break;
+        }
+    }
+
     /**
      * 初始化个人信息
      * @param mUserInfo
@@ -100,6 +136,10 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         glideRequest.load(mUserInfo.getPhotoUrl()).transform(new GlideCircleTransform(getActivity())).into(user_pic);
     }
 
+    /**
+     * 登陆后返回数据
+     * @param messageEvent
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void loginReturn(MessageEvent messageEvent){
         JSONObject jsonObject = null;
@@ -115,6 +155,10 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * 判断用户是否登陆
+     * @return
+     */
     private boolean isLogin() {
         String userInfo = "";
         String lastLoginType = SharedPreferencesUtil.getInstance(getActivity().getApplicationContext()).getSP(Appconstant.LOGIN_LAST_TYPE);

@@ -33,14 +33,14 @@
             android:textSize="12sp" />
 
         <RadioButton
-            android:id="@+id/rb_jiequ"
+            android:id="@+id/rb_gonghui"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:drawableTop="@drawable/select_jiequ_icon"
+            android:drawableTop="@drawable/select_gonghui_icon"
             android:gravity="center"
-            android:text="@string/home_jiequ"
+            android:text="@string/home_gonghui"
             android:textColor="@color/bottom_text_color"
             android:textSize="12sp" />
 
@@ -61,14 +61,14 @@
             android:src="@drawable/tab_icon_fayan" />
 
         <RadioButton
-            android:id="@+id/rb_gonghui"
+            android:id="@+id/rb_jiequ"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:drawableTop="@drawable/select_gonghui_icon"
+            android:drawableTop="@drawable/select_jiequ_icon"
             android:gravity="center"
-            android:text="@string/home_gonghui"
+            android:text="@string/home_xiaoxi"
             android:textColor="@color/bottom_text_color"
             android:textSize="12sp" />
 

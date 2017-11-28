@@ -159,7 +159,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/common_to_top"
-                android:background="#F2F2F2" />
+                android:background="@color/colorCommon_gray" />
 
             <TextView
                 android:layout_width="match_parent"

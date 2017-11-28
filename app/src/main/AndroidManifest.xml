@@ -53,9 +53,9 @@
         <activity
             android:name="com.minyou.manba.activity.DongTaiDetailActivity"
             android:theme="@android:style/Theme.Light.NoTitleBar" />
-        <activity
-            android:name="com.minyou.manba.activity.ImageViewerActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity android:name="com.minyou.manba.activity.ImageViewerActivity" />
+        <activity android:name="com.minyou.manba.activity.MyWalletActivity" />
+        <activity android:name="com.minyou.manba.activity.ShouCangActivity" />
 
         <!-- qq官方申请的key的配置 -->
         <activity
