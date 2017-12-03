@@ -56,6 +56,9 @@
         <activity android:name="com.minyou.manba.activity.ImageViewerActivity" />
         <activity android:name="com.minyou.manba.activity.MyWalletActivity" />
         <activity android:name="com.minyou.manba.activity.ShouCangActivity" />
+        <activity android:name="com.minyou.manba.activity.GameCenterActivity" />
+        <activity android:name="com.minyou.manba.activity.GameDetailActivity" />
+        <activity android:name="com.minyou.manba.activity.SettingActivity" />
 
         <!-- qq官方申请的key的配置 -->
         <activity

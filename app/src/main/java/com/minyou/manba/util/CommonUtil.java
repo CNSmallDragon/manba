@@ -6,6 +6,9 @@ import android.view.WindowManager;
 
 import com.minyou.manba.Appconstant;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by Administrator on 2017/11/21.
  */
@@ -79,6 +82,17 @@ public class CommonUtil {
     public static int px2dip(Context context, float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
+    }
+
+    /**
+     * 将long类型时间转换为String
+     * @param time
+     * @return   要转换成的类型 "yy/MM/dd HH:mm"
+     */
+    public static String transformTime(long time){
+        SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd HH:mm");
+        Date date = new Date(time);
+        return format.format(date);
     }
 
 }

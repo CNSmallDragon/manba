@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/ll_game1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/common_to_side"
+        android:gravity="center_horizontal"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/iv_game_pic1"
+            android:layout_width="@dimen/game_tuijian_pic_height"
+            android:layout_height="@dimen/game_tuijian_pic_height"
+            android:src="@drawable/login_icon_qq"/>
+
+        <TextView
+            android:id="@+id/tv_game_name1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_text_side"
+            android:gravity="center"
+            android:text="1233"
+            android:textColor="@color/common_text_color"/>
+        <TextView
+            android:id="@+id/tv_game_desc1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_text_side"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:text="1233"
+            android:textColor="@color/color_zan"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_game2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/common_to_side"
+        android:gravity="center_horizontal"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/iv_game_pic2"
+            android:layout_width="@dimen/game_tuijian_pic_height"
+            android:layout_height="@dimen/game_tuijian_pic_height"
+            android:src="@drawable/login_icon_qq"/>
+
+        <TextView
+            android:id="@+id/tv_game_name2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_text_side"
+            android:gravity="center"
+            android:text="1233"
+            android:textColor="@color/common_text_color"/>
+        <TextView
+            android:id="@+id/tv_game_desc2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_text_side"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:text="1233"
+            android:textColor="@color/color_zan"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_game3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/common_to_side"
+        android:gravity="center_horizontal"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/iv_game_pic3"
+            android:layout_width="@dimen/game_tuijian_pic_height"
+            android:layout_height="@dimen/game_tuijian_pic_height"
+            android:src="@drawable/login_icon_qq"/>
+
+        <TextView
+            android:id="@+id/tv_game_name3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_text_side"
+            android:gravity="center"
+            android:text="1233"
+            android:textColor="@color/common_text_color"/>
+        <TextView
+            android:id="@+id/tv_game_desc3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_text_side"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:text="1233"
+            android:textColor="@color/color_zan"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

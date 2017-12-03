@@ -18,8 +18,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
+import com.minyou.manba.activity.GameCenterActivity;
+import com.minyou.manba.activity.HomeActivity;
 import com.minyou.manba.activity.LoginActivity;
 import com.minyou.manba.activity.MyWalletActivity;
+import com.minyou.manba.activity.SettingActivity;
+import com.minyou.manba.activity.ShouCangActivity;
 import com.minyou.manba.activity.SociationDetailActivity;
 import com.minyou.manba.bean.ManBaUserInfo;
 import com.minyou.manba.event.MessageEvent;
@@ -108,18 +112,25 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.mine_shoucang:
                 // 我的收藏
+                intent = new Intent(getActivity(), ShouCangActivity.class);
+                startActivity(intent);
                 break;
             case R.id.mine_dongtai:
                 // 我的动态
                 break;
             case R.id.mine_xiaoxi:
                 // 消息
+                ((HomeActivity)getActivity()).getRg_main().check(R.id.rb_jiequ);
                 break;
             case R.id.mine_haiwan:
                 // 嗨玩
+                intent = new Intent(getActivity(), GameCenterActivity.class);
+                startActivity(intent);
                 break;
             case R.id.mine_setting:
                 // 设置
+                intent = new Intent(getActivity(), SettingActivity.class);
+                startActivity(intent);
                 break;
         }
     }

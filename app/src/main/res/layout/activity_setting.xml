@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <com.minyou.manba.ui.ActionTitleView
+        android:id="@+id/atv_title"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/common_title_height"
+        android:gravity="center_vertical"></com.minyou.manba.ui.ActionTitleView>
+
+    <LinearLayout
+        android:id="@+id/ll_user_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/common_to_side">
+
+        <ImageView
+            android:id="@+id/iv_user_pic"
+            android:layout_width="@dimen/setting_pic_height"
+            android:layout_height="@dimen/setting_pic_height"
+            android:src="@drawable/login_icon_qq" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_to_side"
+            android:layout_weight="1"
+            android:text="123" />
+
+        <ImageView
+            android:layout_width="@dimen/setting_goicon_height"
+            android:layout_height="@dimen/setting_goicon_height"
+            android:src="@drawable/me_icon_go" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:id="@+id/ll_tongzhi_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/common_to_side">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_to_side"
+            android:layout_weight="1"
+            android:text="@string/setting_notification"
+            android:textSize="@dimen/common_textsize" />
+
+        <Switch
+            android:id="@+id/switch_notify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff=""
+            android:textOn=""
+            android:thumb="@drawable/thumb"
+            android:track="@drawable/track" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:id="@+id/ll_huancun_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/common_to_side">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_to_side"
+            android:layout_weight="1"
+            android:text="@string/setting_clear_cache"
+            android:textSize="@dimen/common_textsize" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_to_side"
+            android:text="100M"
+            android:textSize="@dimen/common_textsize" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:id="@+id/ll_qa_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/common_to_side">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_to_side"
+            android:layout_weight="1"
+            android:text="@string/setting_common_qa"
+            android:textSize="@dimen/common_textsize" />
+
+        <ImageView
+            android:layout_width="@dimen/setting_goicon_height"
+            android:layout_height="@dimen/setting_goicon_height"
+            android:src="@drawable/me_icon_go" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:id="@+id/ll_idea_fankui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/common_to_side">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_to_side"
+            android:layout_weight="1"
+            android:text="@string/setting_idea_fankui"
+            android:textSize="@dimen/common_textsize" />
+
+        <ImageView
+            android:layout_width="@dimen/setting_goicon_height"
+            android:layout_height="@dimen/setting_goicon_height"
+            android:src="@drawable/me_icon_go" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:id="@+id/ll_update_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/common_to_side">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_to_side"
+            android:layout_weight="1"
+            android:text="@string/setting_update_version"
+            android:textSize="@dimen/common_textsize" />
+
+        <ImageView
+            android:layout_width="@dimen/setting_goicon_height"
+            android:layout_height="@dimen/setting_goicon_height"
+            android:src="@drawable/me_icon_go" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:id="@+id/ll_about_us"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/common_to_side">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_to_side"
+            android:layout_weight="1"
+            android:text="@string/setting_about_us"
+            android:textSize="@dimen/common_textsize" />
+
+        <ImageView
+            android:layout_width="@dimen/setting_goicon_height"
+            android:layout_height="@dimen/setting_goicon_height"
+            android:src="@drawable/me_icon_go" />
+    </LinearLayout>
+
+</LinearLayout>

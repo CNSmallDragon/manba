@@ -36,6 +36,7 @@ public class HomeActivity extends FragmentActivity {
     private Context context;
     //@BindView(R.id.fl_home)
     FrameLayout fl_home;
+
     //@BindView(R.id.rg_main)
     RadioGroup rg_main;
     //@BindView(R.id.rb_fayan)
@@ -162,5 +163,9 @@ public class HomeActivity extends FragmentActivity {
 
     public void setManBaUserInfo(ManBaUserInfo manBaUserInfo) {
         this.mManBaUserInfo = manBaUserInfo;
+    }
+
+    public RadioGroup getRg_main() {
+        return rg_main;
     }
 }

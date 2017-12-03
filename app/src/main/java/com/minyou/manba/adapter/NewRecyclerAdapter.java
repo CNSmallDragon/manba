@@ -69,6 +69,7 @@ public class NewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else {
             this.list = list;
         }
+        glideRequest = Glide.with(context);
     }
 
     @Override
@@ -88,7 +89,6 @@ public class NewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (holder instanceof ItemViewHolder) {
             final ItemViewHolder mItemViewHolder = (ItemViewHolder) holder;
             // 加载用户图片
-            glideRequest = Glide.with(context);
             if (TextUtils.isEmpty(list.get(position).getUserPic())) {
                 glideRequest.load(R.drawable.login_icon_qq).transform(new GlideCircleTransform(context)).into(mItemViewHolder.iv_user_pic);
             } else {

@@ -81,6 +81,21 @@
     <string name="image_save">保存图片</string>
     <string name="image_cancel">取消</string>
 
+    <!--   游戏中心界面   -->
+    <string name="game_title">游戏中心</string>
+    <string name="game_tuijian">今日推荐</string>
+    <string name="game_jingpin">精品排行</string>
 
+    <string name="game_detail_install">安装</string>
+    <string name="game_detail_jianjie">简介</string>
+    <string name="game_detail_libao">礼包</string>
+
+    <!--   设置界面   -->
+    <string name="setting_notification">推送通知</string>
+    <string name="setting_clear_cache">清除缓存</string>
+    <string name="setting_common_qa">常见问题</string>
+    <string name="setting_idea_fankui">意见反馈</string>
+    <string name="setting_update_version">版本更新</string>
+    <string name="setting_about_us">关于漫吧</string>
 
 </resources>

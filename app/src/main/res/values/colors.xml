@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorCommon">#2894FF</color>
     <color name="colorCommon_gray">#F2F2F2</color>
+    <color name="common_text_color">#000000</color>
+    <color name="color_zan">#FF981F</color>
 </resources>

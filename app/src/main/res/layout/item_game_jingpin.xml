@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_num"
+            android:layout_width="@dimen/game_jingpin_num_weight"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="1" />
+
+        <ImageView
+            android:id="@+id/iv_game_pic"
+            android:layout_width="@dimen/game_tuijian_pic_height"
+            android:layout_height="@dimen/game_tuijian_pic_height"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_num"
+            android:src="@drawable/login_icon_qq" />
+
+        <TextView
+            android:id="@+id/tv_game_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/iv_game_pic"
+            android:layout_toRightOf="@id/iv_game_pic"
+            android:layout_marginLeft="@dimen/common_to_side"
+            android:text="阴阳师"/>
+
+        <TextView
+            android:id="@+id/tv_game_desc1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/iv_game_pic"
+            android:layout_toRightOf="@id/iv_game_pic"
+            android:layout_marginLeft="@dimen/common_to_side"
+            android:text="官方正版手游"/>
+
+        <TextView
+            android:id="@+id/tv_game_desc2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_game_pic"
+            android:layout_alignLeft="@id/iv_game_pic"
+            android:layout_marginTop="@dimen/common_to_side"
+            android:text="111111111111111111"/>
+
+        <TextView
+            android:id="@+id/tv_game_desc3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_game_desc2"
+            android:layout_alignLeft="@id/iv_game_pic"
+            android:layout_marginTop="@dimen/common_to_side"
+            android:text="22222222222"/>
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

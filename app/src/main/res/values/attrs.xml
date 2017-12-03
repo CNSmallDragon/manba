@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 自定义属性  -->
+    <declare-styleable name="BorderTextView">
+
+        <attr name="layout_borders" format="boolean"></attr>
+        <attr name="layout_borderLeft" format="boolean"></attr>
+        <attr name="layout_borderTop" format="boolean"></attr>
+        <attr name="layout_borderRight" format="boolean"></attr>
+        <attr name="layout_borderBottom" format="boolean"></attr>
+        <attr name="layout_borderHeight" format="dimension"></attr>
+
+    </declare-styleable>
+
+
+</resources>

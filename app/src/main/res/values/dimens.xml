@@ -67,4 +67,22 @@
     <dimen name="shouc_user_pic">30dp</dimen>  <!--  收藏界面用户图片宽高 -->
     <dimen name="shouc_content_pic">80dp</dimen>   <!--  收藏界面内容图片宽高 -->
 
+    <!--   游戏中心界面   -->
+    <dimen name="game_title_pic_height">150dp</dimen>
+    <dimen name="game_tuijian_height">100dp</dimen>
+    <dimen name="game_tuijian_pic_height">60dp</dimen>
+
+    <dimen name="game_jingpin_num_weight">30dp</dimen>
+    <dimen name="game_jingpin_item_height">70dp</dimen>
+    <!--   游戏详情界面   -->
+    <dimen name="game_detail_bg_height">200dp</dimen>
+    <dimen name="game_detail_button_padding">26dp</dimen>
+    <dimen name="game_text_line_height">2dp</dimen>
+
+    <!--   游戏详情界面   -->
+    <dimen name="setting_pic_height">40dp</dimen>
+    <dimen name="setting_goicon_height">20dp</dimen>
+    <dimen name="setting_switch_width">26dp</dimen>
+    <dimen name="setting_switch_height">26dp</dimen>
+
 </resources>
