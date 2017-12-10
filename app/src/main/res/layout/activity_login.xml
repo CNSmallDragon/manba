@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/login_icon_top"
-            android:src="@drawable/tab_icon_home_pre" />
+            android:src="@drawable/ic_launcher" />
 
         <EditText
             android:id="@+id/login_number"
@@ -73,7 +73,19 @@
             android:layout_marginRight="@dimen/login_num_side"
             android:layout_marginTop="@dimen/login_num_side"
             android:background="@drawable/shape_borderline_bluefull"
-            android:text="@string/login" />
+            android:text="@string/login"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/common_textsize"/>
+
+
+        <TextView
+            android:id="@+id/tv_sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_to_top"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/regist"
+            android:textSize="@dimen/common_textsize"/>
     </LinearLayout>
 
     <LinearLayout

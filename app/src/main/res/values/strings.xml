@@ -98,4 +98,7 @@
     <string name="setting_update_version">版本更新</string>
     <string name="setting_about_us">关于漫吧</string>
 
+    <!--   公共   -->
+    <string name="sorry_network_is_not_good">网络状况不佳</string>
+
 </resources>

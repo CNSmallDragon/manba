@@ -9,6 +9,7 @@ import android.os.Message;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,11 +19,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.bean.ManBaUserInfo;
+import com.minyou.manba.commonInterface.OnHttpResultListener;
 import com.minyou.manba.event.MessageEvent;
 import com.minyou.manba.fragment.MineFragment;
+import com.minyou.manba.model.LoginActivityModel;
+import com.minyou.manba.network.resultModel.UserLoginModel;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 import com.tencent.connect.UserInfo;
@@ -55,11 +60,11 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements View.OnClickListener, OnHttpResultListener<UserLoginModel> {
 
     private static final String TAG = "LoginActivity";
     private static final String NUMBER = "number";
-    private static final String PHONE = "phone";
+    private static final String PHONE = "username";
     private static final String PASSWORD = "password";
     private static final int QQLOGIN = 1001;
     private static final int WXLOGIN = 1002;
@@ -80,12 +85,16 @@ public class LoginActivity extends Activity {
     private Tencent mTencent;
     @BindView(R.id.tv_qq)
     TextView tv_qq;
+    @BindView(R.id.tv_sign_up)
+    TextView tv_sign_up;
 
     public static String mAppid;
     private String inputNumber;
     private String inputPWD;
     public MyIUiListener myIUiListener;
     public ManBaUserInfo mUserInfo;
+
+    private LoginActivityModel model;
 
     private Handler handler = new Handler() {
         @Override
@@ -112,6 +121,16 @@ public class LoginActivity extends Activity {
         unbinder = ButterKnife.bind(this);
         EventBus.getDefault().register(this);
 
+        model = new LoginActivityModel();
+
+        initListener();
+
+
+    }
+
+    private void initListener() {
+        bt_login.setOnClickListener(this);
+        tv_sign_up.setOnClickListener(this);
         cb_display_pwd.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             @Override
@@ -128,16 +147,8 @@ public class LoginActivity extends Activity {
                 login_pwd.setSelection(login_pwd.getText().toString().length());
             }
         });
-
     }
 
-
-    @OnClick(R.id.bt_login)
-    public void inputLogin() {
-        if (checkLoginNum() && checkPassWord()) {
-            login();
-        }
-    }
 
     @OnClick(R.id.tv_forget_pwd)
     public void forgetPwd() {
@@ -176,6 +187,7 @@ public class LoginActivity extends Activity {
         LogUtil.e(TAG, "login===========");
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
+                .add("loginType","1")
                 .add(PHONE, inputNumber)
                 .add(PASSWORD, inputPWD)
                 .build();
@@ -193,12 +205,14 @@ public class LoginActivity extends Activity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                LogUtil.d(TAG, "-----response---------" + new Gson().toJson(response));
+
                 String requestStr = response.body().string();
                 LogUtil.d(TAG, requestStr + "--------------");
-                Intent data = new Intent();
-                data.putExtra(MineFragment.REQUEST, requestStr);
-                setResult(RESULT_OK, data);
-                finish();
+//                Intent data = new Intent();
+//                data.putExtra(MineFragment.REQUEST, requestStr);
+//                setResult(RESULT_OK, data);
+//                finish();
             }
         });
     }
@@ -279,6 +293,45 @@ public class LoginActivity extends Activity {
         myIUiListener = new MyIUiListener();
         Log.d(TAG, "登陆开始-----------------");
         mTencent.login(LoginActivity.this, "all", myIUiListener);
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()) {
+            case R.id.bt_login:
+                if (checkLoginNum() && checkPassWord()) {
+                    //login();
+                    model.startLogin(inputNumber,inputPWD,this);
+                }
+                break;
+            case R.id.tv_sign_up:
+                if (checkLoginNum() && checkPassWord()) {
+                    login();
+                }
+                break;
+        }
+
+    }
+
+    @Override
+    public void onRequestStart() {
+
+    }
+
+    @Override
+    public void onRequestSuccess(UserLoginModel baseResultModel) {
+
+    }
+
+    @Override
+    public void onRequestError(String error) {
+
+    }
+
+    @Override
+    public void onRequestCompleted() {
+
     }
 
     class MyIUiListener implements IUiListener {
