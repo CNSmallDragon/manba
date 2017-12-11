@@ -67,12 +67,9 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 		fragments.add(new HotFragment());
 		fragments.add(new GuanZhuFragment());
 
-//		TabPagerAdapter adapter = new TabPagerAdapter(tabs);
 		MyViewPagerAdapter adapter = new MyViewPagerAdapter(getFragmentManager(),titles,fragments);
 		pager.setAdapter(adapter);
 		tab_layou.setupWithViewPager(pager);
-		//TabPageIndicator indicator = (TabPageIndicator)view.findViewById(R.id.indicator);
-		//indicator.setViewPager(pager);
 	}
 
 

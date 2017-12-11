@@ -4,15 +4,13 @@
     android:versionCode="1"
     android:versionName="1.0">
 
-    <uses-sdk
-        android:minSdkVersion="19"
-        android:targetSdkVersion="25" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <application
         android:name=".MyApplication"
@@ -36,7 +34,7 @@
         <activity
             android:name="com.minyou.manba.activity.HomeActivity"
             android:launchMode="singleTask"
-            android:theme="@style/Theme.PageIndicatorDefaults">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -60,6 +58,7 @@
         <activity android:name="com.minyou.manba.activity.GameCenterActivity" />
         <activity android:name="com.minyou.manba.activity.GameDetailActivity" />
         <activity android:name="com.minyou.manba.activity.SettingActivity" />
+        <activity android:name="com.minyou.manba.activity.FaBuDongTaiActivity" />
 
         <!-- qq官方申请的key的配置 -->
         <activity

@@ -1,11 +1,13 @@
 package com.minyou.manba.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -25,11 +27,11 @@ import com.minyou.manba.util.LogUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends FragmentActivity {
+public class HomeActivity extends FragmentActivity implements View.OnClickListener {
 
     protected static final String TAG = "HomeActivity";
 
-    private boolean[] fragmentsUpdateFlag = {false,false,false,true};
+    private boolean[] fragmentsUpdateFlag = {false, false, false, true};
     private List<BaseFragment> fragments = new ArrayList<BaseFragment>();
 
     //private Unbinder unbinder;
@@ -55,9 +57,13 @@ public class HomeActivity extends FragmentActivity {
         setContentView(R.layout.activity_home);
         this.context = getApplicationContext();
 
-        fl_home = (FrameLayout)findViewById(R.id.fl_home);
+        fl_home = (FrameLayout) findViewById(R.id.fl_home);
         rg_main = (RadioGroup) findViewById(R.id.rg_main);
         rb_fayan = (ImageView) findViewById(R.id.rb_fayan);
+        rb_fayan = (ImageView) findViewById(R.id.rb_fayan);
+
+        rb_fayan.setOnClickListener(this);
+
         fm = getSupportFragmentManager();
         fragments.clear();
         fragments.add(new HomeFragment());
@@ -98,12 +104,6 @@ public class HomeActivity extends FragmentActivity {
         rg_main.check(R.id.rb_home);
     }
 
-
-    //    @OnClick(R.id.rb_fayan)
-//    public void fayan(){
-//        Toast.makeText(this, "发言", Toast.LENGTH_SHORT).show();
-//    }
-
     FragmentStatePagerAdapter adapter = new FragmentStatePagerAdapter(getSupportFragmentManager()) {
 
         @Override
@@ -142,10 +142,10 @@ public class HomeActivity extends FragmentActivity {
     @Override
     public void onBackPressed() {
         long currentTime = System.currentTimeMillis();
-        if((currentTime - firstTime) > 2000){
+        if ((currentTime - firstTime) > 2000) {
             firstTime = currentTime;
             Toast.makeText(HomeActivity.this, getResources().getString(R.string.back_launcher), Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             finish();
             super.onBackPressed();
         }
@@ -167,5 +167,17 @@ public class HomeActivity extends FragmentActivity {
 
     public RadioGroup getRg_main() {
         return rg_main;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.rb_fayan:
+                Toast.makeText(this, "发言", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomeActivity.this, FaBuDongTaiActivity.class);
+                startActivity(intent);
+                break;
+        }
+
     }
 }

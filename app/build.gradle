@@ -19,6 +19,12 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
@@ -47,4 +53,5 @@ dependencies {
 //    compile 'com.google.code.gson:gson:2.8.2'
 //    compile "io.reactivex.rxjava2:rxjava:2.1.7"
 //    compile "io.reactivex.rxjava2:rxandroid:2.0.1"
+    compile(name: 'NativeImgCompress', ext: 'aar')
 }
