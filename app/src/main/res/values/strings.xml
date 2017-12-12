@@ -16,6 +16,10 @@
     <!-- 注册 -->
     <string name="forget_password">忘记密码</string>
     <string name="regist_nicheng">输入昵称</string>
+    <string name="regist_yanzhengma">验证码</string>
+    <string name="regist_getyanzhengma">获取验证码</string>
+    <string name="reget_sms_code_countdown">重新发送(%s)</string>
+    <string name="regist_mima">设置密码：6-16位字母数字组合</string>
     <string name="regist_man">男</string>
     <string name="regist_woman">女</string>
     <string name="regist_lingyu">锁定自己的领域</string>
@@ -26,7 +30,8 @@
     <string name="regist_cosplay">cosplay</string>
     <string name="regist_tongren">同人</string>
     <string name="regist_finish">开启</string>
-    
+    <string name="regist_welcome">欢迎来到漫吧</string>
+
     <string name="home">主页</string>
     <string name="home_jiequ">街区</string>
     <string name="home_xiaoxi">消息</string>

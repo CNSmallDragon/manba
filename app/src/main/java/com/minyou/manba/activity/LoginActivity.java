@@ -187,7 +187,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, OnH
         LogUtil.e(TAG, "login===========");
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
-                .add("loginType","1")
+                .add(Appconstant.Config.LOGIN_YPTE,Appconstant.Config.LOGIN_YPTE_NORMAL)
                 .add(PHONE, inputNumber)
                 .add(PASSWORD, inputPWD)
                 .build();
@@ -206,7 +206,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, OnH
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 LogUtil.d(TAG, "-----response---------" + new Gson().toJson(response));
-
+                //SharedPreferencesUtil.getInstance(LoginActivity.this.getApplicationContext()).putSP(Appconstant.User.USER_ID, openId);
                 String requestStr = response.body().string();
                 LogUtil.d(TAG, requestStr + "--------------");
 //                Intent data = new Intent();
@@ -306,9 +306,8 @@ public class LoginActivity extends Activity implements View.OnClickListener, OnH
                 }
                 break;
             case R.id.tv_sign_up:
-                if (checkLoginNum() && checkPassWord()) {
-                    login();
-                }
+                Intent intent = new Intent(this,RegistActivity.class);
+                startActivity(intent);
                 break;
         }
 

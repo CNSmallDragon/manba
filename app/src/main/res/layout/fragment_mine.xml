@@ -169,7 +169,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/mine_login_side"
-            android:src="@drawable/tab_icon_home_pre" />
+            android:src="@drawable/ic_launcher" />
     </RelativeLayout>
 
     <LinearLayout

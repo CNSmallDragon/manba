@@ -28,6 +28,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_to_top"
             android:gravity="center_vertical">
 
             <EditText
@@ -98,6 +99,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:text="@string/login_thrid" />
 
         <LinearLayout
@@ -134,6 +136,7 @@
                 android:layout_marginLeft="@dimen/login_num_side"
                 android:drawableTop="@drawable/login_icon_xinlang"
                 android:gravity="center"
+                android:visibility="gone"
                 android:text="@string/login_xinlang" />
 
 

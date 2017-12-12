@@ -23,7 +23,7 @@ public class LoginActivityModel {
     public void startLogin(String phone, String pwd, final OnHttpResultListener<UserLoginModel> mListener) {
         // 构建请求参数
         UserLoginRequestModel requestModel = new UserLoginRequestModel();
-        requestModel.setLoginType(Appconstant.User.LOGIN_NORMAL);
+        requestModel.setLoginType(Appconstant.Config.LOGIN_YPTE_NORMAL);
         requestModel.setUserName(phone);
         requestModel.setPassword(pwd);
         // 开始网络请求

@@ -66,13 +66,17 @@ public class Appconstant {
 
 	// 用户相关
 	public static final class User {
-		public static final String LOGIN_NORMAL = "1";		// 正常登陆
-		public static final String LOGIN_SMS = "2";			// 短信登陆
-		public static final String LOGIN_THIRD = "3";		// 三方登陆
+		public static final String USER_ID = "";
+		public static final String TOKEN = "";
+		public static final String TOKEN_REFESH = "";
 	}
 
 	public static final class Config{
 		public static final String KEY = "myservice2017GHJKLATYIQ";
+		public static final String LOGIN_YPTE = "loginType";
+		public static final String LOGIN_YPTE_NORMAL = "1";	// 正常登陆
+		public static final String LOGIN_YPTE_SMS = "2";	// 短信登陆
+		public static final String LOGIN_YPTE_ThIRD = "3";	// 三方登陆
 	}
 
 }
