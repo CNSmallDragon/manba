@@ -152,7 +152,7 @@
 
         <Button
             android:id="@+id/bt_login"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_welcome"
             android:layout_marginLeft="@dimen/mine_login_side"

@@ -93,7 +93,7 @@ public class SociationRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
 
                 @Override
                 public void onClick(View v) {
-                    if(CommonUtil.isLogin(context.getApplicationContext())){
+                    if(CommonUtil.isLogin()){
                         // 已经登陆
                         Toast.makeText(context, "已加入", Toast.LENGTH_SHORT).show();
                     }else{

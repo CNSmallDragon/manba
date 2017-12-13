@@ -3,7 +3,7 @@ package com.minyou.manba.network.resultModel;
 /**
  * Created by luchunhao on 2017/12/10.
  */
-public class UserLoginModel extends BaseResultModel{
+public class UserLoginModel extends BaseResponseModel{
 
     /**
      * userId : 3

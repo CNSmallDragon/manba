@@ -85,6 +85,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/common_to_top"
             android:layout_gravity="center_horizontal"
+            android:background="@drawable/shape_borderline_blue"
+            android:paddingTop="@dimen/common_text_side"
+            android:paddingBottom="@dimen/common_text_side"
             android:text="@string/regist"
             android:textSize="@dimen/common_textsize"/>
     </LinearLayout>

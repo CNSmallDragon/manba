@@ -125,7 +125,7 @@ public class NewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             mItemViewHolder.tv_guanzhu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (CommonUtil.isLogin(context.getApplicationContext())) {
+                    if (CommonUtil.isLogin()) {
                         // 已经登陆
                         mItemViewHolder.tv_guanzhu.setText(context.getResources().getString(R.string.home_guanzhu_done));
                         mItemViewHolder.tv_guanzhu.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);

@@ -3,7 +3,7 @@ package com.minyou.manba.network;
 import com.minyou.manba.MyApplication;
 import com.minyou.manba.R;
 import com.minyou.manba.commonInterface.OnHttpResultListener;
-import com.minyou.manba.network.resultModel.BaseResultModel;
+import com.minyou.manba.network.resultModel.BaseResponseModel;
 
 import rx.Subscriber;
 
@@ -52,8 +52,8 @@ public abstract class CallBackSubscriber<T> extends Subscriber<T> {
     @Override
     public void onNext(T t) {
         if (t != null) {
-            if (t instanceof BaseResultModel) {
-                BaseResultModel resultModel = (BaseResultModel) t;
+            if (t instanceof BaseResponseModel) {
+                BaseResponseModel resultModel = (BaseResponseModel) t;
 //                if (resultModel.isSuccess()) {
 //                    _onNext(t);
 //                    if (mListener != null) {

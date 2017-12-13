@@ -17,9 +17,6 @@ public class Appconstant {
 	public static String SOCIATION_HOT_NUM = "sociation_hot_num";
 	public static String SOCIATION_PIC_PATH = "sociation_pic_path";
 
-	// 网络请求链接
-	// 登陆请求
-	public static String LOGINT_URL = "http://www.mymanba.cn/api/auth/login";
 
 	// 登陆返回Intent标识
 	public static String LOGIN_QQ = "qq";
@@ -66,9 +63,9 @@ public class Appconstant {
 
 	// 用户相关
 	public static final class User {
-		public static final String USER_ID = "";
-		public static final String TOKEN = "";
-		public static final String TOKEN_REFESH = "";
+		public static final String USER_ID = "userId";
+		public static final String TOKEN = "token";
+		public static final String TOKEN_REFRESH = "refreshToken";
 	}
 
 	public static final class Config{

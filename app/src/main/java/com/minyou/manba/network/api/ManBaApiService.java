@@ -2,7 +2,6 @@ package com.minyou.manba.network.api;
 
 
 import com.minyou.manba.network.resultModel.AuthTokenResultModel;
-import com.minyou.manba.network.resultModel.BaseResultModel;
 import com.minyou.manba.network.resultModel.UserLoginModel;
 
 import java.util.Map;
@@ -37,7 +36,7 @@ public interface ManBaApiService {
      * 获取币种列表
      */
     @GET("api/Country/GetCurrencyList")
-    Observable<BaseResultModel> http_getCurrencyList();
+    Observable<String> http_getCurrencyList();
 
     /**
      * 修改用户信息

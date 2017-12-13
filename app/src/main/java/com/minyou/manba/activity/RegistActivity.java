@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
@@ -12,16 +13,29 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.minyou.manba.R;
+import com.minyou.manba.network.api.ManBaApi;
 import com.minyou.manba.ui.ActionTitleView;
+import com.minyou.manba.util.LogUtil;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class RegistActivity extends Activity {
 
+    private static final String TAG = "RegistActivity";
     @BindView(R.id.atv_title)
     ActionTitleView atvTitle;
     @BindView(R.id.iv_regist)
@@ -52,11 +66,17 @@ public class RegistActivity extends Activity {
     CheckBox cbTongren;
     @BindView(R.id.tv_regist)
     TextView tvRegist;
+    @BindView(R.id.et_phone)
+    EditText etPhone;
 
     // 总倒计时时间
     private static final long MILLIS_IN_FUTURE = 60 * 1000;
     // 每次减去1秒
     private static final long COUNT_DOWN_INTERVAL = 1000;
+    private String inputNumber;
+    private String etNichengStr;
+    private String etMimaStr;
+    private String etSmsStr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +90,7 @@ public class RegistActivity extends Activity {
     }
 
     private void initView() {
-        atvTitle.setTitle(getResources().getString(R.string.regist));
+        atvTitle.setTitle(getResources().getString(R.string.regist_welcome));
     }
 
 
@@ -102,10 +122,80 @@ public class RegistActivity extends Activity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_send_sms:
-                startCountDown();
+                if(checkLoginNum()){
+                    startCountDown();
+                    getSmsCode();
+                }
                 break;
             case R.id.tv_regist:
                 break;
         }
     }
+
+    private boolean checkLoginNum() {
+        inputNumber = etPhone.getText().toString();
+        if (TextUtils.isEmpty(inputNumber)) {
+            Toast.makeText(this, "请输入手机号", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (inputNumber.length() != 11) {
+            Toast.makeText(this, "请输入完整的手机号", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkRegist() {
+        etNichengStr = etNicheng.getText().toString().trim();
+        if(TextUtils.isEmpty(etNichengStr)){
+            Toast.makeText(this, "请输入昵称", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        checkLoginNum();
+        etSmsStr = etSms.getText().toString().trim();
+        if(TextUtils.isEmpty(etSmsStr)){
+            Toast.makeText(this, "请输入验证码", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        etMimaStr = etMima.getText().toString().trim();
+        etMimaStr = etMima.getText().toString();
+        if (TextUtils.isEmpty(etMimaStr)) {
+            Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (etMimaStr.length() < 6 || etMimaStr.length() > 16) {
+            Toast.makeText(this, "您输入的密码不符合规范，请重新输入!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    private void getSmsCode() {
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = new FormBody.Builder()
+//                .add(Appconstant.Config.LOGIN_YPTE,Appconstant.Config.LOGIN_YPTE_NORMAL)
+                .add("phoneNumber", inputNumber)
+                .build();
+        Request request = new Request.Builder()
+                .url(ManBaApi.HTTP_GET_SEND_SMS)
+//                .header("Accept","*/*")
+//                .addHeader("Authorization",SharedPreferencesUtil.getInstance().getSP(Appconstant.User.TOKEN))
+                .post(body)
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String requestStr = response.body().string();
+
+                LogUtil.d(TAG, "-----response---------" + requestStr);
+            }
+        });
+    }
+
+
 }

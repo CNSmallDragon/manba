@@ -27,6 +27,7 @@ import com.minyou.manba.commonInterface.OnHttpResultListener;
 import com.minyou.manba.event.MessageEvent;
 import com.minyou.manba.fragment.MineFragment;
 import com.minyou.manba.model.LoginActivityModel;
+import com.minyou.manba.network.api.ManBaApi;
 import com.minyou.manba.network.resultModel.UserLoginModel;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
@@ -69,6 +70,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, OnH
     private static final int QQLOGIN = 1001;
     private static final int WXLOGIN = 1002;
     private static final int SINALOGIN = 1003;
+    private static final int PASSWORD_ERROR = 400;
 
     private Unbinder unbinder;
 
@@ -106,6 +108,11 @@ public class LoginActivity extends Activity implements View.OnClickListener, OnH
                     data.putExtra("nickname", data.getStringExtra("nickname"));
                     data.putExtra("figureurl_qq_2", data.getStringExtra("figureurl_qq_2"));
                     setResult(MineFragment.LOGIN_CODE, data);
+                    break;
+                case PASSWORD_ERROR:
+                    // 密码错误
+                    Toast.makeText(LoginActivity.this,"您输入的密码有误，请重新输入!",Toast.LENGTH_SHORT).show();
+                    login_pwd.setText("");
                     break;
             }
             super.handleMessage(msg);
@@ -184,15 +191,14 @@ public class LoginActivity extends Activity implements View.OnClickListener, OnH
     }
 
     private void login() {
-        LogUtil.e(TAG, "login===========");
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
-                .add(Appconstant.Config.LOGIN_YPTE,Appconstant.Config.LOGIN_YPTE_NORMAL)
+//                .add(Appconstant.Config.LOGIN_YPTE,Appconstant.Config.LOGIN_YPTE_NORMAL)
                 .add(PHONE, inputNumber)
                 .add(PASSWORD, inputPWD)
                 .build();
         Request request = new Request.Builder()
-                .url(Appconstant.LOGINT_URL)
+                .url(ManBaApi.LOGINT_URL)
                 .post(body)
                 .build();
         Call call = client.newCall(request);
@@ -205,14 +211,23 @@ public class LoginActivity extends Activity implements View.OnClickListener, OnH
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                LogUtil.d(TAG, "-----response---------" + new Gson().toJson(response));
                 //SharedPreferencesUtil.getInstance(LoginActivity.this.getApplicationContext()).putSP(Appconstant.User.USER_ID, openId);
                 String requestStr = response.body().string();
-                LogUtil.d(TAG, requestStr + "--------------");
-//                Intent data = new Intent();
-//                data.putExtra(MineFragment.REQUEST, requestStr);
-//                setResult(RESULT_OK, data);
-//                finish();
+                LogUtil.d(TAG, "-----response---------" + requestStr);
+                UserLoginModel userLoginModel = new Gson().fromJson(requestStr,UserLoginModel.class);
+                LogUtil.d(TAG, "-----response---------" + userLoginModel.getCode());
+                if(userLoginModel.getCode() == 0){  // 成功
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, userLoginModel.getUserId());
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getToken());
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getRefreshToken());
+                    setResult(RESULT_OK);
+                    finish();
+                }else if(userLoginModel.getCode() == 400){      // 密码错误
+                    Message message = Message.obtain();
+                    message.what = PASSWORD_ERROR;
+                    handler.sendMessage(message);
+                }
+
             }
         });
     }
@@ -227,7 +242,6 @@ public class LoginActivity extends Activity implements View.OnClickListener, OnH
             Toast.makeText(this, "请输入完整的手机号", Toast.LENGTH_SHORT).show();
             return false;
         }
-        LogUtil.e(TAG, "inputNumber===========" + inputNumber);
         return true;
     }
 
@@ -301,8 +315,8 @@ public class LoginActivity extends Activity implements View.OnClickListener, OnH
         switch (view.getId()) {
             case R.id.bt_login:
                 if (checkLoginNum() && checkPassWord()) {
-                    //login();
-                    model.startLogin(inputNumber,inputPWD,this);
+                    login();
+                    //model.startLogin(inputNumber,inputPWD,this);
                 }
                 break;
             case R.id.tv_sign_up:
@@ -362,7 +376,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, OnH
                 String token = jsonObject.getString(Constants.PARAM_ACCESS_TOKEN);
                 String expires = jsonObject.getString(Constants.PARAM_EXPIRES_IN);
                 if (!TextUtils.isEmpty(openId) && !TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires)) {
-                    SharedPreferencesUtil.getInstance(LoginActivity.this.getApplicationContext()).putSP(Appconstant.LOGIN_QQ_ID, openId);
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_QQ_ID, openId);
                     mTencent.setAccessToken(token, expires);
                     mTencent.setOpenId(openId);
                 }
@@ -385,9 +399,9 @@ public class LoginActivity extends Activity implements View.OnClickListener, OnH
                         mUserInfo.setNickName(userInfoJson.getString(Appconstant.LOGIN_QQ_NAME));
                         mUserInfo.setPhotoUrl(userInfoJson.getString(Appconstant.LOGIN_QQ_PHOTO));
                         // TODO 获取用户信息后发后台注册
-                        SharedPreferencesUtil.getInstance(LoginActivity.this.getApplicationContext()).putSP(Appconstant.LOGIN_USER_INFO_QQ, o.toString());
-                        SharedPreferencesUtil.getInstance(LoginActivity.this.getApplicationContext()).putSP(Appconstant.LOGIN_LAST_TYPE, Appconstant.LOGIN_QQ);
-                        SharedPreferencesUtil.getInstance(LoginActivity.this.getApplicationContext()).putBoolean(Appconstant.LOGIN_OR_NOT, true);
+                        SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_USER_INFO_QQ, o.toString());
+                        SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, Appconstant.LOGIN_QQ);
+                        SharedPreferencesUtil.getInstance().putBoolean(Appconstant.LOGIN_OR_NOT, true);
                         Intent data = new Intent();
 //                        data.putExtra(Appconstant.LOGIN_RETURN_TYPE,Appconstant.LOGIN_QQ);
                         data.putExtra(Appconstant.LOGIN_USER_INFO, mUserInfo);

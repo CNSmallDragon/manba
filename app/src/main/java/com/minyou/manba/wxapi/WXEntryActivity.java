@@ -112,7 +112,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     JSONObject jsonObject = new JSONObject(resultStr);
                     String openid = jsonObject.getString("openid").toString().trim();
                     String access_token = jsonObject.getString("access_token").toString().trim();
-                    SharedPreferencesUtil.getInstance(WXEntryActivity.this.getApplicationContext()).putSP(Appconstant.LOGIN_WEIXIN_ID, openid);
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_WEIXIN_ID, openid);
                     getUserMesg(access_token, openid);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -139,9 +139,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 String resultStr = response.body().string();
                 LogUtil.d(TAG, "getUserMesg--resultStr---" + resultStr);
                 EventBus.getDefault().post(new MessageEvent(resultStr));
-                SharedPreferencesUtil.getInstance(WXEntryActivity.this.getApplicationContext()).putSP(Appconstant.LOGIN_USER_INFO_WEIXIN, resultStr);
-                SharedPreferencesUtil.getInstance(WXEntryActivity.this.getApplicationContext()).putSP(Appconstant.LOGIN_LAST_TYPE, Appconstant.LOGIN_WEIXIN);
-                SharedPreferencesUtil.getInstance(WXEntryActivity.this.getApplicationContext()).putBoolean(Appconstant.LOGIN_OR_NOT, true);
+                SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_USER_INFO_WEIXIN, resultStr);
+                SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, Appconstant.LOGIN_WEIXIN);
+                SharedPreferencesUtil.getInstance().putBoolean(Appconstant.LOGIN_OR_NOT, true);
                 finish();
 
 

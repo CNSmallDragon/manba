@@ -9,6 +9,7 @@
     <dimen name="regist_padding_to_side">20dp</dimen>
 
     <dimen name="regist_lingyu_weight">120dp</dimen>
+    <dimen name="regist_sex_weight">90dp</dimen>
 
     <dimen name="icon_width">70dp</dimen>
     <dimen name="icon_sex_width">20dp</dimen>

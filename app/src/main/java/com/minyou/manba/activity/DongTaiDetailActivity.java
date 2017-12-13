@@ -114,7 +114,7 @@ public class DongTaiDetailActivity extends Activity {
         tv_guanzhu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (CommonUtil.isLogin(getApplicationContext())) {
+                if (CommonUtil.isLogin()) {
                     // 已经登陆
                     tv_guanzhu.setText(getResources().getString(R.string.home_guanzhu_done));
                     tv_guanzhu.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);

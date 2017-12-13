@@ -18,11 +18,10 @@ public class CommonUtil {
     /**
      * 从本地sharedPreference文件判断当前用户是否已经登陆
      *
-     * @param context
      * @return
      */
-    public static boolean isLogin(Context context) {
-        boolean isLogin = SharedPreferencesUtil.getInstance(context).getBoolean(Appconstant.LOGIN_OR_NOT);
+    public static boolean isLogin() {
+        boolean isLogin = SharedPreferencesUtil.getInstance().getBoolean(Appconstant.LOGIN_OR_NOT);
         return isLogin;
     }
 

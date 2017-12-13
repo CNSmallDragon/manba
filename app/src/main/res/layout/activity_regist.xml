@@ -15,14 +15,14 @@
             android:layout_height="wrap_content" >
         </com.minyou.manba.ui.ActionTitleView>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/common_to_side"
-            android:text="@string/regist_welcome"
-            android:textColor="@color/colorCommon"
-            android:textSize="@dimen/large_textsize"/>
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="@dimen/common_to_side"-->
+            <!--android:text="@string/regist_welcome"-->
+            <!--android:textColor="@color/colorCommon"-->
+            <!--android:textSize="@dimen/large_textsize"/>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,15 +42,28 @@
                 android:id="@+id/et_nicheng"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_to_side"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/display_password"
                 android:layout_marginRight="@dimen/regist_padding_to_side"
                 android:layout_weight="1"
                 android:hint="@string/regist_nicheng" />
+            <EditText
+                android:id="@+id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/common_to_side"
+                android:layout_marginLeft="@dimen/display_password"
+                android:layout_marginRight="@dimen/regist_padding_to_side"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:hint="@string/regist_phone" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/common_to_side"
                 android:layout_marginLeft="@dimen/display_password"
                 android:layout_marginRight="@dimen/regist_padding_to_side"
                 android:orientation="horizontal">
@@ -77,6 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/common_to_side"
                 android:layout_marginLeft="@dimen/display_password"
                 android:layout_marginRight="@dimen/regist_padding_to_side"
                 android:layout_weight="1"
@@ -92,19 +106,21 @@
 
             <RadioButton
                 android:id="@+id/rb_sex_man"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/regist_sex_weight"
                 android:layout_height="wrap_content"
                 android:button="@null"
                 android:drawableLeft="@drawable/select_regist_man"
                 android:background="@drawable/select_side_line"
-                android:drawablePadding="@dimen/common_to_side"
                 android:paddingLeft="@dimen/regist_padding_to_side"
                 android:paddingRight="@dimen/regist_padding_to_side"
-                android:text="@string/regist_man"/>
+                android:drawablePadding="@dimen/regist_text_to_pic"
+                android:gravity="center"
+                android:text="@string/regist_man"
+                android:textColor="@color/bottom_text_color"/>
 
             <RadioButton
                 android:id="@+id/rb_sex_women"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/regist_sex_weight"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:button="@null"
@@ -113,7 +129,9 @@
                 android:background="@drawable/select_regist_sex_woman"
                 android:paddingLeft="@dimen/regist_padding_to_side"
                 android:paddingRight="@dimen/regist_padding_to_side"
-                android:text="@string/regist_woman"/>
+                android:gravity="center"
+                android:text="@string/regist_woman"
+                android:textColor="@color/bottom_text_color_women"/>
 
         </RadioGroup>
 

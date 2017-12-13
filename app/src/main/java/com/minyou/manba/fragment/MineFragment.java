@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.activity.GameCenterActivity;
@@ -27,6 +28,8 @@ import com.minyou.manba.activity.ShouCangActivity;
 import com.minyou.manba.activity.SociationDetailActivity;
 import com.minyou.manba.bean.ManBaUserInfo;
 import com.minyou.manba.event.MessageEvent;
+import com.minyou.manba.network.api.ManBaApi;
+import com.minyou.manba.network.resultModel.UserInfoResponseModel;
 import com.minyou.manba.util.GlideCircleTransform;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
@@ -36,10 +39,19 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
-public class MineFragment extends BaseFragment implements View.OnClickListener {
+public class MineFragment extends BaseFragment {
 
     private static final String TAG = "MineFragment";
     public static final int LOGIN_CODE = 100;
@@ -137,14 +149,25 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
     /**
      * 初始化个人信息
-     * @param mUserInfo
+     * @param object
      */
-    private void initUserInfo(ManBaUserInfo mUserInfo){
+    private void initUserInfo(Object object){
+        if(object instanceof ManBaUserInfo){
+            mUserInfo = (ManBaUserInfo) object;
+            user_name.setText(mUserInfo.getNickName());
+            if(!TextUtils.isEmpty(mUserInfo.getPhotoUrl())){
+                glideRequest.load(mUserInfo.getPhotoUrl()).transform(new GlideCircleTransform(getActivity())).into(user_pic);
+            }
+        }else if(object instanceof UserInfoResponseModel){
+            UserInfoResponseModel info = (UserInfoResponseModel) object;
+            user_name.setText(info.getNickName());
+            if(!TextUtils.isEmpty(info.getPhotoUrl())){
+                glideRequest.load(info.getPhotoUrl()).transform(new GlideCircleTransform(getActivity())).into(user_pic);
+            }
+        }
         rl_after_login.setVisibility(View.VISIBLE);
         ll_after_login.setVisibility(View.VISIBLE);
         rl_before_login.setVisibility(View.GONE);
-        user_name.setText(mUserInfo.getNickName());
-        glideRequest.load(mUserInfo.getPhotoUrl()).transform(new GlideCircleTransform(getActivity())).into(user_pic);
     }
 
     /**
@@ -172,14 +195,14 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
      */
     private boolean isLogin() {
         String userInfo = "";
-        String lastLoginType = SharedPreferencesUtil.getInstance(getActivity().getApplicationContext()).getSP(Appconstant.LOGIN_LAST_TYPE);
+        String lastLoginType = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_LAST_TYPE);
         LogUtil.d(TAG, "lastLoginType--------------" + lastLoginType);
         if(!TextUtils.isEmpty(lastLoginType) && lastLoginType.equals(Appconstant.LOGIN_QQ)){
             // qq登陆,
-            String qq_id = SharedPreferencesUtil.getInstance(getActivity()).getSP(Appconstant.LOGIN_QQ_ID);
+            String qq_id = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_QQ_ID);
             // TODO 网络请求登陆
             if(!TextUtils.isEmpty(qq_id)){
-                userInfo = SharedPreferencesUtil.getInstance(getActivity().getApplicationContext()).getSP(Appconstant.LOGIN_USER_INFO_QQ);
+                userInfo = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_USER_INFO_QQ);
                 if(!TextUtils.isEmpty(userInfo)){
                     try {
                         JSONObject jsonObject = new JSONObject(userInfo);
@@ -194,10 +217,10 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             }
         }else if(!TextUtils.isEmpty(lastLoginType) && lastLoginType.equals(Appconstant.LOGIN_WEIXIN)){
             // 微信登陆,
-            String weixin_id = SharedPreferencesUtil.getInstance(getActivity()).getSP(Appconstant.LOGIN_WEIXIN_ID);
+            String weixin_id = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_WEIXIN_ID);
             // TODO 网络请求登陆
             if(!TextUtils.isEmpty(weixin_id)){
-                userInfo = SharedPreferencesUtil.getInstance(getActivity().getApplicationContext()).getSP(Appconstant.LOGIN_USER_INFO_WEIXIN);
+                userInfo = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_USER_INFO_WEIXIN);
                 if(!TextUtils.isEmpty(userInfo)){
                     try {
                         JSONObject jsonObject = new JSONObject(userInfo);
@@ -212,8 +235,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             }
         }else{
             // 用户名密码登陆
-            String phone = SharedPreferencesUtil.getInstance(getActivity().getApplicationContext()).getSP("phone");
-            String password = SharedPreferencesUtil.getInstance(getActivity().getApplicationContext()).getSP("password");
+            String phone = SharedPreferencesUtil.getInstance().getSP("phone");
+            String password = SharedPreferencesUtil.getInstance().getSP("password");
             if ("18516145120".equals(phone) && "123456".equals(password)) {
                 return true;
             }
@@ -229,18 +252,18 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     }
 
 
-    @Override
-    public void onClick(View view) {
-        Intent intent;
-        switch (view.getId()) {
-            case R.id.bt_login:
-                intent = new Intent();
-                intent.setClass(getActivity(), LoginActivity.class);
-                startActivityForResult(intent, LOGIN_CODE);
-                break;
-
-        }
-    }
+//    @Override
+//    public void onClick(View view) {
+//        Intent intent;
+//        switch (view.getId()) {
+//            case R.id.bt_login:
+//                intent = new Intent();
+//                intent.setClass(getActivity(), LoginActivity.class);
+//                startActivityForResult(intent, LOGIN_CODE);
+//                break;
+//
+//        }
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -248,31 +271,56 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         switch (requestCode) {
             case LOGIN_CODE:
                 if (resultCode == Activity.RESULT_OK) {
-                    String type = data.getStringExtra(Appconstant.LOGIN_RETURN_TYPE);
-                    ManBaUserInfo mUserInfo = null;
-                    String nickname = "";
-                    String photoUrl = "";
-                    int sex = -1;
-                    mUserInfo = data.getParcelableExtra(Appconstant.LOGIN_USER_INFO);
-                    nickname = mUserInfo.getNickName();
-                    photoUrl = mUserInfo.getPhotoUrl();
-                    LogUtil.d(TAG, "nickname--------------" + nickname);
-                    LogUtil.d(TAG, "photoUrl--------------" + photoUrl);
-                    Toast.makeText(getActivity(), "登陆成功", Toast.LENGTH_SHORT).show();
-                    //SharedPreferencesUtil.getInstance(getActivity()).putSP("phone","18516145120");
-                    //SharedPreferencesUtil.getInstance(getActivity()).putSP("password","123456");
+//                    String type = data.getStringExtra(Appconstant.LOGIN_RETURN_TYPE);
+//                    ManBaUserInfo mUserInfo = null;
+//                    String nickname = "";
+//                    String photoUrl = "";
+//                    int sex = -1;
+//                    mUserInfo = data.getParcelableExtra(Appconstant.LOGIN_USER_INFO);
+//                    nickname = mUserInfo.getNickName();
+//                    photoUrl = mUserInfo.getPhotoUrl();
+                    String userID = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID);
+                    String token = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.TOKEN);
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody body = new FormBody.Builder()
+                            .add(Appconstant.User.TOKEN, token)
+                            .add(Appconstant.User.USER_ID, userID)
+                            .build();
+                    Request request = new Request.Builder()
+                            .url(ManBaApi.HTTP_GET_USER_INFO+userID)
+                            .header("Accept","*/*")
+                            .addHeader("Authorization",token)
+                            //.post(body)
+                            .build();
+                    Call call = client.newCall(request);
+                    call.enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            Toast.makeText(getActivity(), "获取失败", Toast.LENGTH_SHORT).show();
+                        }
 
-                    rl_after_login.setVisibility(View.VISIBLE);
-                    ll_after_login.setVisibility(View.VISIBLE);
-                    rl_before_login.setVisibility(View.GONE);
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String responseStr = response.body().string();
+                            final UserInfoResponseModel userInfoResponseModel = new Gson().fromJson(responseStr,UserInfoResponseModel.class);
+                            LogUtil.d(TAG, "-----response---------" + responseStr);
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //initUserInfo(userInfoResponseModel.toManBaUserInfo());
+                                    initUserInfo(userInfoResponseModel);
+                                }
+                            });
 
-                    user_name.setText(nickname);
-                    glideRequest.load(photoUrl).transform(new GlideCircleTransform(getActivity())).into(user_pic);
+                        }
+                    });
+
+//                    user_name.setText(nickname);
+//                    glideRequest.load(photoUrl).transform(new GlideCircleTransform(getActivity())).into(user_pic);
                 } else {
                     Toast.makeText(getActivity(), "登陆失败", Toast.LENGTH_SHORT).show();
                 }
                 break;
-
         }
     }
 }

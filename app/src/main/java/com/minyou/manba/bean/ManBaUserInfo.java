@@ -13,6 +13,7 @@ public class ManBaUserInfo implements Parcelable{
     private int sex;    // 1男；2女
     private String interesting;
     private String photoUrl;
+    private String roles;
 
     public ManBaUserInfo(){}
 
@@ -23,6 +24,7 @@ public class ManBaUserInfo implements Parcelable{
         sex = in.readInt();
         interesting = in.readString();
         photoUrl = in.readString();
+        roles = in.readString();
     }
 
     public static final Creator<ManBaUserInfo> CREATOR = new Creator<ManBaUserInfo>() {
@@ -85,6 +87,14 @@ public class ManBaUserInfo implements Parcelable{
         this.userID = userID;
     }
 
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -98,5 +108,6 @@ public class ManBaUserInfo implements Parcelable{
         parcel.writeInt(sex);
         parcel.writeString(interesting);
         parcel.writeString(photoUrl);
+        parcel.writeString(roles);
     }
 }

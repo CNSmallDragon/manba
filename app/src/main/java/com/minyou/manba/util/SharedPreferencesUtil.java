@@ -3,6 +3,8 @@ package com.minyou.manba.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.minyou.manba.MyApplication;
+
 /**
  * Created by Administrator on 2017/11/2.
  */
@@ -21,9 +23,9 @@ public class SharedPreferencesUtil {
     }
 
     //单例模式
-    public static SharedPreferencesUtil getInstance(Context context) {
+    public static SharedPreferencesUtil getInstance() {
         if (mSharedPreferencesUtil == null) {
-            mSharedPreferencesUtil = new SharedPreferencesUtil(context);
+            mSharedPreferencesUtil = new SharedPreferencesUtil(MyApplication.getInstance());
         }
         return mSharedPreferencesUtil;
     }
