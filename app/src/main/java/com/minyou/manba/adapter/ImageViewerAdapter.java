@@ -3,6 +3,7 @@ package com.minyou.manba.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.minyou.manba.R;
 import com.minyou.manba.activity.ImageViewerActivity;
+import com.minyou.manba.util.LogUtil;
 
 import java.util.List;
 
@@ -42,12 +44,14 @@ public class ImageViewerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        ImageView imageView = new ImageView(context);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_pager_image,container,false);
+        ImageView imageView = (ImageView) view.findViewById(R.id.image);
         glideRequest.load(list.get(position)).into(imageView);
-        container.addView(imageView);
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LogUtil.d("lch---",context.getClass()+"");
                 ((ImageViewerActivity)context).finish();
                 ((ImageViewerActivity)context).overridePendingTransition(0,R.anim.activity_alpha_out);
             }
@@ -60,7 +64,8 @@ public class ImageViewerAdapter extends PagerAdapter {
                 return true;
             }
         });
-        return imageView;
+        container.addView(view);
+        return view;
     }
 
     @Override
