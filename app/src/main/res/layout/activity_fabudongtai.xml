@@ -7,12 +7,36 @@
     android:background="#FFFFFF"
     android:orientation="vertical">
 
+    <com.minyou.manba.ui.ActionTitleView
+        android:id="@+id/act_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_title_height"></com.minyou.manba.ui.ActionTitleView>
+
     <EditText
+        android:id="@+id/et_dongtai_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@null"
+        android:layout_marginLeft="5dp"
+        android:hint="说点什么"
+        android:maxLines="1"
+        android:textColor="#000000" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@android:color/darker_gray"/>
+
+    <EditText
+        android:id="@+id/et_dongtai_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:layout_marginLeft="5dp"
         android:hint="说点什么"
         android:maxLines="3"
         android:textColor="#000000" />
+
 
     <GridView
         android:id="@+id/gw"

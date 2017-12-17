@@ -1,4 +1,4 @@
-package com.minyou.manba.util;
+package com.minyou.manba.ui.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;

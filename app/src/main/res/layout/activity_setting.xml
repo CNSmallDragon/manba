@@ -60,14 +60,23 @@
             android:text="@string/setting_notification"
             android:textSize="@dimen/common_textsize" />
 
+        <CheckBox
+            android:layout_width="@dimen/setting_switch_width"
+            android:layout_height="@dimen/setting_switch_height"
+            android:button="@null"
+            android:background="@drawable/select_switch"/>
+
+
         <Switch
             android:id="@+id/switch_notify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:textOff=""
             android:textOn=""
             android:thumb="@drawable/thumb"
             android:track="@drawable/track" />
+
     </LinearLayout>
 
     <View

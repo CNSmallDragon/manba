@@ -22,7 +22,7 @@ import com.minyou.manba.activity.LoginActivity;
 import com.minyou.manba.activity.PersonContentActivity;
 import com.minyou.manba.bean.ItemInfo;
 import com.minyou.manba.util.CommonUtil;
-import com.minyou.manba.util.GlideCircleTransform;
+import com.minyou.manba.ui.view.GlideCircleTransform;
 import com.minyou.manba.util.OnItemClickLitener;
 
 import java.text.SimpleDateFormat;

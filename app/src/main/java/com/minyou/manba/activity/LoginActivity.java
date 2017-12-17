@@ -23,12 +23,13 @@ import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.bean.ManBaUserInfo;
-import com.minyou.manba.commonInterface.OnHttpResultListener;
 import com.minyou.manba.event.MessageEvent;
 import com.minyou.manba.fragment.MineFragment;
 import com.minyou.manba.model.LoginActivityModel;
 import com.minyou.manba.network.api.ManBaApi;
-import com.minyou.manba.network.resultModel.UserLoginModel;
+import com.minyou.manba.network.requestModel.RegistRequestModel;
+import com.minyou.manba.network.responseModel.QQResponseModel;
+import com.minyou.manba.network.responseModel.UserLoginModel;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 import com.tencent.connect.UserInfo;
@@ -61,7 +62,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class LoginActivity extends Activity implements View.OnClickListener, OnHttpResultListener<UserLoginModel> {
+public class LoginActivity extends Activity implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
     private static final String NUMBER = "number";
@@ -216,11 +217,14 @@ public class LoginActivity extends Activity implements View.OnClickListener, OnH
                 LogUtil.d(TAG, "-----response---------" + requestStr);
                 UserLoginModel userLoginModel = new Gson().fromJson(requestStr,UserLoginModel.class);
                 LogUtil.d(TAG, "-----response---------" + userLoginModel.getCode());
+                LogUtil.d(TAG, "-----response---------" + userLoginModel.getToken());
                 if(userLoginModel.getCode() == 0){  // 成功
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, userLoginModel.getUserId());
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getToken());
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getRefreshToken());
-                    setResult(RESULT_OK);
+                    Intent intent = new Intent();
+                    intent.putExtra(Appconstant.LOGIN_USER_INFO,userLoginModel);
+                    setResult(RESULT_OK,intent);
                     finish();
                 }else if(userLoginModel.getCode() == 400){      // 密码错误
                     Message message = Message.obtain();
@@ -317,35 +321,18 @@ public class LoginActivity extends Activity implements View.OnClickListener, OnH
                 if (checkLoginNum() && checkPassWord()) {
                     login();
                     //model.startLogin(inputNumber,inputPWD,this);
+                    //MyHttpUtils.http_postRequest(ManBaApi.LOGINT_URL, RequestBodyUtils.getRequestBody(null),this);
                 }
                 break;
             case R.id.tv_sign_up:
                 Intent intent = new Intent(this,RegistActivity.class);
                 startActivity(intent);
+                finish();
                 break;
         }
 
     }
 
-    @Override
-    public void onRequestStart() {
-
-    }
-
-    @Override
-    public void onRequestSuccess(UserLoginModel baseResultModel) {
-
-    }
-
-    @Override
-    public void onRequestError(String error) {
-
-    }
-
-    @Override
-    public void onRequestCompleted() {
-
-    }
 
     class MyIUiListener implements IUiListener {
 
@@ -361,18 +348,17 @@ public class LoginActivity extends Activity implements View.OnClickListener, OnH
         @Override
         public void onError(UiError uiError) {
             Toast.makeText(LoginActivity.this, "error", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "error-----------------");
         }
 
         @Override
         public void onCancel() {
             Toast.makeText(LoginActivity.this, "取消", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "取消-----------------");
         }
 
         private void initOpenIdAndToken(JSONObject jsonObject) {
             try {
                 String openId = jsonObject.getString(Constants.PARAM_OPEN_ID);
+                Log.d(TAG, "openId-----------------" + openId);
                 String token = jsonObject.getString(Constants.PARAM_ACCESS_TOKEN);
                 String expires = jsonObject.getString(Constants.PARAM_EXPIRES_IN);
                 if (!TextUtils.isEmpty(openId) && !TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires)) {
@@ -391,31 +377,47 @@ public class LoginActivity extends Activity implements View.OnClickListener, OnH
             userInfo.getUserInfo(new IUiListener() {
                 @Override
                 public void onComplete(Object o) {
-                    try {
-                        Log.d(TAG, "获取用户信息-----------------");
-                        Log.d(TAG, o.toString());
-                        JSONObject userInfoJson = new JSONObject(o.toString());
-                        mUserInfo = new ManBaUserInfo();
-                        mUserInfo.setNickName(userInfoJson.getString(Appconstant.LOGIN_QQ_NAME));
-                        mUserInfo.setPhotoUrl(userInfoJson.getString(Appconstant.LOGIN_QQ_PHOTO));
-                        // TODO 获取用户信息后发后台注册
-                        SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_USER_INFO_QQ, o.toString());
-                        SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, Appconstant.LOGIN_QQ);
-                        SharedPreferencesUtil.getInstance().putBoolean(Appconstant.LOGIN_OR_NOT, true);
-                        Intent data = new Intent();
-//                        data.putExtra(Appconstant.LOGIN_RETURN_TYPE,Appconstant.LOGIN_QQ);
-                        data.putExtra(Appconstant.LOGIN_USER_INFO, mUserInfo);
-                        setResult(RESULT_OK, data);
-                        finish();
-                        /*
-                        Message message = Message.obtain();
-                        message.obj = mUserInfo;
-                        message.what = QQLOGIN;
-                        handler.sendMessage(message);
-                        */
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    Log.d(TAG, "获取用户信息-----------------");
+                    Log.d(TAG, o.toString());
+                    QQResponseModel qqModel = new Gson().fromJson(o.toString(),QQResponseModel.class);
+                    //qqModel.setOpenID(SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_QQ_ID));
+                    RegistRequestModel requestModel = new RegistRequestModel();
+                    requestModel.setNickName(qqModel.getNickname());
+                    requestModel.setSex(qqModel.getGender().equals("男")?1:qqModel.getGender().equals("女")?2:0);
+                    requestModel.setQq(SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_QQ_ID));
+                    requestModel.setPicUrl(qqModel.getFigureurl_qq_2());
+                    //mUserInfo.setPhotoUrl(userInfoJson.getString(Appconstant.LOGIN_QQ_PHOTO));
+                    // TODO 根据第三方账号查询用户是否已经注册
+
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody body = new FormBody.Builder()
+                            .add("qqCode", SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_QQ_ID))
+                            .build();
+                    Request request = new Request.Builder()
+                            .url(ManBaApi.LOGINT_URL)
+                            .post(body)
+                            .build();
+                    Call call = client.newCall(request);
+                    call.enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String requestStr = response.body().string();
+                            LogUtil.d("TAG", "11111-----response---------" + requestStr);
+
+                        }
+                    });
+
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_USER_INFO_QQ, o.toString());
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, Appconstant.LOGIN_QQ);
+                    SharedPreferencesUtil.getInstance().putBoolean(Appconstant.LOGIN_OR_NOT, true);
+//                    Intent intnet = new Intent(LoginActivity.this,BindingPhoneActivity.class);
+//                    intnet.putExtra(Appconstant.LOGIN_USER_INFO, requestModel);
+//                    startActivity(intnet);
+//                    finish();
                 }
 
                 @Override

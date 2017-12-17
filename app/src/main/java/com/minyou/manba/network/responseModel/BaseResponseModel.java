@@ -1,4 +1,4 @@
-package com.minyou.manba.network.resultModel;
+package com.minyou.manba.network.responseModel;
 
 /**
  * Created by luchunhao on 2017/12/13.

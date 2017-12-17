@@ -1,6 +1,8 @@
 package com.minyou.manba.network;
 
 
+import android.text.TextUtils;
+
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.util.SPUtils;
 
@@ -21,13 +23,13 @@ public class AddHeadHttpInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
 
-        String auth_token = (String) SPUtils.get(Appconstant.AUTH_TOKEN_KEY, " ");// token
+        String auth_token = (String) SPUtils.get(Appconstant.User.TOKEN, " ");// token
 
         Request originalRequest = chain.request();
         Request.Builder requestBuilder = originalRequest.newBuilder()
-                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-                .addHeader("Connection", "keep-alive")
-                .addHeader("Authorization", auth_token == null ? "" : auth_token)
+                //.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+                //.addHeader("Connection", "keep-alive")
+                .addHeader("Authorization", TextUtils.isEmpty(auth_token)? "" : auth_token)
                 .addHeader("Accept", "*/*")
                 .method(originalRequest.method(), originalRequest.body());
 

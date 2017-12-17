@@ -1,11 +1,13 @@
 package com.minyou.manba.fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.minyou.manba.R;
 import com.minyou.manba.util.LogUtil;
 
 import butterknife.ButterKnife;
@@ -16,6 +18,7 @@ public abstract class BaseFragment extends Fragment {
 	private static final String TAG = "BaseFragment";
 	protected Unbinder unbinder;
 	public View view;
+	private ProgressDialog progressDialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,23 @@ public abstract class BaseFragment extends Fragment {
 	public void onDestroyView() {
 		super.onDestroyView();
 		unbinder.unbind();
+	}
+
+	protected void loading() {
+		if (progressDialog == null) {
+			progressDialog = new ProgressDialog(getActivity());
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		}
+		progressDialog.setMessage(getString(R.string.loading));
+		progressDialog.setCancelable(true);
+		progressDialog.show();
+	}
+
+	public void cancelLoading() {
+		if (progressDialog != null)
+			if (progressDialog.isShowing()) {
+				progressDialog.dismiss();
+			}
 	}
 
 	/**

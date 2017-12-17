@@ -3,9 +3,8 @@ package com.minyou.manba.network.utils;
 
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.network.RetrofitServiceGenerator;
-import com.minyou.manba.network.RetryWhenNetworkException;
 import com.minyou.manba.network.api.ManBaApiService;
-import com.minyou.manba.network.resultModel.AuthTokenResultModel;
+import com.minyou.manba.network.responseModel.AuthTokenResultModel;
 import com.minyou.manba.util.SPUtils;
 
 import rx.Observable;
@@ -30,7 +29,7 @@ public class RxHttpUtils {
                         return null;
                     }
                 })
-                .retryWhen(new RetryWhenNetworkException()) // 重试
+                //.retryWhen(new RetryWhenNetworkException()) // 重试
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -39,7 +38,7 @@ public class RxHttpUtils {
     // 创建网络请求（不带token）
     public static <T> Observable<T> createHttpRequest(final Observable<T> observable) {
         return observable
-                .retryWhen(new RetryWhenNetworkException()) // 重试
+                //.retryWhen(new RetryWhenNetworkException()) // 重试
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -48,7 +47,7 @@ public class RxHttpUtils {
     // 创建合并网络请求 (merge)
     public static <T> Observable<T> mergeHttpRequest(final Observable<T>... observables) {
         return Observable.merge(observables)
-                .retryWhen(new RetryWhenNetworkException()) // 重试
+                //.retryWhen(new RetryWhenNetworkException()) // 重试
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

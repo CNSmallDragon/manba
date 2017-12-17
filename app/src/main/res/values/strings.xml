@@ -5,10 +5,11 @@
     <string name="app_name">漫吧</string>
     <string name="login">登陆</string>
     <string name="regist">注册</string>
+    <string name="regist_now">马上注册 ></string>
     <string name="login_num">请输入手机号</string>
     <string name="login_pwd">请输入6-16位数字密码</string>
     <string name="login_forget_pwd">忘记密码？</string>
-    <string name="login_thrid">第三方登录</string>
+    <string name="login_thrid">其他登陆方式</string>
     <string name="login_weixin">微信</string>
     <string name="login_qq">QQ</string>
     <string name="login_xinlang">微博</string>
@@ -31,7 +32,9 @@
     <string name="regist_cosplay">cosplay</string>
     <string name="regist_tongren">同人</string>
     <string name="regist_finish">开启</string>
+    <string name="regist_finish_third">开启漫吧之旅</string>
     <string name="regist_welcome">欢迎来到漫吧</string>
+    <string name="regist_binding_phone">请绑定手机号</string>
 
     <string name="home">主页</string>
     <string name="home_jiequ">街区</string>
@@ -104,9 +107,14 @@
     <string name="setting_update_version">版本更新</string>
     <string name="setting_about_us">关于漫吧</string>
 
+    <!--   发布动态   -->
+    <string name="fabu_title_hint">帖子标题（可选）</string>
+    <string name="fabu_content_hint">请输入内容</string>
+
     <!--   公共   -->
     <string name="sorry_network_is_not_good">网络状况不佳</string>
     <string name="my_app_name">MY漫吧</string>
     <string name="my_app_desc">二次元同好聚集地</string>
+    <string name="loading">正在加载中...</string>
 
 </resources>

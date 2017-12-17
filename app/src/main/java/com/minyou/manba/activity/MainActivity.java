@@ -14,17 +14,25 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.minyou.manba.R;
 
+import java.util.Random;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class MainActivity extends Activity implements OnClickListener {
 
+    private String[] ads = {"http://chatm-icon.oss-cn-beijing.aliyuncs.com/pic/pic_20171109135437541.png",
+            "http://chatm-icon.oss-cn-beijing.aliyuncs.com/pic/pic_20170725104352981.jpg",
+            "http://chatm-icon.oss-cn-beijing.aliyuncs.com/pic/pic_20171109145155437.gif",
+            "http://chatm-icon.oss-cn-beijing.aliyuncs.com/pic/pic_20171109153125234.jpg"};
+
     private static final long WAIT_HOME = 3000;
     private Unbinder unbinder;
     @BindView(R.id.iv_welcome)
     ImageView iv_welcome;
 
+    private String picUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +49,26 @@ public class MainActivity extends Activity implements OnClickListener {
         int width = dm.widthPixels;         // 屏幕宽度（像素）
         int height = dm.heightPixels;       // 屏幕高度（像素）
 
+        Random random = new Random();
+        int nextInt = random.nextInt(10)%4;
+
+        switch (nextInt){
+            case 0:
+                picUrl = ads[0];
+                break;
+            case 1:
+                picUrl = ads[1];
+                break;
+            case 2:
+                picUrl = ads[2];
+                break;
+            case 3:
+                picUrl = ads[3];
+                break;
+        }
+
         Glide.with(this)
-                .load(R.drawable.test_welcome)
+                .load(picUrl)
                 .override(width,height)
                 .into(iv_welcome);
 

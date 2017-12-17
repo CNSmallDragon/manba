@@ -18,7 +18,7 @@ import com.minyou.manba.R;
 import com.minyou.manba.bean.ItemInfo;
 import com.minyou.manba.ui.ActionTitleView;
 import com.minyou.manba.util.CommonUtil;
-import com.minyou.manba.util.GlideCircleTransform;
+import com.minyou.manba.ui.view.GlideCircleTransform;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -3,7 +3,7 @@ package com.minyou.manba.network;
 import com.minyou.manba.MyApplication;
 import com.minyou.manba.R;
 import com.minyou.manba.commonInterface.OnHttpResultListener;
-import com.minyou.manba.network.resultModel.BaseResponseModel;
+import com.minyou.manba.network.responseModel.BaseResponseModel;
 
 import rx.Subscriber;
 

@@ -5,20 +5,29 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.minyou.manba.R;
+import com.minyou.manba.event.EventInfo;
 import com.minyou.manba.network.api.ManBaApi;
+import com.minyou.manba.network.responseModel.RegistResponseModel;
 import com.minyou.manba.ui.ActionTitleView;
 import com.minyou.manba.util.LogUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
@@ -68,15 +77,42 @@ public class RegistActivity extends Activity {
     TextView tvRegist;
     @BindView(R.id.et_phone)
     EditText etPhone;
+    @BindView(R.id.cb_display_pwd)
+    CheckBox cb_display_pwd;
 
     // 总倒计时时间
     private static final long MILLIS_IN_FUTURE = 60 * 1000;
     // 每次减去1秒
     private static final long COUNT_DOWN_INTERVAL = 1000;
+    private static final int REGIST_ERROR = 100;
+    private static final int REGIST_SUCCESS = 101;
     private String inputNumber;
     private String etNichengStr;
     private String etMimaStr;
     private String etSmsStr;
+
+    private int sex = 0;        // 2女1男
+
+    public Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case  REGIST_ERROR:
+                    Toast.makeText(RegistActivity.this, (String)msg.obj, Toast.LENGTH_SHORT).show();
+                    break;
+                case REGIST_SUCCESS:
+                    // 注册成功
+                    EventInfo info = new EventInfo();
+                    info.setType(EventInfo.REGIST_RETURN);
+                    info.setData(msg.obj);
+                    EventBus.getDefault().post(info);
+                    finish();
+                    break;
+            }
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +127,22 @@ public class RegistActivity extends Activity {
 
     private void initView() {
         atvTitle.setTitle(getResources().getString(R.string.regist_welcome));
+        cb_display_pwd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (TextUtils.isEmpty(etMima.getText())) {
+                    return;
+                }
+                if (isChecked) {
+                    etMima.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                } else {
+                    etMima.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+                // 将光标移动到最后
+                etMima.setSelection(etMima.getText().toString().length());
+            }
+        });
     }
 
 
@@ -128,8 +180,61 @@ public class RegistActivity extends Activity {
                 }
                 break;
             case R.id.tv_regist:
+                if(checkRegist()){
+                    postRegist();
+                }
                 break;
         }
+    }
+
+    private void postRegist() {
+        OkHttpClient client = new OkHttpClient();
+//        RegistRequestModel requestModel = new RegistRequestModel();
+//        requestModel.setPhone(inputNumber);
+//        requestModel.setPassword(etMimaStr);
+//        requestModel.setNickName(etNichengStr);
+//        requestModel.setSex(sex);
+//        requestModel.setSmsCode(etSmsStr);
+//        RequestBody body = RequestBodyUtils.getRequestBody(requestModel);
+        RequestBody body = new FormBody.Builder()
+                .add("phone",inputNumber)
+                .add("password", etMimaStr)
+                .add("nickName", etNichengStr)
+                .add("sex", String.valueOf(sex))
+                .add("smsCode", etSmsStr)
+                .build();
+        Request request = new Request.Builder()
+                .url(ManBaApi.HTTP_POST_REGIST)
+//                .header("Accept","*/*")
+//                .addHeader("Authorization",SharedPreferencesUtil.getInstance().getSP(Appconstant.User.TOKEN))
+                .post(body)
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Message message = Message.obtain();
+                String requestStr = response.body().string();
+                RegistResponseModel model = new Gson().fromJson(requestStr,RegistResponseModel.class);
+                if(model.getCode() == 0){
+                    // 注册成功
+                    message.what = REGIST_SUCCESS;
+                    message.obj = model.getResult();
+                }else if(model.getCode() == 18){    // 验证码错误
+                    message.what = REGIST_ERROR;
+                    message.obj = model.getMsg();
+                }else if(model.getCode() == 21){    // 用户已存在
+                    message.what = REGIST_ERROR;
+                    message.obj = model.getMsg();
+                }
+                handler.sendMessage(message);
+                LogUtil.d(TAG, "-----postRegist---------" + requestStr);
+            }
+        });
     }
 
     private boolean checkLoginNum() {
@@ -165,6 +270,13 @@ public class RegistActivity extends Activity {
         }
         if (etMimaStr.length() < 6 || etMimaStr.length() > 16) {
             Toast.makeText(this, "您输入的密码不符合规范，请重新输入!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // 校验性别
+        sex = rbSexMan.isChecked()?1:rbSexWomen.isChecked()?2:0;
+        if(sex == 0){
+            Toast.makeText(this, "请选择性别", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

@@ -2,7 +2,7 @@ package com.minyou.manba.network;
 
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.network.api.ManBaApiService;
-import com.minyou.manba.network.resultModel.AuthTokenResultModel;
+import com.minyou.manba.network.responseModel.AuthTokenResultModel;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SPUtils;
 

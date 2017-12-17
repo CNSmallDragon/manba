@@ -80,10 +80,10 @@
     <dimen name="game_detail_button_padding">26dp</dimen>
     <dimen name="game_text_line_height">2dp</dimen>
 
-    <!--   游戏详情界面   -->
+    <!--   设置界面   -->
     <dimen name="setting_pic_height">40dp</dimen>
     <dimen name="setting_goicon_height">20dp</dimen>
-    <dimen name="setting_switch_width">26dp</dimen>
+    <dimen name="setting_switch_width">45dp</dimen>
     <dimen name="setting_switch_height">26dp</dimen>
 
 </resources>

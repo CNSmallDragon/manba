@@ -85,16 +85,44 @@
                     android:text="@string/regist_getyanzhengma"/>
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/et_mima"
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="@dimen/common_to_side"
-                android:layout_marginLeft="@dimen/display_password"
+                android:layout_marginTop="@dimen/common_to_top"
                 android:layout_marginRight="@dimen/regist_padding_to_side"
-                android:layout_weight="1"
-                android:hint="@string/regist_mima" />
+                android:gravity="center_vertical">
+
+                <EditText
+                    android:id="@+id/et_mima"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/login_num_side"
+                    android:layout_marginRight="@dimen/login_num_side"
+                    android:hint="@string/regist_mima"
+                    android:inputType="textPassword" />
+
+                <CheckBox
+                    android:id="@+id/cb_display_pwd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:button="@drawable/login_icon_checked"
+                    android:checked="false" />
+
+            </RelativeLayout>
+
+            <!--<EditText-->
+                <!--android:id="@+id/et_mima"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_marginTop="@dimen/common_to_side"-->
+                <!--android:layout_marginLeft="@dimen/display_password"-->
+                <!--android:layout_marginRight="@dimen/regist_padding_to_side"-->
+                <!--android:layout_weight="1"-->
+                <!--android:hint="@string/regist_mima" />-->
         </LinearLayout>
 
         <RadioGroup

@@ -13,4 +13,7 @@ public class ManBaApi {
 
     // 获取短信验证码
     public static String HTTP_GET_SEND_SMS = "http://www.mymanba.cn/api/user/sendSms";
+
+    // 用户注册
+    public static String HTTP_POST_REGIST = "http://www.mymanba.cn/api/user/register";
 }

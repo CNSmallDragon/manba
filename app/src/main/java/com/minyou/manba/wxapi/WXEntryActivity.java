@@ -1,11 +1,16 @@
 package com.minyou.manba.wxapi;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
-import com.minyou.manba.event.MessageEvent;
+import com.minyou.manba.R;
+import com.minyou.manba.network.api.ManBaApi;
+import com.minyou.manba.network.requestModel.RegistRequestModel;
+import com.minyou.manba.network.responseModel.WeiXinResponseModel;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -15,7 +20,6 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,8 +27,10 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -38,9 +44,20 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
     private Activity mActivity;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        }
+        progressDialog.setMessage(getString(R.string.loading));
+        progressDialog.setCancelable(true);
+        progressDialog.show();
+
         mAPi = WXAPIFactory.createWXAPI(this, Appconstant.WEIXIN_APP_ID, true);
         mAPi.handleIntent(getIntent(), this);
     }
@@ -138,11 +155,45 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             public void onResponse(Call call, Response response) throws IOException {
                 String resultStr = response.body().string();
                 LogUtil.d(TAG, "getUserMesg--resultStr---" + resultStr);
-                EventBus.getDefault().post(new MessageEvent(resultStr));
+                WeiXinResponseModel weixinModel = new Gson().fromJson(resultStr,WeiXinResponseModel.class);
+                //EventBus.getDefault().post(new MessageEvent(resultStr));
                 SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_USER_INFO_WEIXIN, resultStr);
                 SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, Appconstant.LOGIN_WEIXIN);
                 SharedPreferencesUtil.getInstance().putBoolean(Appconstant.LOGIN_OR_NOT, true);
-                finish();
+
+                RegistRequestModel requestModel = new RegistRequestModel();
+                requestModel.setNickName(weixinModel.getNickname());
+                requestModel.setSex(weixinModel.getSex());
+                requestModel.setWeixin(weixinModel.getOpenid());
+                requestModel.setPicUrl(weixinModel.getHeadimgurl());
+                // TODO 根据第三方账号查询用户是否已经注册
+                OkHttpClient client = new OkHttpClient();
+                RequestBody body = new FormBody.Builder()
+                        .add("weiXin", weixinModel.getOpenid())
+                        .build();
+                Request request = new Request.Builder()
+                        .url(ManBaApi.LOGINT_URL)
+                        .post(body)
+                        .build();
+                Call weixinCall = client.newCall(request);
+                weixinCall.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String requestStr = response.body().string();
+                        LogUtil.d("TAG", "11111-----response---------" + requestStr);
+
+                    }
+                });
+
+
+//                Intent intnet = new Intent(WXEntryActivity.this,BindingPhoneActivity.class);
+//                intnet.putExtra(Appconstant.LOGIN_USER_INFO, requestModel);
+//                startActivity(intnet);
+//                finish();
 
 
             }

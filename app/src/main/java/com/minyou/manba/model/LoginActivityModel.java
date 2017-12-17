@@ -7,7 +7,7 @@ import com.minyou.manba.network.CallBackSubscriber;
 import com.minyou.manba.network.RetrofitServiceGenerator;
 import com.minyou.manba.network.api.ManBaApiService;
 import com.minyou.manba.network.requestModel.UserLoginRequestModel;
-import com.minyou.manba.network.resultModel.UserLoginModel;
+import com.minyou.manba.network.responseModel.UserLoginModel;
 import com.minyou.manba.network.utils.RequestBodyUtils;
 import com.minyou.manba.network.utils.RxHttpUtils;
 import com.minyou.manba.util.LogUtil;
@@ -23,7 +23,7 @@ public class LoginActivityModel {
     public void startLogin(String phone, String pwd, final OnHttpResultListener<UserLoginModel> mListener) {
         // 构建请求参数
         UserLoginRequestModel requestModel = new UserLoginRequestModel();
-        requestModel.setLoginType(Appconstant.Config.LOGIN_YPTE_NORMAL);
+        //requestModel.setLoginType(Appconstant.Config.LOGIN_YPTE_NORMAL);
         requestModel.setUserName(phone);
         requestModel.setPassword(pwd);
         // 开始网络请求

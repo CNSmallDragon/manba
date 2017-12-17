@@ -18,7 +18,7 @@ import com.minyou.manba.R;
 import com.minyou.manba.activity.LoginActivity;
 import com.minyou.manba.bean.SociationBean;
 import com.minyou.manba.util.CommonUtil;
-import com.minyou.manba.util.GlideCircleTransform;
+import com.minyou.manba.ui.view.GlideCircleTransform;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.OnItemClickLitener;
 
