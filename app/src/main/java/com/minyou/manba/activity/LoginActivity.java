@@ -406,18 +406,26 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
                             String requestStr = response.body().string();
+                            try {
+                                JSONObject jsonObject = new JSONObject(requestStr);
+                                if(jsonObject.getString("code").equals("22")){  //未绑定手机号
+                                    Intent intnet = new Intent(LoginActivity.this, BindingPhoneActivity.class);
+                                    intnet.putExtra(Appconstant.LOGIN_QQ_ID, SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_QQ_ID));
+                                    startActivity(intnet);
+                                    finish();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             LogUtil.d("TAG", "11111-----response---------" + requestStr);
 
                         }
                     });
 
-                    SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_USER_INFO_QQ, o.toString());
-                    SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, Appconstant.LOGIN_QQ);
-                    SharedPreferencesUtil.getInstance().putBoolean(Appconstant.LOGIN_OR_NOT, true);
-//                    Intent intnet = new Intent(LoginActivity.this,BindingPhoneActivity.class);
-//                    intnet.putExtra(Appconstant.LOGIN_USER_INFO, requestModel);
-//                    startActivity(intnet);
-//                    finish();
+//                    SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_USER_INFO_QQ, o.toString());
+//                    SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, Appconstant.LOGIN_QQ);
+//                    SharedPreferencesUtil.getInstance().putBoolean(Appconstant.LOGIN_OR_NOT, true);
+
                 }
 
                 @Override

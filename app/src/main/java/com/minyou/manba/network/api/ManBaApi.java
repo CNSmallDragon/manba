@@ -5,6 +5,7 @@ package com.minyou.manba.network.api;
  */
 public class ManBaApi {
     // 网络请求链接
+    public static String BASE_URL = "http://www.mymanba.cn/";
     // 登陆请求
     public static String LOGINT_URL = "http://www.mymanba.cn/api/auth/login";
 
@@ -16,4 +17,7 @@ public class ManBaApi {
 
     // 用户注册
     public static String HTTP_POST_REGIST = "http://www.mymanba.cn/api/user/register";
+
+    // 用户注册
+    public static String HTTP_POST_PUBLISH = BASE_URL + "api/zone/publish";
 }

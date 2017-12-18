@@ -170,8 +170,9 @@ public class MineFragment extends BaseFragment {
             }
         }else if(object instanceof UserLoginModel){ // 正常登陆返回
             UserLoginModel userLoginModel = (UserLoginModel) object;
+            LogUtil.d(TAG,"----" + userLoginModel.getPhotoUrl());
             user_name.setText(userLoginModel.getNickName());
-            if(!TextUtils.isEmpty(userLoginModel.getPhotoUrl())){
+            if(!TextUtils.isEmpty(userLoginModel.getPhotoUrl()) || userLoginModel.getNickName() == null){
                 glideRequest.load(userLoginModel.getPhotoUrl()).transform(new GlideCircleTransform(getActivity())).into(user_pic);
             }
         }

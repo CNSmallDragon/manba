@@ -1,14 +1,19 @@
 package com.minyou.manba.activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -16,27 +21,51 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.adapter.GridViewAddImgesAdpter;
-
-import net.bither.util.NativeUtil;
+import com.minyou.manba.network.api.ManBaApi;
+import com.minyou.manba.ui.ActionTitleView;
+import com.minyou.manba.util.CommonUtil;
+import com.minyou.manba.util.LogUtil;
+import com.minyou.manba.util.SharedPreferencesUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import butterknife.BindView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by luchunhao on 2017/12/11.
  */
 public class FaBuDongTaiActivity extends BaseActivity {
 
-    private GridView gw;
+    private static final String TAG = "FaBuDongTaiActivity";
+    @BindView(R.id.act_title)
+    ActionTitleView actTitle;
+    @BindView(R.id.et_dongtai_title)
+    EditText etDongtaiTitle;
+    @BindView(R.id.et_dongtai_content)
+    EditText etDongtaiContent;
+    @BindView(R.id.gw)
+    GridView gw;
+
     private List<Map<String, Object>> datas;
     private GridViewAddImgesAdpter gridViewAddImgesAdpter;
     private Dialog dialog;
@@ -47,6 +76,9 @@ public class FaBuDongTaiActivity extends BaseActivity {
     /* 头像名称 */
     private final String PHOTO_FILE_NAME = "temp_photo.jpg";
 
+    private String contentStr;
+
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_fabudongtai;
@@ -54,7 +86,14 @@ public class FaBuDongTaiActivity extends BaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        gw = (GridView) findViewById(R.id.gw);
+        actTitle.setTitle(getResources().getString(R.string.fabu_dongtai));
+        actTitle.setRightToDo(R.drawable.details_icon_guanzhu, null, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 发布帖子
+                http_postSendTieZi();
+            }
+        });
         datas = new ArrayList<>();
         gridViewAddImgesAdpter = new GridViewAddImgesAdpter(datas, this);
         gw.setAdapter(gridViewAddImgesAdpter);
@@ -62,6 +101,40 @@ public class FaBuDongTaiActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 showdialog();
+            }
+        });
+    }
+
+    private void http_postSendTieZi() {
+        contentStr = etDongtaiContent.getText().toString().trim();
+
+        String userID = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID);
+        String token = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.TOKEN);
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = new FormBody.Builder()
+                .add(Appconstant.User.TOKEN, token)
+                .add(Appconstant.User.USER_ID, userID)
+                .add("zoneContent",contentStr)
+                .add("fileType","3")
+                .build();
+        Request request = new Request.Builder()
+                .url(ManBaApi.HTTP_POST_PUBLISH)
+                .header("Accept","*/*")
+                .addHeader("Authorization",token)
+                .post(body)
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseStr = response.body().string();
+                LogUtil.d(TAG, "-----response---------" + responseStr);
+                finish();
             }
         });
     }
@@ -100,7 +173,18 @@ public class FaBuDongTaiActivity extends BaseActivity {
             public void onClick(View v) {
                 dialog.dismiss();
                 // 拍照
-                camera();
+                if (Build.VERSION.SDK_INT >= 23) {
+                    int checkCallPhonePermission = ContextCompat.checkSelfPermission(FaBuDongTaiActivity.this, Manifest.permission.CAMERA);
+                    if(checkCallPhonePermission != PackageManager.PERMISSION_GRANTED){
+                        ActivityCompat.requestPermissions(FaBuDongTaiActivity.this,new String[]{Manifest.permission.CAMERA},222);
+                        return;
+                    }else{
+                        camera();
+                    }
+                } else {
+                    camera();
+                }
+
             }
         });
 
@@ -130,12 +214,14 @@ public class FaBuDongTaiActivity extends BaseActivity {
                     System.currentTimeMillis() + "_" + PHOTO_FILE_NAME);
             //从文件中创建uri
             Uri uri = Uri.fromFile(tempFile);
-            Intent intent = new Intent();
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-            intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.addCategory(intent.CATEGORY_DEFAULT);
+            //Intent intent = new Intent();
+            //intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+            //intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+            //intent.addCategory(intent.CATEGORY_DEFAULT);
             // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CAREMA
-            startActivityForResult(intent, PHOTO_REQUEST_CAREMA);
+            //startActivityForResult(intent, PHOTO_REQUEST_CAREMA);
+
+            CommonUtil.startActionCapture(this,dir,PHOTO_REQUEST_CAREMA);
         } else {
             Toast.makeText(this, "未找到存储卡，无法拍照！", Toast.LENGTH_SHORT).show();
         }
@@ -179,12 +265,11 @@ public class FaBuDongTaiActivity extends BaseActivity {
                     cursor.moveToFirst();
                     //最后根据索引值获取图片路径
                     String path = cursor.getString(column_index);
-
-
                     uploadImage(path);
                 }
 
             } else if (requestCode == PHOTO_REQUEST_CAREMA) {
+                Log.i("images", "拿到照片path=" + tempFile.getPath());
                 if (resultCode != RESULT_CANCELED) {
                     // 从相机返回的数据
                     if (hasSdcard()) {
@@ -235,7 +320,7 @@ public class FaBuDongTaiActivity extends BaseActivity {
                     dir.mkdir();
                 }
                 final File file = new File(dir + "/temp_photo" + System.currentTimeMillis() + ".jpg");
-                NativeUtil.compressBitmap(path, file.getAbsolutePath(), 50);
+                //NativeUtil.compressBitmap(path, file.getAbsolutePath(), 50);
                 if (file.exists()) {
                     Log.d("images", "压缩后的文件存在" + file.getAbsolutePath());
                 } else {
@@ -252,9 +337,30 @@ public class FaBuDongTaiActivity extends BaseActivity {
     }
 
     public void photoPath(String path) {
-        Map<String,Object> map=new HashMap<>();
-        map.put("path",path);
+        Map<String, Object> map = new HashMap<>();
+        map.put("path", path);
         datas.add(map);
         gridViewAddImgesAdpter.notifyDataSetChanged();
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            //就像onActivityResult一样这个地方就是判断你是从哪来的。
+            case 222:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+                    camera();
+                } else {
+                    // Permission Denied
+                    Toast.makeText(FaBuDongTaiActivity.this, "很遗憾你把相机权限禁用了。请务必开启相机权限享受我们提供的服务吧。", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 }

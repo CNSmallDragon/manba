@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.network.api.ManBaApi;
-import com.minyou.manba.network.requestModel.RegistRequestModel;
 import com.minyou.manba.network.responseModel.RegistResponseModel;
 import com.minyou.manba.ui.ActionTitleView;
 import com.minyou.manba.util.LogUtil;
@@ -55,7 +54,8 @@ public class BindingPhoneActivity extends BaseActivity {
     private static final long COUNT_DOWN_INTERVAL = 1000;
     private String inputNumber;
 
-    private RegistRequestModel requestModel;
+    private String qqOpenId;
+    private String weixinOpenId;
 
     @Override
     public int getLayoutId() {
@@ -67,7 +67,8 @@ public class BindingPhoneActivity extends BaseActivity {
         atv_title.setTitle(getResources().getString(R.string.regist_binding_phone));
         Intent intent = getIntent();
         if(null != intent){
-            requestModel = intent.getParcelableExtra(Appconstant.LOGIN_USER_INFO);
+            qqOpenId = intent.getStringExtra(Appconstant.LOGIN_QQ_ID);
+            weixinOpenId = intent.getStringExtra(Appconstant.LOGIN_WEIXIN_ID);
         }
     }
 
@@ -158,10 +159,10 @@ public class BindingPhoneActivity extends BaseActivity {
         //RequestBody body = RequestBodyUtils.getRequestBody(requestModel);
         RequestBody body = new FormBody.Builder()
                 .add("phone",inputNumber)
-                .add("qq", requestModel.getQq())
-                .add("weixin", requestModel.getWeixin())
-                .add("nickName", requestModel.getNickName())
-                .add("sex", String.valueOf(requestModel.getSex()))
+                .add("qq", qqOpenId)
+                .add("weixin", weixinOpenId)
+//                .add("nickName", requestModel.getNickName())
+//                .add("sex", String.valueOf(requestModel.getSex()))
                 .add("smsCode", etSms.getText().toString().trim())
                 .build();
         Request request = new Request.Builder()

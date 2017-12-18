@@ -110,6 +110,7 @@
     <!--   发布动态   -->
     <string name="fabu_title_hint">帖子标题（可选）</string>
     <string name="fabu_content_hint">请输入内容</string>
+    <string name="fabu_dongtai">发帖</string>
 
     <!--   公共   -->
     <string name="sorry_network_is_not_good">网络状况不佳</string>

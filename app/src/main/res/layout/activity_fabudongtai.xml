@@ -18,8 +18,9 @@
         android:layout_height="wrap_content"
         android:background="@null"
         android:layout_marginLeft="5dp"
-        android:hint="说点什么"
+        android:hint="@string/fabu_title_hint"
         android:maxLines="1"
+        android:visibility="gone"
         android:textColor="#000000" />
 
     <View
@@ -33,7 +34,7 @@
         android:layout_height="wrap_content"
         android:background="@null"
         android:layout_marginLeft="5dp"
-        android:hint="说点什么"
+        android:hint="@string/fabu_content_hint"
         android:maxLines="3"
         android:textColor="#000000" />
 

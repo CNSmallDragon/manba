@@ -64,6 +64,12 @@ public class ActionTitleView extends LinearLayout implements OnClickListener {
 		}
 	}
 
+	public void setTitleSize(int size){
+		if(null != tv_title){
+			tv_title.setTextSize(size);
+		}
+	}
+
 	/**
 	 * 设置右侧按钮显示及事件
 	 *

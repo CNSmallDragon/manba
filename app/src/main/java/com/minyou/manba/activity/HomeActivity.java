@@ -22,6 +22,7 @@ import com.minyou.manba.fragment.HomeFragment;
 import com.minyou.manba.fragment.MineFragment;
 import com.minyou.manba.fragment.SociationFragment;
 import com.minyou.manba.fragment.StreetFragment;
+import com.minyou.manba.util.CommonUtil;
 import com.minyou.manba.util.LogUtil;
 
 import java.util.ArrayList;
@@ -171,11 +172,17 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.rb_fayan:
                 Toast.makeText(this, "发言", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(HomeActivity.this, FaBuDongTaiActivity.class);
-                startActivity(intent);
+                if (CommonUtil.isLogin()) {
+                    intent = new Intent(HomeActivity.this, FaBuDongTaiActivity.class);
+                    startActivity(intent);
+                }else{
+                    intent = new Intent(HomeActivity.this,LoginActivity.class);
+                    startActivity(intent);
+                }
                 break;
         }
 

@@ -21,6 +21,7 @@ public class Appconstant {
 	// 登陆返回Intent标识
 	public static String LOGIN_QQ = "qq";
 	public static String LOGIN_QQ_ID = "qq_openid";
+	public static String LOGIN_THIRD_ID = "openid";
 	public static String LOGIN_WEIXIN = "weixin";
 	public static String LOGIN_WEIXIN_ID = "weixin_openid";
 	public static String LOGIN_QQ_PHOTO = "figureurl_qq_2";
