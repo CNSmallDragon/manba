@@ -34,7 +34,7 @@ public class Appconstant {
 	public static String LOGIN_USER_INFO_WEIXIN = "user_info_weixin";
 	public static String LOGIN_USER_INFO_QQ = "user_info_qq";
 	// 记录最后一次登录方式
-	public static String LOGIN_LAST_TYPE = "last_type";
+	public static String LOGIN_LAST_TYPE = "last_type";		// 1用户密码、2qq、3微信
 	public static String LOGIN_OR_NOT = "isLogin";
 
 	// 首页进入动态详情页面表示
@@ -67,6 +67,11 @@ public class Appconstant {
 		public static final String USER_ID = "userId";
 		public static final String TOKEN = "token";
 		public static final String TOKEN_REFRESH = "refreshToken";
+		public static final String USER_QQ_INFO = "user_qq_info";
+		public static final String USER_WX_INFO = "user_wx_info";
+		// 正常登陆用户信息
+		public static final String USER_PHONE = "phone" ;
+		public static final String USER_PWD = "password" ;
 	}
 
 	public static final class Config{

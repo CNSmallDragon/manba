@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,32 +26,25 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
-        android:visibility="gone"
         android:background="@android:color/darker_gray"/>
 
     <EditText
         android:id="@+id/et_dongtai_content"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="200dp"
+        android:background="@null"
         android:layout_marginLeft="5dp"
         android:hint="@string/fabu_content_hint"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:maxLines="3"
         android:textColor="#000000" />
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <GridView
+        android:id="@+id/gw"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:choiceMode="singleChoice"
-        android:divider="@null"
-        android:fadingEdge="none"
-        android:listSelector="@android:color/transparent"
-        android:scrollbarStyle="outsideOverlay"
-        app:layoutManager="android.support.v7.widget.GridLayoutManager"
-        app:spanCount="4"
-        tools:listitem="@layout/list_item_image"/>
+        android:layout_marginTop="10dp"
+        android:columnWidth="66dp"
+        android:numColumns="5" />
 
 </LinearLayout>

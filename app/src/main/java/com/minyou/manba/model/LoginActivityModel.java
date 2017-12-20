@@ -7,7 +7,7 @@ import com.minyou.manba.network.CallBackSubscriber;
 import com.minyou.manba.network.RetrofitServiceGenerator;
 import com.minyou.manba.network.api.ManBaApiService;
 import com.minyou.manba.network.requestModel.UserLoginRequestModel;
-import com.minyou.manba.network.responseModel.UserLoginModel;
+import com.minyou.manba.network.resultModel.UserLoginModel;
 import com.minyou.manba.network.utils.RequestBodyUtils;
 import com.minyou.manba.network.utils.RxHttpUtils;
 import com.minyou.manba.util.LogUtil;

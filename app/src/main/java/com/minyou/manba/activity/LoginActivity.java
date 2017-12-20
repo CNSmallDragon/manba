@@ -1,6 +1,5 @@
 package com.minyou.manba.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -23,15 +21,15 @@ import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.bean.ManBaUserInfo;
-import com.minyou.manba.event.MessageEvent;
+import com.minyou.manba.event.EventInfo;
 import com.minyou.manba.fragment.MineFragment;
 import com.minyou.manba.model.LoginActivityModel;
 import com.minyou.manba.network.api.ManBaApi;
-import com.minyou.manba.network.requestModel.RegistRequestModel;
-import com.minyou.manba.network.responseModel.QQResponseModel;
-import com.minyou.manba.network.responseModel.UserLoginModel;
+import com.minyou.manba.network.resultModel.QQResponseModel;
+import com.minyou.manba.network.resultModel.UserLoginResultModel;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
+import com.minyou.manba.wxapi.WXEntryActivity;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.auth.QQToken;
 import com.tencent.connect.common.Constants;
@@ -51,7 +49,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import okhttp3.Call;
@@ -62,7 +59,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class LoginActivity extends Activity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
     private static final String NUMBER = "number";
@@ -112,7 +109,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     break;
                 case PASSWORD_ERROR:
                     // 密码错误
-                    Toast.makeText(LoginActivity.this,"您输入的密码有误，请重新输入!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "您输入的密码有误，请重新输入!", Toast.LENGTH_SHORT).show();
                     login_pwd.setText("");
                     break;
             }
@@ -120,21 +117,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         }
     };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_login);
-        unbinder = ButterKnife.bind(this);
-        EventBus.getDefault().register(this);
-
-        model = new LoginActivityModel();
-
-        initListener();
-
-
-    }
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        //setContentView(R.layout.activity_login);
+//        //unbinder = ButterKnife.bind(this);
+//    }
 
     private void initListener() {
         bt_login.setOnClickListener(this);
@@ -215,21 +204,31 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 //SharedPreferencesUtil.getInstance(LoginActivity.this.getApplicationContext()).putSP(Appconstant.User.USER_ID, openId);
                 String requestStr = response.body().string();
                 LogUtil.d(TAG, "-----response---------" + requestStr);
-                UserLoginModel userLoginModel = new Gson().fromJson(requestStr,UserLoginModel.class);
+                UserLoginResultModel userLoginModel = new Gson().fromJson(requestStr, UserLoginResultModel.class);
                 LogUtil.d(TAG, "-----response---------" + userLoginModel.getCode());
-                LogUtil.d(TAG, "-----response---------" + userLoginModel.getToken());
-                if(userLoginModel.getCode() == 0){  // 成功
-                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, userLoginModel.getUserId());
-                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getToken());
-                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getRefreshToken());
-                    Intent intent = new Intent();
-                    intent.putExtra(Appconstant.LOGIN_USER_INFO,userLoginModel);
-                    setResult(RESULT_OK,intent);
+                if (userLoginModel != null && userLoginModel.getCode().equals("0")) {  // 成功
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, "1");
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_PHONE, inputNumber);
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_PWD, inputPWD);
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, userLoginModel.getResult().getUserId() + "");
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getResult().getToken());
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getResult().getRefreshToken());
+                    Intent intent;
+                    if (getIntent() != null && getIntent().getBooleanExtra("fromMainActivity", false)) {
+                        intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    } else {
+                        intent = new Intent();
+                        intent.putExtra(Appconstant.LOGIN_USER_INFO, userLoginModel.getResult());
+                        setResult(RESULT_OK, intent);
+                    }
                     finish();
-                }else if(userLoginModel.getCode() == 400){      // 密码错误
+                } else if (userLoginModel.getCode().equals("15")) {      // 密码错误 400?15
                     Message message = Message.obtain();
                     message.what = PASSWORD_ERROR;
                     handler.sendMessage(message);
+                } else if (userLoginModel.getCode().equals("14")) {        // 用户不存在
+
                 }
 
             }
@@ -279,30 +278,39 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onWXReturn(MessageEvent messageEvent) {
-
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(messageEvent.getMessage());
-            ManBaUserInfo mUserInfo = new ManBaUserInfo();
-            mUserInfo.setNickName(jsonObject.get(Appconstant.LOGIN_WEIXIN_NAME).toString().trim());
-            mUserInfo.setSex(Integer.parseInt(jsonObject.get(Appconstant.LOGIN_WEIXIN_SEX).toString().trim()));
-            mUserInfo.setPhotoUrl(jsonObject.get(Appconstant.LOGIN_WEIXIN_PHOTO).toString().trim());
-            Intent data = new Intent();
-//            data.putExtra(Appconstant.LOGIN_RETURN_TYPE,Appconstant.LOGIN_WEIXIN);
-            data.putExtra(Appconstant.LOGIN_USER_INFO, mUserInfo);
-            setResult(RESULT_OK, data);
-            finish();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_login;
     }
+
+    @Override
+    public void initView(Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
+
+        model = new LoginActivityModel();
+
+        initListener();
+    }
+
+    /**
+     * 微信登陆后返回，关闭当前activity
+     * @param info
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onWXReturn(EventInfo info) {
+        if(null != info && info.getType() == EventInfo.LOGIN_WEIXIN){
+            if(getIntent().getBooleanExtra("fromMainActivity", false)){
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }else{
+                finish();
+            }
+        }
+    }
+
 
     @OnClick(R.id.tv_qq)
     public void loginQQ() {
@@ -310,6 +318,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         mTencent = Tencent.createInstance(mAppid, LoginActivity.this);
         myIUiListener = new MyIUiListener();
         Log.d(TAG, "登陆开始-----------------");
+        loading();
         mTencent.login(LoginActivity.this, "all", myIUiListener);
     }
 
@@ -325,7 +334,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 }
                 break;
             case R.id.tv_sign_up:
-                Intent intent = new Intent(this,RegistActivity.class);
+                Intent intent = new Intent(this, RegistActivity.class);
                 startActivity(intent);
                 finish();
                 break;
@@ -379,13 +388,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 public void onComplete(Object o) {
                     Log.d(TAG, "获取用户信息-----------------");
                     Log.d(TAG, o.toString());
-                    QQResponseModel qqModel = new Gson().fromJson(o.toString(),QQResponseModel.class);
-                    //qqModel.setOpenID(SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_QQ_ID));
-                    RegistRequestModel requestModel = new RegistRequestModel();
-                    requestModel.setNickName(qqModel.getNickname());
-                    requestModel.setSex(qqModel.getGender().equals("男")?1:qqModel.getGender().equals("女")?2:0);
-                    requestModel.setQq(SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_QQ_ID));
-                    requestModel.setPicUrl(qqModel.getFigureurl_qq_2());
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_QQ_INFO, o.toString());
+                    QQResponseModel qqModel = new Gson().fromJson(o.toString(), QQResponseModel.class);
+//                    RegistRequestModel requestModel = new RegistRequestModel();
+//                    requestModel.setNickName(qqModel.getNickname());
+//                    requestModel.setSex(qqModel.getGender().equals("男")?1:qqModel.getGender().equals("女")?2:0);
+//                    requestModel.setQq(SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_QQ_ID));
+//                    requestModel.setPicUrl(qqModel.getFigureurl_qq_2());
                     //mUserInfo.setPhotoUrl(userInfoJson.getString(Appconstant.LOGIN_QQ_PHOTO));
                     // TODO 根据第三方账号查询用户是否已经注册
 
@@ -406,17 +415,30 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
                             String requestStr = response.body().string();
-                            try {
-                                JSONObject jsonObject = new JSONObject(requestStr);
-                                if(jsonObject.getString("code").equals("22")){  //未绑定手机号
-                                    Intent intnet = new Intent(LoginActivity.this, BindingPhoneActivity.class);
-                                    intnet.putExtra(Appconstant.LOGIN_QQ_ID, SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_QQ_ID));
-                                    startActivity(intnet);
-                                    finish();
+                            UserLoginResultModel userLoginModel = new Gson().fromJson(requestStr, UserLoginResultModel.class);
+                            LogUtil.d(TAG, "-----response---------" + userLoginModel.getCode());
+                            if (userLoginModel != null && userLoginModel.getCode().equals("0")) { // 成功
+                                SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, "2");
+                                SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, userLoginModel.getResult().getUserId() + "");
+                                SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getResult().getToken());
+                                SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getResult().getRefreshToken());
+                                Intent intent;
+                                if (getIntent() != null && getIntent().getBooleanExtra("fromMainActivity", false)) {
+                                    intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    intent = new Intent();
+                                    intent.putExtra(Appconstant.LOGIN_USER_INFO, userLoginModel.getResult());
+                                    setResult(RESULT_OK, intent);
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                            } else if (userLoginModel != null && userLoginModel.getCode().equals("22")) {
+                                Intent intnet = new Intent(LoginActivity.this, BindingPhoneActivity.class);
+                                intnet.putExtra(Appconstant.LOGIN_QQ_ID, SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_QQ_ID));
+                                startActivity(intnet);
                             }
+                            cancelLoading();
+                            finish();
+
                             LogUtil.d("TAG", "11111-----response---------" + requestStr);
 
                         }

@@ -4,7 +4,7 @@ package com.minyou.manba.network;
 import com.minyou.manba.MyApplication;
 import com.minyou.manba.R;
 import com.minyou.manba.commonInterface.OnHttpResultListener;
-import com.minyou.manba.network.responseModel.BaseResponseModel;
+import com.minyou.manba.network.resultModel.BaseResultModel;
 
 import rx.Subscriber;
 
@@ -45,8 +45,8 @@ public class CallSubscriber<T>  extends Subscriber<T> {
     @Override
     public void onNext(T t) {
         if (t != null) {
-            if (t instanceof BaseResponseModel) {
-                BaseResponseModel resultModel = (BaseResponseModel) t;
+            if (t instanceof BaseResultModel) {
+                BaseResultModel resultModel = (BaseResultModel) t;
                 mListener.onRequestSuccess(t);
 //                if (resultModel.isSuccess()) {
 //                    _onNext(t);

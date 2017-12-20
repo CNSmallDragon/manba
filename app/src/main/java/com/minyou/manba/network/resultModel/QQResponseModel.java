@@ -1,4 +1,4 @@
-package com.minyou.manba.network.responseModel;
+package com.minyou.manba.network.resultModel;
 
 import android.os.Parcel;
 import android.os.Parcelable;

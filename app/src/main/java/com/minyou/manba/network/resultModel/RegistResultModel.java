@@ -1,9 +1,9 @@
-package com.minyou.manba.network.responseModel;
+package com.minyou.manba.network.resultModel;
 
 /**
  * Created by luchunhao on 2017/12/14.
  */
-public class RegistResponseModel extends BaseResponseModel {
+public class RegistResultModel extends BaseResultModel {
 
     private int result;
 

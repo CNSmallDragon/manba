@@ -15,9 +15,10 @@ import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.network.api.ManBaApi;
-import com.minyou.manba.network.responseModel.RegistResponseModel;
+import com.minyou.manba.network.resultModel.RegistResultModel;
 import com.minyou.manba.ui.ActionTitleView;
 import com.minyou.manba.util.LogUtil;
+import com.minyou.manba.util.SharedPreferencesUtil;
 
 import java.io.IOException;
 
@@ -54,8 +55,8 @@ public class BindingPhoneActivity extends BaseActivity {
     private static final long COUNT_DOWN_INTERVAL = 1000;
     private String inputNumber;
 
-    private String qqOpenId;
-    private String weixinOpenId;
+    private String qqOpenId = "";
+    private String weixinOpenId = "";
 
     @Override
     public int getLayoutId() {
@@ -83,6 +84,10 @@ public class BindingPhoneActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_regist:
+                if(TextUtils.isEmpty(etSms.getText())){
+                    Toast.makeText(this, "请输入验证码", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if(checkLoginNum() && !TextUtils.isEmpty(etSms.getText())){
                     postRegist();
                 }
@@ -157,16 +162,25 @@ public class BindingPhoneActivity extends BaseActivity {
     private void postRegist() {
         OkHttpClient client = new OkHttpClient();
         //RequestBody body = RequestBodyUtils.getRequestBody(requestModel);
-        RequestBody body = new FormBody.Builder()
-                .add("phone",inputNumber)
-                .add("qq", qqOpenId)
-                .add("weixin", weixinOpenId)
-//                .add("nickName", requestModel.getNickName())
-//                .add("sex", String.valueOf(requestModel.getSex()))
-                .add("smsCode", etSms.getText().toString().trim())
-                .build();
+        RequestBody body = null;
+        LogUtil.d(TAG, "-----qqOpenId---------" + qqOpenId);
+        LogUtil.d(TAG, "-----weixinOpenId---------" + weixinOpenId);
+        if(!TextUtils.isEmpty(qqOpenId)){
+            body = new FormBody.Builder()
+                    .add("phone",inputNumber)
+                    .add("qq", qqOpenId)
+                    .add("smsCode", etSms.getText().toString().trim())
+                    .build();
+        }else if(!TextUtils.isEmpty(weixinOpenId)){
+            body = new FormBody.Builder()
+                    .add("phone",inputNumber)
+                    .add("weixin", weixinOpenId)
+                    .add("smsCode", etSms.getText().toString().trim())
+                    .build();
+        }
+
         Request request = new Request.Builder()
-                .url(ManBaApi.HTTP_POST_REGIST)
+                .url(ManBaApi.LOGINT_URL)
 //                .header("Accept","*/*")
 //                .addHeader("Authorization",SharedPreferencesUtil.getInstance().getSP(Appconstant.User.TOKEN))
                 .post(body)
@@ -180,10 +194,13 @@ public class BindingPhoneActivity extends BaseActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String requestStr = response.body().string();
-                RegistResponseModel model = new Gson().fromJson(requestStr,RegistResponseModel.class);
-                if(model.getCode() == 0){
+                RegistResultModel model = new Gson().fromJson(requestStr,RegistResultModel.class);
+                if(model.getCode().equals("0")){
                     // 注册成功
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_PHONE,inputNumber);
                     finish();
+                }else if(model.getCode().equals("21")){     //用户已存在
+
                 }
                 LogUtil.d(TAG, "-----postRegist---------" + requestStr);
             }

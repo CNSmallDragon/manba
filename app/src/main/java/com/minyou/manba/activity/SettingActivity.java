@@ -2,6 +2,7 @@ package com.minyou.manba.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.minyou.manba.R;
 import com.minyou.manba.ui.ActionTitleView;
+import com.minyou.manba.util.SharedPreferencesUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -39,6 +41,8 @@ public class SettingActivity extends BaseActivity {
     LinearLayout llUpdateVersion;
     @BindView(R.id.ll_about_us)
     LinearLayout llAboutUs;
+    @BindView(R.id.bt_exit_login)
+    Button bt_exit_login;
 
     @Override
     public int getLayoutId() {
@@ -50,7 +54,7 @@ public class SettingActivity extends BaseActivity {
         atvTitle.setTitle(getResources().getString(R.string.my_shezhi));
     }
 
-    @OnClick({R.id.ll_user_setting, R.id.ll_huancun_setting, R.id.ll_qa_setting, R.id.ll_idea_fankui, R.id.ll_update_version, R.id.ll_about_us})
+    @OnClick({R.id.ll_user_setting, R.id.ll_huancun_setting, R.id.ll_qa_setting, R.id.ll_idea_fankui, R.id.ll_update_version, R.id.ll_about_us,R.id.bt_exit_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_user_setting:
@@ -64,6 +68,10 @@ public class SettingActivity extends BaseActivity {
             case R.id.ll_update_version:
                 break;
             case R.id.ll_about_us:
+                break;
+            case R.id.bt_exit_login:
+                SharedPreferencesUtil.getInstance().removeAll();
+                finish();
                 break;
         }
     }

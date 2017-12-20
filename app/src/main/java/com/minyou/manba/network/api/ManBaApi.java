@@ -20,4 +20,10 @@ public class ManBaApi {
 
     // 用户注册
     public static String HTTP_POST_PUBLISH = BASE_URL + "api/zone/publish";
+
+    // 获取动态列表
+    public static String HTTP_GET_PUBLISH_LIST = BASE_URL + "api/zone/list";
+
+    // 发布动态
+    public static String HTTP_POST_ZONE_PUBLISH = BASE_URL + "api/zone/publish";
 }

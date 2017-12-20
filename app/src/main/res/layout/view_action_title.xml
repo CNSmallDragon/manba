@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/iv_back"
-        android:layout_width="30dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/common_title_height"
+        android:layout_height="@dimen/common_title_height"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/login_num_side"
         android:src="@drawable/navi_bar_back_img" />

@@ -2,6 +2,7 @@ package com.minyou.manba.activity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -20,14 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
-import com.minyou.manba.event.EventInfo;
 import com.minyou.manba.network.api.ManBaApi;
-import com.minyou.manba.network.responseModel.RegistResponseModel;
+import com.minyou.manba.network.resultModel.RegistResultModel;
+import com.minyou.manba.network.resultModel.UserLoginModel;
 import com.minyou.manba.ui.ActionTitleView;
 import com.minyou.manba.util.LogUtil;
-
-import org.greenrobot.eventbus.EventBus;
+import com.minyou.manba.util.SharedPreferencesUtil;
 
 import java.io.IOException;
 
@@ -86,6 +87,8 @@ public class RegistActivity extends Activity {
     private static final long COUNT_DOWN_INTERVAL = 1000;
     private static final int REGIST_ERROR = 100;
     private static final int REGIST_SUCCESS = 101;
+    private static final String PHONE = "username";
+    private static final String PASSWORD = "password";
     private String inputNumber;
     private String etNichengStr;
     private String etMimaStr;
@@ -100,18 +103,62 @@ public class RegistActivity extends Activity {
             switch (msg.what){
                 case  REGIST_ERROR:
                     Toast.makeText(RegistActivity.this, (String)msg.obj, Toast.LENGTH_SHORT).show();
+
                     break;
                 case REGIST_SUCCESS:
                     // 注册成功
-                    EventInfo info = new EventInfo();
-                    info.setType(EventInfo.REGIST_RETURN);
-                    info.setData(msg.obj);
-                    EventBus.getDefault().post(info);
-                    finish();
+//                    EventInfo info = new EventInfo();
+//                    info.setType(EventInfo.REGIST_RETURN);
+//                    info.setData(msg.obj);
+//                    EventBus.getDefault().post(info);
+                    // 将用户信息存入本地
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_PHONE,inputNumber);
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_PWD,etMimaStr);
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE,"1");
+                    // 调用登陆接口获取用户信息
+                    login();
                     break;
             }
         }
     };
+
+    // 注册成功后登陆
+    private void login() {
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = new FormBody.Builder()
+                .add(PHONE, inputNumber)
+                .add(PASSWORD, etMimaStr)
+                .build();
+        Request request = new Request.Builder()
+                .url(ManBaApi.LOGINT_URL)
+                .post(body)
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //SharedPreferencesUtil.getInstance(LoginActivity.this.getApplicationContext()).putSP(Appconstant.User.USER_ID, openId);
+                String requestStr = response.body().string();
+                LogUtil.d(TAG, "-----response---------" + requestStr);
+                UserLoginModel userLoginModel = new Gson().fromJson(requestStr,UserLoginModel.class);
+                if(userLoginModel.getCode().equals("0")){  // 成功
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, userLoginModel.getUserId());
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getToken());
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getRefreshToken());
+                    // 注册登录完成后跳转首页
+                    Intent intent = new Intent(RegistActivity.this,HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+    }
 
 
     @Override
@@ -219,15 +266,15 @@ public class RegistActivity extends Activity {
             public void onResponse(Call call, Response response) throws IOException {
                 Message message = Message.obtain();
                 String requestStr = response.body().string();
-                RegistResponseModel model = new Gson().fromJson(requestStr,RegistResponseModel.class);
-                if(model.getCode() == 0){
+                RegistResultModel model = new Gson().fromJson(requestStr,RegistResultModel.class);
+                if(model.getCode().equals("0")){
                     // 注册成功
                     message.what = REGIST_SUCCESS;
                     message.obj = model.getResult();
-                }else if(model.getCode() == 18){    // 验证码错误
+                }else if(model.getCode().equals("18")){    // 验证码错误
                     message.what = REGIST_ERROR;
                     message.obj = model.getMsg();
-                }else if(model.getCode() == 21){    // 用户已存在
+                }else if(model.getCode().equals("21")){    // 用户已存在
                     message.what = REGIST_ERROR;
                     message.obj = model.getMsg();
                 }

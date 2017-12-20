@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.minyou.manba.R;
+import com.minyou.manba.manager.UserManager;
 
 import java.util.Random;
 
@@ -92,8 +93,15 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     public void goHome(){
-        Intent intent = new Intent(MainActivity.this,HomeActivity.class);
-        startActivity(intent);
+        // 判断用户是否登陆未登录跳转登陆界面
+        if(UserManager.isLogin()){
+            Intent intent = new Intent(MainActivity.this,HomeActivity.class);
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            intent.putExtra("fromMainActivity",true);
+            startActivity(intent);
+        }
         finish();
     }
 

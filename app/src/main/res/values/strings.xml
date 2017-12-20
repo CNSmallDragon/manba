@@ -106,6 +106,7 @@
     <string name="setting_idea_fankui">意见反馈</string>
     <string name="setting_update_version">版本更新</string>
     <string name="setting_about_us">关于漫吧</string>
+    <string name="setting_exit">退出登录</string>
 
     <!--   发布动态   -->
     <string name="fabu_title_hint">帖子标题（可选）</string>

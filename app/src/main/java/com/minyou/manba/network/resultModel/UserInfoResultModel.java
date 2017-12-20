@@ -1,4 +1,4 @@
-package com.minyou.manba.network.responseModel;
+package com.minyou.manba.network.resultModel;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,7 +8,7 @@ import com.minyou.manba.bean.ManBaUserInfo;
 /**
  * Created by luchunhao on 2017/12/13.
  */
-public class UserInfoResponseModel extends BaseResponseModel{
+public class UserInfoResultModel extends BaseResultModel {
 
     public UserLoginResultBean getUserLoginResultBean() {
         return result;

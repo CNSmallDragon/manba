@@ -53,6 +53,12 @@ public class SharedPreferencesUtil {
         mEditor.remove(key);
         mEditor.commit();
     }
+
+    // 清除所有数据
+    public void removeAll(){
+        mEditor.clear();
+        mEditor.commit();
+    }
 }
 
 

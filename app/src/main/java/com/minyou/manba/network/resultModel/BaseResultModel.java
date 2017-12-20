@@ -1,20 +1,20 @@
-package com.minyou.manba.network.responseModel;
+package com.minyou.manba.network.resultModel;
 
 /**
  * Created by luchunhao on 2017/12/13.
  */
-public class BaseResponseModel {
+public class BaseResultModel {
 
-    protected int code;
+    protected String code;
     protected String msg;
     protected Object detail;
     protected boolean success;
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

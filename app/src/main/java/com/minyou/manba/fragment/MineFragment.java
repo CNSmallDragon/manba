@@ -28,18 +28,17 @@ import com.minyou.manba.activity.ShouCangActivity;
 import com.minyou.manba.activity.SociationDetailActivity;
 import com.minyou.manba.bean.ManBaUserInfo;
 import com.minyou.manba.event.EventInfo;
-import com.minyou.manba.event.MessageEvent;
+import com.minyou.manba.manager.UserManager;
 import com.minyou.manba.network.api.ManBaApi;
-import com.minyou.manba.network.responseModel.UserInfoResponseModel;
-import com.minyou.manba.network.responseModel.UserLoginModel;
+import com.minyou.manba.network.resultModel.QQResponseModel;
+import com.minyou.manba.network.resultModel.UserLoginResultModel;
+import com.minyou.manba.network.resultModel.WeiXinResponseModel;
 import com.minyou.manba.ui.view.GlideCircleTransform;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -58,6 +57,8 @@ public class MineFragment extends BaseFragment {
     private static final String TAG = "MineFragment";
     public static final int LOGIN_CODE = 100;
     public static final String REQUEST = "requestInfo";
+    private static final String PHONE = "username";
+    private static final String PASSWORD = "password";
 
     @BindView(R.id.bt_login)
     Button bt_login;
@@ -87,14 +88,15 @@ public class MineFragment extends BaseFragment {
 
     @Override
     public int getContentViewId() {
+        glideRequest = Glide.with(getActivity());
         return R.layout.fragment_mine;
     }
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        glideRequest = Glide.with(getActivity());
-        if (isLogin()) {
-            initUserInfo(mUserInfo);
+        LogUtil.d(TAG,"initView===");
+        if (UserManager.isLogin()) {
+            autoLogin();
         } else {
             rl_after_login.setVisibility(View.GONE);
             ll_after_login.setVisibility(View.GONE);
@@ -103,9 +105,23 @@ public class MineFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        initView(null);
+    }
+
+
+
+    @Override
     public void initData(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        LogUtil.d(TAG,"isVisibleToUser===" + isVisibleToUser);
     }
 
     @OnClick({R.id.mine_gonghui,R.id.mine_qianbao,R.id.mine_shoucang,R.id.mine_dongtai,R.id.mine_xiaoxi,R.id.mine_haiwan,R.id.mine_setting})
@@ -155,25 +171,26 @@ public class MineFragment extends BaseFragment {
      */
     private void initUserInfo(Object object){
         LogUtil.d(TAG,"----" + object.getClass());
-        if(object instanceof ManBaUserInfo){
-            mUserInfo = (ManBaUserInfo) object;
-            user_name.setText(mUserInfo.getNickName());
-            if(!TextUtils.isEmpty(mUserInfo.getPhotoUrl())){
-                glideRequest.load(mUserInfo.getPhotoUrl()).transform(new GlideCircleTransform(getActivity())).into(user_pic);
+        if(object instanceof WeiXinResponseModel){
+            WeiXinResponseModel weiXinResponseModel = (WeiXinResponseModel) object;
+            user_name.setText(weiXinResponseModel.getNickname());
+            if(!TextUtils.isEmpty(weiXinResponseModel.getHeadimgurl())){
+                glideRequest.load(weiXinResponseModel.getHeadimgurl()).transform(new GlideCircleTransform(getActivity())).into(user_pic);
             }
-        }else if(object instanceof UserInfoResponseModel.UserLoginResultBean){
-            UserInfoResponseModel.UserLoginResultBean info = (UserInfoResponseModel.UserLoginResultBean) object;
+        }else if(object instanceof UserLoginResultModel.ResultBean){// 正常登陆返回
+            UserLoginResultModel.ResultBean info = (UserLoginResultModel.ResultBean) object;
             LogUtil.d(TAG,info.getNickName());
             user_name.setText(info.getNickName());
+            LogUtil.d(TAG,user_name.getText().toString());
             if(!TextUtils.isEmpty(info.getPhotoUrl())){
                 glideRequest.load(info.getPhotoUrl()).transform(new GlideCircleTransform(getActivity())).into(user_pic);
             }
-        }else if(object instanceof UserLoginModel){ // 正常登陆返回
-            UserLoginModel userLoginModel = (UserLoginModel) object;
-            LogUtil.d(TAG,"----" + userLoginModel.getPhotoUrl());
-            user_name.setText(userLoginModel.getNickName());
-            if(!TextUtils.isEmpty(userLoginModel.getPhotoUrl()) || userLoginModel.getNickName() == null){
-                glideRequest.load(userLoginModel.getPhotoUrl()).transform(new GlideCircleTransform(getActivity())).into(user_pic);
+        }else if(object instanceof QQResponseModel){ // qq登陆返回
+            QQResponseModel qqResponseModel = (QQResponseModel) object;
+            LogUtil.d(TAG,"----" + qqResponseModel.getFigureurl_qq_2());
+            user_name.setText(qqResponseModel.getNickname());
+            if(!TextUtils.isEmpty(qqResponseModel.getFigureurl_qq_2())){
+                glideRequest.load(qqResponseModel.getFigureurl_qq_2()).transform(new GlideCircleTransform(getActivity())).into(user_pic);
             }
         }
         rl_after_login.setVisibility(View.VISIBLE);
@@ -181,24 +198,24 @@ public class MineFragment extends BaseFragment {
         rl_before_login.setVisibility(View.GONE);
     }
 
-    /**
-     * 登陆后返回数据
-     * @param messageEvent
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void loginReturn(MessageEvent messageEvent){
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(messageEvent.getMessage());
-            ManBaUserInfo mUserInfo = new ManBaUserInfo();
-            mUserInfo.setNickName(jsonObject.get(Appconstant.LOGIN_WEIXIN_NAME).toString().trim());
-            mUserInfo.setSex(Integer.parseInt(jsonObject.get(Appconstant.LOGIN_WEIXIN_SEX).toString().trim()));
-            mUserInfo.setPhotoUrl(jsonObject.get(Appconstant.LOGIN_WEIXIN_PHOTO).toString().trim());
-            initUserInfo(mUserInfo);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
+//    /**
+//     * 登陆后返回数据
+//     * @param messageEvent
+//     */
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void loginReturn(MessageEvent messageEvent){
+//        JSONObject jsonObject = null;
+//        try {
+//            jsonObject = new JSONObject(messageEvent.getMessage());
+//            ManBaUserInfo mUserInfo = new ManBaUserInfo();
+//            mUserInfo.setNickName(jsonObject.get(Appconstant.LOGIN_WEIXIN_NAME).toString().trim());
+//            mUserInfo.setSex(Integer.parseInt(jsonObject.get(Appconstant.LOGIN_WEIXIN_SEX).toString().trim()));
+//            mUserInfo.setPhotoUrl(jsonObject.get(Appconstant.LOGIN_WEIXIN_PHOTO).toString().trim());
+//            initUserInfo(mUserInfo);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     /**
      * 注册后返回数据
@@ -212,58 +229,70 @@ public class MineFragment extends BaseFragment {
     }
 
     /**
-     * 判断用户是否登陆
+     * 自动登陆
      * @return
      */
-    private boolean isLogin() {
+    private void autoLogin() {
         String userInfo = "";
         String lastLoginType = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_LAST_TYPE);
         LogUtil.d(TAG, "lastLoginType--------------" + lastLoginType);
-        if(!TextUtils.isEmpty(lastLoginType) && lastLoginType.equals(Appconstant.LOGIN_QQ)){
+        if(!TextUtils.isEmpty(lastLoginType) && lastLoginType.equals("2")){
             // qq登陆,
-            String qq_id = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_QQ_ID);
-            // TODO 网络请求登陆
-//            if(!TextUtils.isEmpty(qq_id)){
-//                userInfo = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_USER_INFO_QQ);
-//                if(!TextUtils.isEmpty(userInfo)){
-//                    try {
-//                        JSONObject jsonObject = new JSONObject(userInfo);
-//                        mUserInfo = new ManBaUserInfo();
-//                        mUserInfo.setPhotoUrl(jsonObject.getString(Appconstant.LOGIN_QQ_PHOTO));
-//                        mUserInfo.setNickName(jsonObject.getString(Appconstant.LOGIN_QQ_NAME));
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                    return true;
-//                }
-//            }
-        }else if(!TextUtils.isEmpty(lastLoginType) && lastLoginType.equals(Appconstant.LOGIN_WEIXIN)){
+            String qqInfo = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_QQ_INFO);
+            QQResponseModel qqModel = new Gson().fromJson(qqInfo, QQResponseModel.class);
+            if(null != qqModel){
+                initUserInfo(qqModel);
+            }
+        }else if(!TextUtils.isEmpty(lastLoginType) && lastLoginType.equals("3")){
             // 微信登陆,
-            String weixin_id = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_WEIXIN_ID);
-            // TODO 网络请求登陆
-//            if(!TextUtils.isEmpty(weixin_id)){
-//                userInfo = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_USER_INFO_WEIXIN);
-//                if(!TextUtils.isEmpty(userInfo)){
-//                    try {
-//                        JSONObject jsonObject = new JSONObject(userInfo);
-//                        mUserInfo = new ManBaUserInfo();
-//                        mUserInfo.setPhotoUrl(jsonObject.getString(Appconstant.LOGIN_WEIXIN_PHOTO));
-//                        mUserInfo.setNickName(jsonObject.getString(Appconstant.LOGIN_WEIXIN_NAME));
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                    return true;
-//                }
-//            }
+            String wxInfo = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_WX_INFO);
+            if(TextUtils.isEmpty(wxInfo)){
+                wxInfo = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_USER_INFO_WEIXIN);
+            }
+            WeiXinResponseModel weixinModel = new Gson().fromJson(wxInfo,WeiXinResponseModel.class);
+            //EventBus.getDefault().post(new MessageEvent(resultStr));
+            if(null != weixinModel){
+                initUserInfo(weixinModel);
+            }
         }else{
             // 用户名密码登陆
-            String phone = SharedPreferencesUtil.getInstance().getSP("phone");
-            String password = SharedPreferencesUtil.getInstance().getSP("password");
-            if ("18516145120".equals(phone) && "123456".equals(password)) {
-                return true;
-            }
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+//                .add(Appconstant.Config.LOGIN_YPTE,Appconstant.Config.LOGIN_YPTE_NORMAL)
+                    .add(PHONE, SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_PHONE))
+                    .add(PASSWORD, SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_PWD))
+                    .build();
+            Request request = new Request.Builder()
+                    .url(ManBaApi.LOGINT_URL)
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    //SharedPreferencesUtil.getInstance(LoginActivity.this.getApplicationContext()).putSP(Appconstant.User.USER_ID, openId);
+                    String requestStr = response.body().string();
+                    LogUtil.d(TAG, "-----response---------" + requestStr);
+                    final UserLoginResultModel userLoginModelResult = new Gson().fromJson(requestStr,UserLoginResultModel.class);
+                    LogUtil.d(TAG, "-----response---------" + userLoginModelResult.getCode());
+                    if(userLoginModelResult.getCode().equals("0")){  // 成功
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                initUserInfo(userLoginModelResult.getResult());
+                            }
+                        });
+                    }else if(userLoginModelResult.getCode().equals("15")){      // 密码错误 400?15
+
+                    }
+
+                }
+            });
         }
-        return false;
     }
 
     @OnClick(R.id.bt_login)
@@ -302,53 +331,12 @@ public class MineFragment extends BaseFragment {
         }
     }
 
-    // 从网络获取用户个人信息
-    private void getUserInfo_bak(){
-        String userID = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID);
-        String token = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.TOKEN);
-        OkHttpClient client = new OkHttpClient();
-        RequestBody body = new FormBody.Builder()
-                .add(Appconstant.User.TOKEN, token)
-                .add(Appconstant.User.USER_ID, userID)
-                .build();
-        Request request = new Request.Builder()
-                .url(ManBaApi.HTTP_GET_USER_INFO+userID)
-                .header("Accept","*/*")
-                .addHeader("Authorization",token)
-                //.post(body)
-                .build();
-        Call call = client.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Toast.makeText(getActivity(), "获取失败", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseStr = response.body().string();
-                final UserInfoResponseModel userInfoResponseModel = new Gson().fromJson(responseStr,UserInfoResponseModel.class);
-                if(userInfoResponseModel.getCode() == 0 ){
-                    LogUtil.d(TAG, "-----response---------" + responseStr);
-                    LogUtil.d(TAG, "-----response---------" + userInfoResponseModel.getUserLoginResultBean().getNickName());
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            //initUserInfo(userInfoResponseModel.toManBaUserInfo());
-                            initUserInfo(userInfoResponseModel.getUserLoginResultBean());
-                        }
-                    });
-                }
-
-            }
-        });
-    }
 
     public void getUserInfo(Intent data) {
         if(null == data){
             return;
         }
-        UserLoginModel userLoginModel = data.getParcelableExtra(Appconstant.LOGIN_USER_INFO);
+        UserLoginResultModel.ResultBean userLoginModel = data.getParcelableExtra(Appconstant.LOGIN_USER_INFO);
         initUserInfo(userLoginModel);
     }
 }

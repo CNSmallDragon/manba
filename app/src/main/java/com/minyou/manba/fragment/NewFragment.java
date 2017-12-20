@@ -10,17 +10,30 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.activity.DongTaiDetailActivity;
 import com.minyou.manba.adapter.NewRecyclerAdapter;
 import com.minyou.manba.bean.ItemInfo;
+import com.minyou.manba.network.api.ManBaApi;
+import com.minyou.manba.network.resultModel.ZoneListResultModel;
+import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.OnItemClickLitener;
+import com.minyou.manba.util.SharedPreferencesUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by Administrator on 2017/11/6.
@@ -52,7 +65,7 @@ public class NewFragment extends BaseFragment implements SwipeRefreshLayout.OnRe
 
     }
 
-    public void getData() {
+    public void getData_bak() {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -75,13 +88,46 @@ public class NewFragment extends BaseFragment implements SwipeRefreshLayout.OnRe
         }, 3000);
     }
 
+    public void getData() {
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = new FormBody.Builder()
+                .add(Appconstant.Config.LOGIN_YPTE,Appconstant.Config.LOGIN_YPTE_NORMAL)
+                .add("phone", "1234567890")
+                .add("password", "123456")
+                .build();
+        Request request = new Request.Builder()
+                .url(ManBaApi.HTTP_GET_PUBLISH_LIST)
+                .header("Accept","*/*")
+                .addHeader("Authorization", SharedPreferencesUtil.getInstance().getSP(Appconstant.User.TOKEN))
+//                .post(body)
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String requestStr = response.body().string();
+                ZoneListResultModel zoneListResultModel = new Gson().fromJson(requestStr,ZoneListResultModel.class);
+                LogUtil.d("tag", "-----response---------" + requestStr);
+                //list.addAll(zoneListResultModel.getResultList());
+                adapter.notifyDataSetChanged();
+                //结束后停止刷新
+                new_swiper.setRefreshing(false);
+
+            }
+        });
+    }
+
     @Override
     public void initData(Bundle savedInstanceState) {
         list = new ArrayList<ItemInfo>();
         new_swiper.setOnRefreshListener(this);
         new_swiper.setColorSchemeColors(Color.BLUE);
         new_swiper.setRefreshing(true);
-        getData();
+        getData_bak();
 
         new_recyclerview.setItemAnimator(new DefaultItemAnimator());
         //new_recyclerview.addItemDecoration(new RefreshItemDecoration(getActivity(), RefreshItemDecoration.VERTICAL_LIST));

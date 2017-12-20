@@ -1,8 +1,8 @@
 package com.minyou.manba.network.api;
 
 
-import com.minyou.manba.network.responseModel.AuthTokenResultModel;
-import com.minyou.manba.network.responseModel.UserLoginModel;
+import com.minyou.manba.network.resultModel.AuthTokenResultModel;
+import com.minyou.manba.network.resultModel.UserLoginModel;
 
 import java.util.Map;
 

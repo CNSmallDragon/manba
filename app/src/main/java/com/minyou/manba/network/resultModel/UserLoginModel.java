@@ -1,4 +1,4 @@
-package com.minyou.manba.network.responseModel;
+package com.minyou.manba.network.resultModel;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by luchunhao on 2017/12/10.
  */
-public class UserLoginModel extends BaseResponseModel implements Parcelable{
+public class UserLoginModel extends BaseResultModel implements Parcelable{
 
 
     /**
