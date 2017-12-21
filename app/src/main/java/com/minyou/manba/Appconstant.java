@@ -67,8 +67,10 @@ public class Appconstant {
 		public static final String USER_ID = "userId";
 		public static final String TOKEN = "token";
 		public static final String TOKEN_REFRESH = "refreshToken";
+		public static final String USER_THRID_INFO = "user_thrid_info";
 		public static final String USER_QQ_INFO = "user_qq_info";
 		public static final String USER_WX_INFO = "user_wx_info";
+		public static final String USER_INFO = "user_info";
 		// 正常登陆用户信息
 		public static final String USER_PHONE = "phone" ;
 		public static final String USER_PWD = "password" ;

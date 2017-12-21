@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.activity.BindingPhoneActivity;
-import com.minyou.manba.activity.HomeActivity;
 import com.minyou.manba.event.EventInfo;
 import com.minyou.manba.network.api.ManBaApi;
 import com.minyou.manba.network.resultModel.UserLoginResultModel;
@@ -159,7 +158,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             public void onResponse(Call call, Response response) throws IOException {
                 String resultStr = response.body().string();
                 LogUtil.d(TAG, "getUserMesg--resultStr---" + resultStr);
-                WeiXinResponseModel weixinModel = new Gson().fromJson(resultStr, WeiXinResponseModel.class);
+                final WeiXinResponseModel weixinModel = new Gson().fromJson(resultStr, WeiXinResponseModel.class);
                 //EventBus.getDefault().post(new MessageEvent(resultStr));
                 SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_USER_INFO_WEIXIN, resultStr);
                 SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, Appconstant.LOGIN_WEIXIN);
@@ -171,7 +170,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 //                requestModel.setSex(weixinModel.getSex());
 //                requestModel.setWeixin(weixinModel.getOpenid());
 //                requestModel.setPicUrl(weixinModel.getHeadimgurl());
-                // TODO 根据第三方账号查询用户是否已经注册
+                //  根据第三方账号查询用户是否已经注册
                 OkHttpClient client = new OkHttpClient();
                 RequestBody body = new FormBody.Builder()
                         .add("weiXin", weixinModel.getOpenid())
@@ -194,22 +193,16 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                         LogUtil.d("TAG", "11111-----response---------" + userLoginModel.getCode());
                         if (userLoginModel != null && userLoginModel.getCode().equals("22")) {    //未绑定手机号
                             Intent intnet = new Intent(WXEntryActivity.this, BindingPhoneActivity.class);
-                            intnet.putExtra(Appconstant.LOGIN_WEIXIN_ID, SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_WEIXIN_ID));
+                            intnet.putExtra(Appconstant.User.USER_THRID_INFO, weixinModel);
                             startActivity(intnet);
                         } else if (userLoginModel != null && userLoginModel.getCode().equals("0")) {   //成功
                             SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, "3");
                             SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, userLoginModel.getResult().getUserId() + "");
                             SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getResult().getToken());
                             SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getResult().getRefreshToken());
-                            Intent intent;
-                            if (getIntent() != null && getIntent().getBooleanExtra("fromMainActivity", false)) {
-                                intent = new Intent(WXEntryActivity.this, HomeActivity.class);
-                                startActivity(intent);
-                            } else {
-                                EventInfo info = new EventInfo();
-                                info.setType(EventInfo.LOGIN_WEIXIN);
-                                EventBus.getDefault().post(info);
-                            }
+                            EventInfo info = new EventInfo();
+                            info.setType(EventInfo.LOGIN_WEIXIN);
+                            EventBus.getDefault().post(info);
                         }
                         finish();
                     }

@@ -1,5 +1,6 @@
 package com.minyou.manba.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -56,6 +57,7 @@ public class SettingActivity extends BaseActivity {
 
     @OnClick({R.id.ll_user_setting, R.id.ll_huancun_setting, R.id.ll_qa_setting, R.id.ll_idea_fankui, R.id.ll_update_version, R.id.ll_about_us,R.id.bt_exit_login})
     public void onViewClicked(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.ll_user_setting:
                 break;
@@ -71,6 +73,9 @@ public class SettingActivity extends BaseActivity {
                 break;
             case R.id.bt_exit_login:
                 SharedPreferencesUtil.getInstance().removeAll();
+                // 退出登录后跳转登陆界面
+                intent = new Intent(SettingActivity.this,LoginActivity.class);
+                startActivity(intent);
                 finish();
                 break;
         }

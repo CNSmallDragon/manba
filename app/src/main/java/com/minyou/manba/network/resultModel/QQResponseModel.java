@@ -46,6 +46,9 @@ public class QQResponseModel implements Parcelable {
     private String level;
     private String is_yellow_year_vip;
 
+    // 新增字段
+    private String openId;
+
     protected QQResponseModel(Parcel in) {
         ret = in.readInt();
         msg = in.readString();
@@ -64,6 +67,7 @@ public class QQResponseModel implements Parcelable {
         yellow_vip_level = in.readString();
         level = in.readString();
         is_yellow_year_vip = in.readString();
+        openId = in.readString();
     }
 
     public static final Creator<QQResponseModel> CREATOR = new Creator<QQResponseModel>() {
@@ -214,6 +218,13 @@ public class QQResponseModel implements Parcelable {
         this.is_yellow_year_vip = is_yellow_year_vip;
     }
 
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
 
     @Override
     public int describeContents() {
@@ -239,5 +250,6 @@ public class QQResponseModel implements Parcelable {
         parcel.writeString(yellow_vip_level);
         parcel.writeString(level);
         parcel.writeString(is_yellow_year_vip);
+        parcel.writeString(openId);
     }
 }

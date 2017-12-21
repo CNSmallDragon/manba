@@ -15,7 +15,10 @@ import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.network.api.ManBaApi;
+import com.minyou.manba.network.resultModel.QQResponseModel;
 import com.minyou.manba.network.resultModel.RegistResultModel;
+import com.minyou.manba.network.resultModel.UserLoginModel;
+import com.minyou.manba.network.resultModel.WeiXinResponseModel;
 import com.minyou.manba.ui.ActionTitleView;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
@@ -55,8 +58,7 @@ public class BindingPhoneActivity extends BaseActivity {
     private static final long COUNT_DOWN_INTERVAL = 1000;
     private String inputNumber;
 
-    private String qqOpenId = "";
-    private String weixinOpenId = "";
+    private Object object;
 
     @Override
     public int getLayoutId() {
@@ -68,8 +70,7 @@ public class BindingPhoneActivity extends BaseActivity {
         atv_title.setTitle(getResources().getString(R.string.regist_binding_phone));
         Intent intent = getIntent();
         if(null != intent){
-            qqOpenId = intent.getStringExtra(Appconstant.LOGIN_QQ_ID);
-            weixinOpenId = intent.getStringExtra(Appconstant.LOGIN_WEIXIN_ID);
+            object = intent.getParcelableExtra(Appconstant.User.USER_THRID_INFO);
         }
     }
 
@@ -161,26 +162,33 @@ public class BindingPhoneActivity extends BaseActivity {
 
     private void postRegist() {
         OkHttpClient client = new OkHttpClient();
-        //RequestBody body = RequestBodyUtils.getRequestBody(requestModel);
         RequestBody body = null;
-        LogUtil.d(TAG, "-----qqOpenId---------" + qqOpenId);
-        LogUtil.d(TAG, "-----weixinOpenId---------" + weixinOpenId);
-        if(!TextUtils.isEmpty(qqOpenId)){
+        if(object instanceof QQResponseModel){
+            QQResponseModel qqResponseModel = (QQResponseModel) object;
             body = new FormBody.Builder()
                     .add("phone",inputNumber)
-                    .add("qq", qqOpenId)
+                    .add("nickName", qqResponseModel.getNickname())
+                    .add("sex", qqResponseModel.getGender().equals("男") ? "1" : qqResponseModel.getGender().equals("女") ? "2" : "0")
+                    .add("qq", qqResponseModel.getOpenId())
                     .add("smsCode", etSms.getText().toString().trim())
+//                    .add("photoUrl", qqResponseModel.getFigureurl_qq_2())
                     .build();
-        }else if(!TextUtils.isEmpty(weixinOpenId)){
+            SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, "2");
+        }else if(object instanceof WeiXinResponseModel){
+            WeiXinResponseModel weiXinResponseModel = (WeiXinResponseModel) object;
             body = new FormBody.Builder()
                     .add("phone",inputNumber)
-                    .add("weixin", weixinOpenId)
+                    .add("nickName", weiXinResponseModel.getNickname())
+                    .add("sex", weiXinResponseModel.getSex()+"")
+                    .add("weixin", weiXinResponseModel.getOpenid())
                     .add("smsCode", etSms.getText().toString().trim())
+//                    .add("photoUrl", weiXinResponseModel.getHeadimgurl())
                     .build();
+            SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, "3");
         }
 
         Request request = new Request.Builder()
-                .url(ManBaApi.LOGINT_URL)
+                .url(ManBaApi.HTTP_POST_REGIST)
 //                .header("Accept","*/*")
 //                .addHeader("Authorization",SharedPreferencesUtil.getInstance().getSP(Appconstant.User.TOKEN))
                 .post(body)
@@ -189,6 +197,7 @@ public class BindingPhoneActivity extends BaseActivity {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                SharedPreferencesUtil.getInstance().removeSP(Appconstant.LOGIN_LAST_TYPE);
             }
 
             @Override
@@ -198,11 +207,55 @@ public class BindingPhoneActivity extends BaseActivity {
                 if(model.getCode().equals("0")){
                     // 注册成功
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_PHONE,inputNumber);
-                    finish();
+                    login();
                 }else if(model.getCode().equals("21")){     //用户已存在
 
                 }
                 LogUtil.d(TAG, "-----postRegist---------" + requestStr);
+            }
+        });
+    }
+
+    // 注册成功后登陆
+    private void login() {
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = null;
+        if("2".equals(SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_LAST_TYPE))){
+            body = new FormBody.Builder()
+                    .add("qqCode", SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_QQ_ID))
+                    .build();
+        }else if("3".equals(SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_LAST_TYPE))){
+            body = new FormBody.Builder()
+                    .add("weiXin", SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_WEIXIN_ID))
+                    .build();
+        }
+        Request request = new Request.Builder()
+                .url(ManBaApi.LOGINT_URL)
+                .post(body)
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //SharedPreferencesUtil.getInstance(LoginActivity.this.getApplicationContext()).putSP(Appconstant.User.USER_ID, openId);
+                String requestStr = response.body().string();
+                LogUtil.d(TAG, "-----response---------" + requestStr);
+                UserLoginModel userLoginModel = new Gson().fromJson(requestStr,UserLoginModel.class);
+                if(userLoginModel.getCode().equals("0")){  // 成功
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, userLoginModel.getUserId());
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getToken());
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getRefreshToken());
+                    // 注册登录完成后跳转首页
+                    Intent intent = new Intent(BindingPhoneActivity.this,HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
     }

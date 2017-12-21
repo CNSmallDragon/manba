@@ -29,7 +29,6 @@ import com.minyou.manba.network.resultModel.QQResponseModel;
 import com.minyou.manba.network.resultModel.UserLoginResultModel;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
-import com.minyou.manba.wxapi.WXEntryActivity;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.auth.QQToken;
 import com.tencent.connect.common.Constants;
@@ -210,18 +209,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, "1");
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_PHONE, inputNumber);
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_PWD, inputPWD);
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_INFO,requestStr);
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, userLoginModel.getResult().getUserId() + "");
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getResult().getToken());
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getResult().getRefreshToken());
-                    Intent intent;
-                    if (getIntent() != null && getIntent().getBooleanExtra("fromMainActivity", false)) {
-                        intent = new Intent(LoginActivity.this, HomeActivity.class);
-                        startActivity(intent);
-                    } else {
-                        intent = new Intent();
-                        intent.putExtra(Appconstant.LOGIN_USER_INFO, userLoginModel.getResult());
-                        setResult(RESULT_OK, intent);
-                    }
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    startActivity(intent);
                     finish();
                 } else if (userLoginModel.getCode().equals("15")) {      // 密码错误 400?15
                     Message message = Message.obtain();
@@ -302,12 +295,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onWXReturn(EventInfo info) {
         if(null != info && info.getType() == EventInfo.LOGIN_WEIXIN){
-            if(getIntent().getBooleanExtra("fromMainActivity", false)){
-                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(intent);
-            }else{
-                finish();
-            }
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -389,14 +379,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     Log.d(TAG, "获取用户信息-----------------");
                     Log.d(TAG, o.toString());
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_QQ_INFO, o.toString());
-                    QQResponseModel qqModel = new Gson().fromJson(o.toString(), QQResponseModel.class);
-//                    RegistRequestModel requestModel = new RegistRequestModel();
-//                    requestModel.setNickName(qqModel.getNickname());
-//                    requestModel.setSex(qqModel.getGender().equals("男")?1:qqModel.getGender().equals("女")?2:0);
-//                    requestModel.setQq(SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_QQ_ID));
-//                    requestModel.setPicUrl(qqModel.getFigureurl_qq_2());
-                    //mUserInfo.setPhotoUrl(userInfoJson.getString(Appconstant.LOGIN_QQ_PHOTO));
-                    // TODO 根据第三方账号查询用户是否已经注册
+                    final QQResponseModel qqModel = new Gson().fromJson(o.toString(), QQResponseModel.class);
+                    qqModel.setOpenId(SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_QQ_ID));
+                    // 根据第三方账号查询用户是否已经注册
 
                     OkHttpClient client = new OkHttpClient();
                     RequestBody body = new FormBody.Builder()
@@ -422,18 +407,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, userLoginModel.getResult().getUserId() + "");
                                 SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getResult().getToken());
                                 SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getResult().getRefreshToken());
-                                Intent intent;
-                                if (getIntent() != null && getIntent().getBooleanExtra("fromMainActivity", false)) {
-                                    intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                    startActivity(intent);
-                                } else {
-                                    intent = new Intent();
-                                    intent.putExtra(Appconstant.LOGIN_USER_INFO, userLoginModel.getResult());
-                                    setResult(RESULT_OK, intent);
-                                }
+                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                startActivity(intent);
                             } else if (userLoginModel != null && userLoginModel.getCode().equals("22")) {
                                 Intent intnet = new Intent(LoginActivity.this, BindingPhoneActivity.class);
-                                intnet.putExtra(Appconstant.LOGIN_QQ_ID, SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_QQ_ID));
+                                intnet.putExtra(Appconstant.User.USER_THRID_INFO, qqModel);
                                 startActivity(intnet);
                             }
                             cancelLoading();

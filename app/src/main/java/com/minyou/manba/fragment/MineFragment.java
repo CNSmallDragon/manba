@@ -29,7 +29,6 @@ import com.minyou.manba.activity.SociationDetailActivity;
 import com.minyou.manba.bean.ManBaUserInfo;
 import com.minyou.manba.event.EventInfo;
 import com.minyou.manba.manager.UserManager;
-import com.minyou.manba.network.api.ManBaApi;
 import com.minyou.manba.network.resultModel.QQResponseModel;
 import com.minyou.manba.network.resultModel.UserLoginResultModel;
 import com.minyou.manba.network.resultModel.WeiXinResponseModel;
@@ -40,25 +39,14 @@ import com.minyou.manba.util.SharedPreferencesUtil;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.IOException;
-
 import butterknife.BindView;
 import butterknife.OnClick;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class MineFragment extends BaseFragment {
 
     private static final String TAG = "MineFragment";
     public static final int LOGIN_CODE = 100;
     public static final String REQUEST = "requestInfo";
-    private static final String PHONE = "username";
-    private static final String PASSWORD = "password";
 
     @BindView(R.id.bt_login)
     Button bt_login;
@@ -161,6 +149,7 @@ public class MineFragment extends BaseFragment {
                 // 设置
                 intent = new Intent(getActivity(), SettingActivity.class);
                 startActivity(intent);
+                getActivity().finish();
                 break;
         }
     }
@@ -254,44 +243,13 @@ public class MineFragment extends BaseFragment {
             if(null != weixinModel){
                 initUserInfo(weixinModel);
             }
-        }else{
+        }else if(!TextUtils.isEmpty(lastLoginType) && lastLoginType.equals("1")){
             // 用户名密码登陆
-            OkHttpClient client = new OkHttpClient();
-            RequestBody body = new FormBody.Builder()
-//                .add(Appconstant.Config.LOGIN_YPTE,Appconstant.Config.LOGIN_YPTE_NORMAL)
-                    .add(PHONE, SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_PHONE))
-                    .add(PASSWORD, SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_PWD))
-                    .build();
-            Request request = new Request.Builder()
-                    .url(ManBaApi.LOGINT_URL)
-                    .post(body)
-                    .build();
-            Call call = client.newCall(request);
-            call.enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    //SharedPreferencesUtil.getInstance(LoginActivity.this.getApplicationContext()).putSP(Appconstant.User.USER_ID, openId);
-                    String requestStr = response.body().string();
-                    LogUtil.d(TAG, "-----response---------" + requestStr);
-                    final UserLoginResultModel userLoginModelResult = new Gson().fromJson(requestStr,UserLoginResultModel.class);
-                    LogUtil.d(TAG, "-----response---------" + userLoginModelResult.getCode());
-                    if(userLoginModelResult.getCode().equals("0")){  // 成功
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                initUserInfo(userLoginModelResult.getResult());
-                            }
-                        });
-                    }else if(userLoginModelResult.getCode().equals("15")){      // 密码错误 400?15
-
-                    }
-
-                }
-            });
+            userInfo = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_INFO);
+            UserLoginResultModel userLoginModelResult = new Gson().fromJson(userInfo,UserLoginResultModel.class);
+            if(null != userLoginModelResult){
+                initUserInfo(userLoginModelResult.getResult());
+            }
         }
     }
 
