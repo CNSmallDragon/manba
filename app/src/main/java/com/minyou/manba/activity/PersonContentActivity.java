@@ -17,7 +17,6 @@ import com.minyou.manba.ui.ActionTitleView;
 import com.minyou.manba.ui.MyScrollView;
 import com.minyou.manba.ui.ScrollViewListener;
 import com.minyou.manba.util.CommonUtil;
-import com.minyou.manba.util.LogUtil;
 
 import butterknife.BindDimen;
 import butterknife.BindView;
@@ -76,7 +75,6 @@ public class PersonContentActivity extends Activity {
         mScrollView.setOnScrollChangedListener(new ScrollViewListener() {
             @Override
             public void onScroll(MyScrollView scrollView, float x, float y, float oldx, float oldy) {
-                LogUtil.d(TAG, "y=========" + y);
                 if (y >= person_bg_height - statusBarHeight - common_title_height) {
                     atv_title.setBackgroundColor(Color.WHITE);
                     statusBarView.setBackgroundColor(Color.BLACK);

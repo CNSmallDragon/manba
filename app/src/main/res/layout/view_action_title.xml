@@ -32,9 +32,11 @@
         android:layout_marginRight="@dimen/login_num_side" />
 
     <View
+        android:id="@+id/titlebar_line"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_alignParentBottom="true"
+        android:visibility="gone"
         android:background="@android:color/darker_gray"/>
 
 </RelativeLayout>

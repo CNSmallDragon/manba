@@ -45,7 +45,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:choiceMode="singleChoice"
         android:divider="@null"
         android:fadingEdge="none"
@@ -54,5 +54,22 @@
         app:layoutManager="android.support.v7.widget.GridLayoutManager"
         app:spanCount="4"
         tools:listitem="@layout/list_item_image"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/gainsboro"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/common_to_side"
+        android:text="@string/fabu_gonghui"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_choose_gonghui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
 
 </LinearLayout>

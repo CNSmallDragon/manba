@@ -2,6 +2,7 @@ package com.minyou.manba.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -17,10 +18,8 @@ import android.widget.TextView;
 
 import com.minyou.manba.R;
 import com.minyou.manba.adapter.ImageViewerAdapter;
-import com.minyou.manba.util.LogUtil;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +40,6 @@ public class ImageViewerActivity extends Activity {
     ViewPager viewpager_image;
 
     private ImageViewerAdapter mAdapter;
-    private List<Integer> imageList;
     private View view;
     private TextView tv_send;
     private TextView tv_save;
@@ -54,6 +52,8 @@ public class ImageViewerActivity extends Activity {
     }
 
     private PopupWindow popupWindow;
+    private ArrayList<String> images;
+    private int position;
 
 
     @Override
@@ -64,13 +64,13 @@ public class ImageViewerActivity extends Activity {
         setContentView(R.layout.activity_image_viewer);
         unbinder = ButterKnife.bind(this);
 
-        imageList = new ArrayList<Integer>();
-        imageList.add(R.drawable.test_01);
-        imageList.add(R.drawable.test_02);
-        imageList.add(R.drawable.test_03);
-        imageList.add(R.drawable.test_04);
-        imageList.add(R.drawable.test_05);
-        imageList.add(R.drawable.test_06);
+        Intent intent = getIntent();
+        if(null == intent){
+            finish();
+        }
+
+        position = intent.getIntExtra("position",0);
+        images = intent.getStringArrayListExtra("imageList");
 
         image_menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,20 +80,18 @@ public class ImageViewerActivity extends Activity {
             }
         });
 
-        mAdapter = new ImageViewerAdapter(this,imageList);
+        mAdapter = new ImageViewerAdapter(this,images);
         viewpager_image.setAdapter(mAdapter);
         // 初始化数目
-        tv_view.setText(1 + "/" + (imageList.size()));
+        tv_view.setText(1 + "/" + (images.size()));
         viewpager_image.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                LogUtil.d("===onPageScrolled===","position========" + position);
             }
 
             @Override
             public void onPageSelected(int position) {
-                LogUtil.d("==onPageSelected====","position========" + position);
-                tv_view.setText(position+1 + "/" + (imageList.size()));
+                tv_view.setText(position+1 + "/" + (images.size()));
             }
 
             @Override
@@ -101,7 +99,7 @@ public class ImageViewerActivity extends Activity {
 
             }
         });
-//        viewpager_image.setCurrentItem(3);
+        viewpager_image.setCurrentItem(position);
 
     }
 

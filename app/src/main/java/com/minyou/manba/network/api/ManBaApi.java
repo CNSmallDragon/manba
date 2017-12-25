@@ -24,6 +24,9 @@ public class ManBaApi {
     // 获取动态列表
     public static String HTTP_GET_PUBLISH_LIST = BASE_URL + "api/zone/list";
 
+    // 获取工会列表
+    public static String HTTP_GET_GUILD_LIST = BASE_URL + "api/guild/list";
+
     // 发布动态
     public static String HTTP_POST_ZONE_PUBLISH = BASE_URL + "api/zone/publish";
 }

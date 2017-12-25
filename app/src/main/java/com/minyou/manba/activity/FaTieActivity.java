@@ -1,9 +1,11 @@
 package com.minyou.manba.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,26 +19,24 @@ import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.ui.ImagePreviewDelActivity;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
+import com.minyou.manba.adapter.ChooseSociationAdapter;
 import com.minyou.manba.adapter.ImagePickerAdapter;
 import com.minyou.manba.dialog.SelectDialog;
-import com.minyou.manba.network.api.ManBaApi;
+import com.minyou.manba.network.okhttputils.ManBaRequestManager;
+import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
+import com.minyou.manba.network.okhttputils.ReqCallBack;
+import com.minyou.manba.network.resultModel.SociationResultModel;
 import com.minyou.manba.ui.ActionTitleView;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * Created by luchunhao on 2017/12/19.
@@ -56,12 +56,18 @@ public class FaTieActivity extends AppCompatActivity implements ImagePickerAdapt
     RecyclerView recyclerView;
     @BindView(R.id.activity_main)
     LinearLayout activityMain;
+    @BindView(R.id.recyclerview_choose_gonghui)
+    RecyclerView recyclerviewChooseGonghui;
 
     private ImagePickerAdapter adapter;
     private ArrayList<ImageItem> selImageList; //当前选择的所有图片
     private int maxImgCount = 8;               //允许选择图片最大数
 
+    private ChooseSociationAdapter chooseSociationAdapter;
+    private List<SociationResultModel.ResultBean.SociationResultBean> list = new ArrayList<SociationResultModel.ResultBean.SociationResultBean>();
     private String contentStr;
+    private List<Integer> checkedList;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +76,62 @@ public class FaTieActivity extends AppCompatActivity implements ImagePickerAdapt
         ButterKnife.bind(this);
 
         initWidget();
+        initData();
     }
+
+    private void initData() {
+        HashMap<String,String> params = new HashMap<>();
+        params.put("pageSize","10");
+        params.put("pageNo","1");
+        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_GUILD_LIST, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
+            @Override
+            public void onReqSuccess(String result) {
+                SociationResultModel sociationResultModel = new Gson().fromJson(result,SociationResultModel.class);
+                list.addAll(sociationResultModel.getResult().getResultList());
+                chooseSociationAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+
+            }
+        });
+    }
+
+//    private void initData2(){
+//        ShopCarRequestModel requestModel = new ShopCarRequestModel();
+//        requestModel.setCultureID(CultureID);
+//        requestModel.setCurrencyName(CurrencyName);
+//        subscription = RxHttpUtils.createHttpRequest(RetrofitServiceGenerator.createService(TbDressDataApiService.class, new AESGsonResponseBodyConverter.JsonBridge() {
+//            @Override
+//            public void onJson(String json) {
+//                LogUtil.d("json", json);
+//            }
+//        })
+//                .http_getCarBaglist(RequestBodyUtils.getRequestBody(requestModel)))
+//                .subscribe(new CallBackSubscriber<BaseResultModel>(listener) {
+//                               @Override
+//                               public void _onStart() {
+//
+//                               }
+//
+//                               @Override
+//                               public void _onNext(BaseResultModel baseResultModel) {
+//                               }
+//
+//                               @Override
+//                               public void _onError(String msg) {
+//
+//                               }
+//
+//                               @Override
+//                               public void _onCompleted() {
+//
+//                               }
+//                           }
+//                );
+//    }
+
 
     private void initWidget() {
         // 初始化头部信息
@@ -79,10 +140,19 @@ public class FaTieActivity extends AppCompatActivity implements ImagePickerAdapt
             @Override
             public void onClick(View view) {
                 // 发布帖子
-                for(ImageItem item : selImageList){
-                    LogUtil.d(TAG,"添加图片返回---"+new Gson().toJson(item));
+                for (ImageItem item : selImageList) {
+                    LogUtil.d(TAG, "添加图片返回---" + new Gson().toJson(item));
+                    LogUtil.d(TAG, "添加图片返回URL---" + item.path);
                 }
-                //http_postSendTieZi();
+                if(null != chooseSociationAdapter){
+                    checkedList = chooseSociationAdapter.getCheckedList();
+                }
+                for(int i : checkedList){
+                    LogUtil.d(TAG, "选中的公会id---" + i);
+                }
+                contentStr = etDongtaiContent.getText().toString().trim();
+                LogUtil.d(TAG, "发布内容---" + contentStr);
+                http_postSendTieZi(contentStr,checkedList,selImageList);
             }
         });
 
@@ -93,6 +163,18 @@ public class FaTieActivity extends AppCompatActivity implements ImagePickerAdapt
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+
+        LinearLayoutManager manager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+        chooseSociationAdapter = new ChooseSociationAdapter(this,list);
+        recyclerviewChooseGonghui.setLayoutManager(manager);
+        recyclerviewChooseGonghui.setAdapter(chooseSociationAdapter);
+
+
     }
 
     private SelectDialog showDialog(SelectDialog.SelectDialogListener listener, List<String> names) {
@@ -187,37 +269,66 @@ public class FaTieActivity extends AppCompatActivity implements ImagePickerAdapt
         }
     }
 
-    private void http_postSendTieZi() {
-        contentStr = etDongtaiContent.getText().toString().trim();
+    private void http_postSendTieZi(String actionUrl,List<Integer> guildIds,ArrayList<ImageItem> imageItems) {
 
-        String userID = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID);
-        String token = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.TOKEN);
-        OkHttpClient client = new OkHttpClient();
-        RequestBody body = new FormBody.Builder()
-                .add(Appconstant.User.TOKEN, token)
-                .add(Appconstant.User.USER_ID, userID)
-                .add("zoneContent", contentStr)
-                .add("fileType", "3")
-                .build();
-        Request request = new Request.Builder()
-                .url(ManBaApi.HTTP_POST_PUBLISH)
-                .header("Accept", "*/*")
-                .addHeader("Authorization", token)
-                .post(body)
-                .build();
-        Call call = client.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
+        long guildId;
+        List<File> zoneFile = new ArrayList<File>();
 
+        // 构造guild
+        if(guildIds == null || guildIds.size() <= 0){
+            guildId = -1;
+        }else{
+            guildId = guildIds.get(0);
+        }
+
+        // 构造图片路径
+        for(ImageItem imageItem : imageItems){
+            File file = new File(imageItem.path);
+            if(file.exists()){
+                zoneFile.add(file);
             }
+        }
 
+        // 显示加载框
+        loading();
+        String userID = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID);
+        HashMap<String,Object> params = new HashMap<>();
+        params.put(Appconstant.User.USER_ID, userID);
+        params.put("zoneContent",contentStr);
+        params.put("guildId",guildIds.get(0));
+        params.put("fileType",1);
+        params.put("zoneFile",zoneFile);
+        ManBaRequestManager.getInstance().upLoadFile(OkHttpServiceApi.HTTP_ZONE_PUBLISH, params, new ReqCallBack<String>() {
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseStr = response.body().string();
-                LogUtil.d(TAG, "-----response---------" + responseStr);
+            public void onReqSuccess(String result) {
+                cancelLoading();
+                LogUtil.d(TAG, "-----result---------" + result);
                 finish();
             }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+                cancelLoading();
+            }
         });
+
+    }
+
+
+    protected void loading() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        }
+        progressDialog.setMessage(getString(R.string.loading_up));
+        progressDialog.setCancelable(true);
+        progressDialog.show();
+    }
+
+    public void cancelLoading() {
+        if (progressDialog != null)
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
     }
 }

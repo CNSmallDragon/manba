@@ -10,14 +10,21 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.activity.DongTaiDetailActivity;
 import com.minyou.manba.adapter.NewRecyclerAdapter;
 import com.minyou.manba.bean.ItemInfo;
+import com.minyou.manba.network.okhttputils.ManBaRequestManager;
+import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
+import com.minyou.manba.network.okhttputils.ReqCallBack;
+import com.minyou.manba.network.resultModel.ZoneListResultModel;
+import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.OnItemClickLitener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,6 +41,10 @@ public class HotFragment extends BaseFragment implements SwipeRefreshLayout.OnRe
 
     private NewRecyclerAdapter adapter;
     private List<ItemInfo> list;
+    private List<ZoneListResultModel.ResultBean.ZoneListBean> zoneList;
+
+    private int pageSize = 10;
+    private int pageNo = 1;
 
     public static Handler handler = new Handler(){
         @Override
@@ -52,8 +63,7 @@ public class HotFragment extends BaseFragment implements SwipeRefreshLayout.OnRe
 
     }
 
-
-    public void getData() {
+    public void getData_bak() {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -76,18 +86,44 @@ public class HotFragment extends BaseFragment implements SwipeRefreshLayout.OnRe
         }, 3000);
     }
 
+    public void getData() {
+
+        HashMap<String,String> params = new HashMap<>();
+        params.put("pageSize","10");
+        params.put("pageNo",String.valueOf(pageNo));
+        params.put("sourceType",String.valueOf(pageSize));
+        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_GUILD_LIST, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
+            @Override
+            public void onReqSuccess(String result) {
+                ZoneListResultModel zoneListResultModel = new Gson().fromJson(result,ZoneListResultModel.class);
+                LogUtil.d("tag", "-----response---------" + result);
+                zoneList.addAll(zoneListResultModel.getResult().getResultList());
+                adapter.notifyDataSetChanged();
+                //结束后停止刷新
+                new_swiper.setRefreshing(false);
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+
+            }
+        });
+        pageNo ++;
+    }
+
     @Override
     public void initData(Bundle savedInstanceState) {
         list = new ArrayList<ItemInfo>();
+        zoneList = new ArrayList<ZoneListResultModel.ResultBean.ZoneListBean>();
         new_swiper.setOnRefreshListener(this);
         new_swiper.setColorSchemeColors(Color.BLUE);
         new_swiper.setRefreshing(true);
-        getData();
+        getData_bak();
 
         new_recyclerview.setItemAnimator(new DefaultItemAnimator());
         //new_recyclerview.addItemDecoration(new RefreshItemDecoration(getActivity(), RefreshItemDecoration.VERTICAL_LIST));
         new_recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new NewRecyclerAdapter(getActivity(), list);
+        adapter = new NewRecyclerAdapter(getActivity(), zoneList);
         new_recyclerview.setAdapter(adapter);
 
         initListener();

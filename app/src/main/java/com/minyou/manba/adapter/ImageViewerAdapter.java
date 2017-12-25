@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.minyou.manba.R;
 import com.minyou.manba.activity.ImageViewerActivity;
-import com.minyou.manba.util.LogUtil;
 
 import java.util.List;
 
@@ -23,10 +22,10 @@ import java.util.List;
 public class ImageViewerAdapter extends PagerAdapter {
 
     private Context context;
-    private List<Integer> list;
+    private List<String> list;
     private RequestManager glideRequest;
 
-    public ImageViewerAdapter(Context context,List<Integer> list){
+    public ImageViewerAdapter(Context context,List<String> list){
         glideRequest = Glide.with(context);
         this.context = context;
         this.list = list;
@@ -51,7 +50,6 @@ public class ImageViewerAdapter extends PagerAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LogUtil.d("lch---",context.getClass()+"");
                 ((ImageViewerActivity)context).finish();
                 ((ImageViewerActivity)context).overridePendingTransition(0,R.anim.activity_alpha_out);
             }

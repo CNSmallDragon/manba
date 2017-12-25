@@ -19,5 +19,9 @@
         <attr name="circle" format="boolean"/>
     </declare-styleable>
 
+    <declare-styleable name="multi_imageview">
+        <attr name="maxRowCount" format="integer"/>
+    </declare-styleable>
+
 
 </resources>

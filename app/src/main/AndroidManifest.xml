@@ -61,6 +61,7 @@
         <activity android:name="com.minyou.manba.activity.FaBuDongTaiActivity" />
         <activity android:name="com.minyou.manba.activity.BindingPhoneActivity" />
         <activity android:name="com.minyou.manba.activity.FaTieActivity" />
+        <activity android:name="com.minyou.manba.activity.PersonInfoActivity" />
 
         <!-- qq官方申请的key的配置 -->
         <activity

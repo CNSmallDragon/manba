@@ -1,9 +1,12 @@
 package com.minyou.manba.activity;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -47,12 +51,20 @@ public class MainActivity extends Activity implements OnClickListener {
     private static final String PHONE = "username";
     private static final String PASSWORD = "password";
 
+    // 总倒计时时间
+    private static final long MILLIS_IN_FUTURE = 5 * 1000;
+    // 每次减去1秒
+    private static final long COUNT_DOWN_INTERVAL = 1000;
+
     private static final long WAIT_HOME = 3000;
     private Unbinder unbinder;
     @BindView(R.id.iv_welcome)
     ImageView iv_welcome;
+    @BindView(R.id.tv_time)
+    TextView tv_time;
 
     private String picUrl;
+    private String lastLoginType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,23 +104,30 @@ public class MainActivity extends Activity implements OnClickListener {
                 .override(width,height)
                 .into(iv_welcome);
 
+        startCountDown();
+
         // 延时3s进入主界面
-        new Thread(){
-            @Override
-            public void run() {
-                try {
-                    sleep(WAIT_HOME);
-                    goHome();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                super.run();
-            }
-        }.start();
+//        new Thread(){
+//            @Override
+//            public void run() {
+//                try {
+//                    sleep(WAIT_HOME);
+//
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                super.run();
+//            }
+//        }.start();
     }
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_time:
+                goHome();
+                break;
+        }
     }
 
     public void goHome(){
@@ -122,30 +141,33 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+
     private void autoLogin() {
         OkHttpClient client = new OkHttpClient();
         RequestBody body = null;
-        final String lastLoginType = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_LAST_TYPE);
+        lastLoginType = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_LAST_TYPE);
         String qqId = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_QQ_ID);
         String wxId = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_WEIXIN_ID);
 
-        LogUtil.d(TAG, "lastLoginType--------------" + lastLoginType);
         if(!TextUtils.isEmpty(lastLoginType) && lastLoginType.equals("2") && !TextUtils.isEmpty(qqId)){
             // qq登陆,
             body = new FormBody.Builder()
                     .add("qqCode", qqId)
                     .build();
+            lastLoginType = "2";
         }else if(!TextUtils.isEmpty(lastLoginType) && lastLoginType.equals("3") && !TextUtils.isEmpty(wxId)){
             // 微信登陆,
             body = new FormBody.Builder()
                     .add("weiXin", wxId)
                     .build();
+            lastLoginType = "3";
         }else if(!TextUtils.isEmpty(lastLoginType) && lastLoginType.equals("1")){
             // 用户名密码登陆
             body = new FormBody.Builder()
                     .add(PHONE, SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_PHONE))
                     .add(PASSWORD, SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_PWD))
                     .build();
+            lastLoginType = "1";
 
         }else{
             // 未登录
@@ -166,7 +188,6 @@ public class MainActivity extends Activity implements OnClickListener {
                 String requestStr = response.body().string();
                 LogUtil.d(TAG, "-----response---------" + requestStr);
                 final UserLoginResultModel userLoginModelResult = new Gson().fromJson(requestStr,UserLoginResultModel.class);
-                LogUtil.d(TAG, "-----response---------" + userLoginModelResult.getCode());
                 if(userLoginModelResult.getCode().equals("0")){  // 成功
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE,lastLoginType);
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_INFO,requestStr);
@@ -183,6 +204,24 @@ public class MainActivity extends Activity implements OnClickListener {
             }
         });
 
+    }
+
+    // 启动倒计时
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void startCountDown() {
+        // 开始倒计时
+        new CountDownTimer(MILLIS_IN_FUTURE, COUNT_DOWN_INTERVAL) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                // 刷新文字
+                tv_time.setText(getResources().getString(R.string.home_pass, millisUntilFinished / COUNT_DOWN_INTERVAL - 1));
+            }
+
+            @Override
+            public void onFinish() {
+                goHome();
+            }
+        }.start();
     }
 
     @Override

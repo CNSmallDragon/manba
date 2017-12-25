@@ -95,10 +95,11 @@ public class FileUtil {
                 LogUtil.i(TAG, "上传照片成功 response=" + response.body().string());
                 System.out.println("上传照片成功：response = " + response.body().string());
 
-
             }
         });
 
     }
+
+
 
 }

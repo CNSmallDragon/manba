@@ -11,6 +11,17 @@
         android:layout_marginBottom="100dp"
         android:scaleType="fitXY" />
 
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/common_to_side"
+        android:layout_marginTop="@dimen/common_to_side"
+        android:text="123"
+        android:textColor="@color/colorCommon"
+        android:background="@drawable/shape_borderline_home_grey"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
