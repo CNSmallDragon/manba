@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources.Theme;
+import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -23,25 +24,35 @@ public class ActionTitleView extends LinearLayout implements OnClickListener {
 	private Context context;
 	private TextView tv_title;
 	private ImageView iv_title_right;
+	private String title;
 
 	public ActionTitleView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
-		this.context = context;
-	}
-
-	public ActionTitleView(Context context, AttributeSet attrs) {
-		super(context, attrs);
+		TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.ActionTitle);
+		title = typedArray.getString(R.styleable.ActionTitle_titleText);
+		typedArray.recycle();
 		this.context = context;
 		view = (LinearLayout) LinearLayout.inflate(context, R.layout.view_action_title, this);
 		init();
 	}
 
+	public ActionTitleView(Context context, AttributeSet attrs) {
+		this(context, attrs,0);
+
+	}
+
 	public ActionTitleView(Context context) {
-		super(context);
-		this.context = context;
+		this(context,null);
 	}
 
 	private void init() {
+		tv_title = (TextView) view.findViewById(R.id.tv_title);
+		if(TextUtils.isEmpty(title)){
+			tv_title.setVisibility(View.GONE);
+		}else{
+			tv_title.setVisibility(View.VISIBLE);
+			tv_title.setText(title);
+		}
 		iv_back = (ImageView) view.findViewById(R.id.iv_back);
 		iv_back.setOnClickListener(this);
 	}
@@ -55,7 +66,7 @@ public class ActionTitleView extends LinearLayout implements OnClickListener {
 
 	// 设置标题
 	public void setTitle(String title) {
-		tv_title = (TextView) view.findViewById(R.id.tv_title);
+
 		if (!TextUtils.isEmpty(title)) {
 			tv_title.setVisibility(View.VISIBLE);
 			tv_title.setText(title);

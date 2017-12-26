@@ -64,29 +64,6 @@ public class NewFragment extends BaseFragment implements SwipeRefreshLayout.OnRe
 
     }
 
-    public void getData_bak() {
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                list.clear();
-                for (int i = 1; i <= 10; i++) {
-                    ItemInfo info = new ItemInfo();
-                    info.setUserName("小漫吧" + i);
-                    info.setDate(System.currentTimeMillis());
-                    info.setFamilyName("漫吧家族");
-                    info.setContentStr("今天是个好日子");
-                    info.setSharedCount((int) (Math.random() * 100));
-                    info.setZanCount((int) (Math.random() * 100));
-                    info.setCommentCount((int) (Math.random() * 100));
-                    list.add(info);
-                }
-                adapter.notifyDataSetChanged();
-                //结束后停止刷新
-                new_swiper.setRefreshing(false);
-            }
-        }, 3000);
-    }
-
     public void getData() {
         pageNo = 1;
         HashMap<String,String> params = new HashMap<>();

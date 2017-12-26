@@ -81,7 +81,7 @@
     <dimen name="game_text_line_height">2dp</dimen>
 
     <!--   设置界面   -->
-    <dimen name="setting_pic_height">40dp</dimen>
+    <dimen name="setting_pic_height">100dp</dimen>
     <dimen name="setting_goicon_height">20dp</dimen>
     <dimen name="setting_switch_width">45dp</dimen>
     <dimen name="setting_switch_height">26dp</dimen>

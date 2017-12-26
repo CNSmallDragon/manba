@@ -92,7 +92,7 @@ public class NewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ItemViewHolder) {
             final ItemViewHolder mItemViewHolder = (ItemViewHolder) holder;
 
@@ -164,6 +164,7 @@ public class NewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, PersonContentActivity.class);
+                    intent.putExtra("userID",zoneList.get(position).getUserId());
                     context.startActivity(intent);
                 }
             });

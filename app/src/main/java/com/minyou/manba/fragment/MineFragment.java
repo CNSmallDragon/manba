@@ -42,6 +42,7 @@ import com.minyou.manba.ui.view.GlideCircleTransform;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -80,6 +81,7 @@ public class MineFragment extends BaseFragment {
 
     @Override
     public int getContentViewId() {
+        EventBus.getDefault().register(this);
         glideRequest = Glide.with(getActivity());
         imagePicker = ImagePicker.getInstance();
         imagePicker.setImageLoader(new GlideImageLoader());
@@ -199,7 +201,7 @@ public class MineFragment extends BaseFragment {
             UserLoginResultModel.ResultBean info = (UserLoginResultModel.ResultBean) object;
             LogUtil.d(TAG, info.getNickName());
             user_name.setText(info.getNickName());
-            LogUtil.d(TAG, user_name.getText().toString());
+            LogUtil.d(TAG, info.getPhotoUrl());
             if (!TextUtils.isEmpty(info.getPhotoUrl())) {
                 glideRequest.load(info.getPhotoUrl()).transform(new GlideCircleTransform(getActivity())).into(user_pic);
             }
@@ -226,6 +228,24 @@ public class MineFragment extends BaseFragment {
     public void regstReturn(EventInfo info) {
         if (info.getType() == EventInfo.REGIST_RETURN) {
             //getUserInfo();
+        }
+    }
+
+    /**
+     * 个人资料修改信息后返回数据
+     *
+     * @param info
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void editUserInfoReturn(EventInfo info) {
+        if (info.getType() == EventInfo.SETTING_USER_INFO) {
+            UserLoginResultModel.ResultBean bean = (UserLoginResultModel.ResultBean) info.getData();
+            if(!TextUtils.isEmpty(bean.getNickName())){
+                user_name.setText(bean.getNickName());
+            }
+            if(!TextUtils.isEmpty(bean.getPhotoUrl())){
+                glideRequest.load(bean.getPhotoUrl()).transform(new GlideCircleTransform(getActivity())).into(user_pic);
+            }
         }
     }
 

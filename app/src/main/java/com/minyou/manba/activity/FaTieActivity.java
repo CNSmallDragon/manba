@@ -66,7 +66,7 @@ public class FaTieActivity extends AppCompatActivity implements ImagePickerAdapt
     private ChooseSociationAdapter chooseSociationAdapter;
     private List<SociationResultModel.ResultBean.SociationResultBean> list = new ArrayList<SociationResultModel.ResultBean.SociationResultBean>();
     private String contentStr;
-    private List<Integer> checkedList;
+    private int checkedId;
     private ProgressDialog progressDialog;
 
     @Override
@@ -145,14 +145,12 @@ public class FaTieActivity extends AppCompatActivity implements ImagePickerAdapt
                     LogUtil.d(TAG, "添加图片返回URL---" + item.path);
                 }
                 if(null != chooseSociationAdapter){
-                    checkedList = chooseSociationAdapter.getCheckedList();
+                    checkedId = chooseSociationAdapter.getCheckedId();
                 }
-                for(int i : checkedList){
-                    LogUtil.d(TAG, "选中的公会id---" + i);
-                }
+                LogUtil.d(TAG, "选中的公会id---" + checkedId);
                 contentStr = etDongtaiContent.getText().toString().trim();
                 LogUtil.d(TAG, "发布内容---" + contentStr);
-                http_postSendTieZi(contentStr,checkedList,selImageList);
+                http_postSendTieZi(contentStr,checkedId,selImageList);
             }
         });
 
@@ -170,7 +168,7 @@ public class FaTieActivity extends AppCompatActivity implements ImagePickerAdapt
                 return false;
             }
         };
-        chooseSociationAdapter = new ChooseSociationAdapter(this,list);
+        chooseSociationAdapter = new ChooseSociationAdapter(this,list,recyclerviewChooseGonghui);
         recyclerviewChooseGonghui.setLayoutManager(manager);
         recyclerviewChooseGonghui.setAdapter(chooseSociationAdapter);
 
@@ -269,17 +267,9 @@ public class FaTieActivity extends AppCompatActivity implements ImagePickerAdapt
         }
     }
 
-    private void http_postSendTieZi(String actionUrl,List<Integer> guildIds,ArrayList<ImageItem> imageItems) {
+    private void http_postSendTieZi(String contentStr,int guildId,ArrayList<ImageItem> imageItems) {
 
-        long guildId;
         List<File> zoneFile = new ArrayList<File>();
-
-        // 构造guild
-        if(guildIds == null || guildIds.size() <= 0){
-            guildId = -1;
-        }else{
-            guildId = guildIds.get(0);
-        }
 
         // 构造图片路径
         for(ImageItem imageItem : imageItems){
@@ -295,7 +285,7 @@ public class FaTieActivity extends AppCompatActivity implements ImagePickerAdapt
         HashMap<String,Object> params = new HashMap<>();
         params.put(Appconstant.User.USER_ID, userID);
         params.put("zoneContent",contentStr);
-        params.put("guildId",guildIds.get(0));
+        params.put("guildId",guildId);
         params.put("fileType",1);
         params.put("zoneFile",zoneFile);
         ManBaRequestManager.getInstance().upLoadFile(OkHttpServiceApi.HTTP_ZONE_PUBLISH, params, new ReqCallBack<String>() {

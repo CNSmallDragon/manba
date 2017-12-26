@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,9 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.minyou.manba.R;
 import com.minyou.manba.network.resultModel.SociationResultModel;
-import com.minyou.manba.util.LogUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,20 +28,27 @@ public class ChooseSociationAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private static final String TAG = ChooseSociationAdapter.class.getSimpleName();
     private Context context;
     private List<SociationResultModel.ResultBean.SociationResultBean> list;
-    private List<Integer> checkedList;
+    private RecyclerView mRecyclerView;
     private LayoutInflater inflater;
     private RequestManager glideRequest;
+    private int selectPosition = 0;
 
-    public ChooseSociationAdapter(Context context,List<SociationResultModel.ResultBean.SociationResultBean> list){
+    public ChooseSociationAdapter(Context context,List<SociationResultModel.ResultBean.SociationResultBean> list,RecyclerView mRecyclerView){
         this.context = context;
         this.list = list;
-        this.checkedList = new ArrayList<Integer>();
+        this.mRecyclerView = mRecyclerView;
         inflater = LayoutInflater.from(context);
         glideRequest = Glide.with(context);
+        for(int i=0;i<list.size();i++){
+            if(list.get(i).isChecked()){
+                selectPosition = i;
+            }
+
+        }
     }
 
-    public List<Integer> getCheckedList() {
-        return checkedList;
+    public int getCheckedId() {
+        return selectPosition;
     }
 
     @Override
@@ -63,24 +67,39 @@ public class ChooseSociationAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
             mHolder1.tv_gonghui_name.setText(list.get(position).getGuildName());
 
+            mHolder1.cb_check.setChecked(list.get(position).isChecked());
             mHolder1.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mHolder1.cb_check.setChecked(mHolder1.cb_check.isChecked() ? false : true);
-                    LogUtil.d(TAG,"name-====" + list.get(position).getGuildName());
+                    ChooseSociationHolder holder = (ChooseSociationHolder) mRecyclerView.findViewHolderForLayoutPosition(selectPosition);
+                    if(holder != null){
+                        holder.cb_check.setChecked(false);
+                    }else{
+                        notifyItemChanged(selectPosition);
+                    }
+                    //上次选中的条目，设置为false；
+                    list.get(selectPosition).setChecked(false);
+                    selectPosition = position;
+                    list.get(selectPosition).setChecked(true);
+                    mHolder1.cb_check.setChecked(true);
                 }
             });
 
-            mHolder1.cb_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(isChecked){
-                        checkedList.add(list.get(position).getId());
-                    }
-                }
-            });
+//            mHolder1.cb_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                    if(isChecked){
+//                        checkedList.add(list.get(position).getId());
+//                    }
+//                }
+//            });
 
         }
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
     }
 
     @Override

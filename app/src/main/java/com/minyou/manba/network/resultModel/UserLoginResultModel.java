@@ -67,7 +67,11 @@ public class UserLoginResultModel extends BaseResultModel {
         private String refreshToken;
         private List<RolesBean> roles;
 
-        protected ResultBean(Parcel in) {
+        public ResultBean() {
+
+        }
+
+        public ResultBean(Parcel in) {
             userId = in.readInt();
             mvpPin = in.readString();
             phone = in.readString();

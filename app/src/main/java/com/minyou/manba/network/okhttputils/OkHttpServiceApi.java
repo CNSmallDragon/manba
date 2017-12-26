@@ -24,4 +24,7 @@ public class OkHttpServiceApi {
 
     // 获取动态列表
     public static String HTTP_GET_ZONE_LIST = "api/zone/list";
+
+    // 根据ID查询用户信息
+    public static String HTTP_GET_USER_DETAIL = "api/user/detail";
 }

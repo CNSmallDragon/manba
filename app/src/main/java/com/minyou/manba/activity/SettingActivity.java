@@ -1,65 +1,40 @@
 package com.minyou.manba.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
+import android.databinding.DataBindingUtil;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Switch;
-import android.widget.TextView;
 
+import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
-import com.minyou.manba.ui.ActionTitleView;
+import com.minyou.manba.databinding.ActivitySettingBinding;
 import com.minyou.manba.util.SharedPreferencesUtil;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2017/12/3.
  */
-public class SettingActivity extends BaseActivity {
-    @BindView(R.id.atv_title)
-    ActionTitleView atvTitle;
-    @BindView(R.id.iv_user_pic)
-    ImageView ivUserPic;
-    @BindView(R.id.tv_user_name)
-    TextView tvUserName;
-    @BindView(R.id.ll_user_setting)
-    LinearLayout llUserSetting;
-    @BindView(R.id.switch_notify)
-    Switch switchNotify;
-    @BindView(R.id.ll_tongzhi_setting)
-    LinearLayout llTongzhiSetting;
-    @BindView(R.id.ll_huancun_setting)
-    LinearLayout llHuancunSetting;
-    @BindView(R.id.ll_qa_setting)
-    LinearLayout llQaSetting;
-    @BindView(R.id.ll_idea_fankui)
-    LinearLayout llIdeaFankui;
-    @BindView(R.id.ll_update_version)
-    LinearLayout llUpdateVersion;
-    @BindView(R.id.ll_about_us)
-    LinearLayout llAboutUs;
-    @BindView(R.id.bt_exit_login)
-    Button bt_exit_login;
+public class SettingActivity extends DataBindingBaseActivity implements View.OnClickListener {
+
+    private ActivitySettingBinding binding;
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_setting;
+    public void setContentViewAndBindData() {
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_setting);
+        initListener();
+    }
+
+    private void initListener() {
+        binding.llUserSetting.setOnClickListener(this);
+        binding.btExitLogin.setOnClickListener(this);
     }
 
     @Override
-    public void initView(Bundle savedInstanceState) {
-        atvTitle.setTitle(getResources().getString(R.string.my_shezhi));
-    }
-
-    @OnClick({R.id.ll_user_setting, R.id.ll_huancun_setting, R.id.ll_qa_setting, R.id.ll_idea_fankui, R.id.ll_update_version, R.id.ll_about_us,R.id.bt_exit_login})
-    public void onViewClicked(View view) {
+    public void onClick(View v) {
         Intent intent;
-        switch (view.getId()) {
+        switch (v.getId()) {
             case R.id.ll_user_setting:
+                intent = new Intent(SettingActivity.this,PersonInfoActivity.class);
+                intent.putExtra("userId",SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID));
+                startActivity(intent);
                 break;
             case R.id.ll_huancun_setting:
                 break;

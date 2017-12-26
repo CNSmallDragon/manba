@@ -102,6 +102,7 @@ public class SociationResultModel extends BaseResultModel {
             private long createTime;
             private Object updateTime;
             private int yn;
+            private boolean isChecked = false;
 
             public int getId() {
                 return id;
@@ -181,6 +182,14 @@ public class SociationResultModel extends BaseResultModel {
 
             public void setYn(int yn) {
                 this.yn = yn;
+            }
+
+            public boolean isChecked() {
+                return isChecked;
+            }
+
+            public void setChecked(boolean checked) {
+                isChecked = checked;
             }
         }
     }

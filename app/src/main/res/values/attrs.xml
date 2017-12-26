@@ -23,5 +23,9 @@
         <attr name="maxRowCount" format="integer"/>
     </declare-styleable>
 
+    <declare-styleable name="ActionTitle">
+        <attr name="titleText" format="string"></attr>
+    </declare-styleable>
+
 
 </resources>
