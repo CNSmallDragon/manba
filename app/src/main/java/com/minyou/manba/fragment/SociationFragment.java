@@ -1,15 +1,19 @@
 package com.minyou.manba.fragment;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.minyou.manba.Appconstant;
@@ -18,7 +22,7 @@ import com.minyou.manba.activity.SociationDetailActivity;
 import com.minyou.manba.adapter.SociationListAdapter;
 import com.minyou.manba.adapter.SociationRecyclerAdapter;
 import com.minyou.manba.bean.SociationBean;
-import com.minyou.manba.ui.ActionTitleView;
+import com.minyou.manba.databinding.FragmentGonghuiBinding;
 import com.minyou.manba.ui.RefreshItemDecoration;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.OnItemClickLitener;
@@ -26,37 +30,31 @@ import com.minyou.manba.util.OnItemClickLitener;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindString;
-import butterknife.BindView;
-
-public class SociationFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class SociationFragment extends DataBindingBaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     public static final String TAG = "SociationFragment";
     public static final int DETAIL = 0;
 
-    @BindView(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout mSwiper;
-    @BindView(R.id.rv_gonghui_list)
-    RecyclerView mRecyclerView;
     private ListView lv_gonghui_list;
     private SociationListAdapter adapter;
     private SociationRecyclerAdapter mRecyclerAdapter;
     private List<SociationBean> list;
-    @BindView(R.id.atv_title)
-    ActionTitleView atv_title;
-    @BindString(R.string.home_gonghui)
-    String home_gonghui;
 
+    private FragmentGonghuiBinding binding;
 
+    @Nullable
     @Override
-    public int getContentViewId() {
-        return R.layout.fragment_gonghui;
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_gonghui, container, false);
+        initView();
+        initData();
+        return binding.getRoot();
     }
 
-    @Override
-    public void initView(Bundle savedInstanceState) {
-        atv_title.setTitle(home_gonghui);
-        atv_title.hideBackIcon();
-        atv_title.setRightToDo(R.drawable.guild_nav_icon_add, null, new OnClickListener() {
+
+    public void initView() {
+        binding.atvTitle.setTitle(getResources().getString(R.string.home_gonghui));
+        binding.atvTitle.hideBackIcon();
+        binding.atvTitle.setRightToDo(R.drawable.guild_nav_icon_add, null, new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -66,22 +64,21 @@ public class SociationFragment extends BaseFragment implements SwipeRefreshLayou
         });
     }
 
-    @Override
-    public void initData(Bundle savedInstanceState) {
+    public void initData() {
         list = new ArrayList<SociationBean>();
 
-        mSwiper.setOnRefreshListener(this);
-        mSwiper.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
-        mSwiper.setProgressBackgroundColorSchemeColor(Color.parseColor("#BBFFFF"));
-        mSwiper.setRefreshing(true);
+        binding.swipeRefreshLayout.setOnRefreshListener(this);
+        binding.swipeRefreshLayout.setColorSchemeColors(Color.BLUE, Color.RED, Color.YELLOW);
+        binding.swipeRefreshLayout.setProgressBackgroundColorSchemeColor(Color.parseColor("#BBFFFF"));
+        binding.swipeRefreshLayout.setRefreshing(true);
         getData();
 
         // mRecyclerView加载数据
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.addItemDecoration(new RefreshItemDecoration(getActivity(), RefreshItemDecoration.VERTICAL_LIST));
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.rvGonghuiList.setItemAnimator(new DefaultItemAnimator());
+        binding.rvGonghuiList.addItemDecoration(new RefreshItemDecoration(getActivity(), RefreshItemDecoration.VERTICAL_LIST));
+        binding.rvGonghuiList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerAdapter = new SociationRecyclerAdapter(getActivity(), list);
-        mRecyclerView.setAdapter(mRecyclerAdapter);
+        binding.rvGonghuiList.setAdapter(mRecyclerAdapter);
         // 设置条目点击事件
         mRecyclerAdapter.setOnItemClickListener(new OnItemClickLitener() {
             @Override
@@ -97,7 +94,7 @@ public class SociationFragment extends BaseFragment implements SwipeRefreshLayou
         });
 
         // 设置滑动监听，上拉加载更多
-        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        binding.rvGonghuiList.setOnScrollListener(new RecyclerView.OnScrollListener() {
             int lastVisibleItem ;
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -171,7 +168,7 @@ public class SociationFragment extends BaseFragment implements SwipeRefreshLayou
                 //adapter.notifyDataSetChanged();
                 mRecyclerAdapter.notifyDataSetChanged();
                 //结束后停止刷新
-                mSwiper.setRefreshing(false);
+                binding.swipeRefreshLayout.setRefreshing(false);
             }
         }, 3000);
     }
@@ -192,7 +189,7 @@ public class SociationFragment extends BaseFragment implements SwipeRefreshLayou
                 //adapter.notifyDataSetChanged();
                 mRecyclerAdapter.notifyDataSetChanged();
                 //结束后停止刷新
-                mSwiper.setRefreshing(false);
+                binding.swipeRefreshLayout.setRefreshing(false);
             }
         }, 3000);
     }

@@ -1,5 +1,10 @@
 package com.minyou.manba.network.resultModel;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
+import com.minyou.manba.BR;
+
 import java.util.List;
 
 /**
@@ -23,7 +28,7 @@ public class UserDetailResultModel extends BaseResultModel {
         this.result = result;
     }
 
-    public static class UserDetailBean {
+    public static class UserDetailBean extends BaseObservable{
         /**
          * mvpPin : string
          * nickName : string
@@ -53,6 +58,7 @@ public class UserDetailResultModel extends BaseResultModel {
         private String weibo;
         private String weixin;
         private List<RolesBean> roles;
+        private String birthday;
 
         public String getMvpPin() {
             return mvpPin;
@@ -62,12 +68,14 @@ public class UserDetailResultModel extends BaseResultModel {
             this.mvpPin = mvpPin;
         }
 
+        @Bindable
         public String getNickName() {
             return nickName;
         }
 
         public void setNickName(String nickName) {
             this.nickName = nickName;
+            notifyPropertyChanged(BR.nickName);
         }
 
         public String getPassword() {
@@ -156,6 +164,16 @@ public class UserDetailResultModel extends BaseResultModel {
 
         public void setRoles(List<RolesBean> roles) {
             this.roles = roles;
+        }
+
+        @Bindable
+        public String getBirthday() {
+            return birthday;
+        }
+
+        public void setBirthday(String birthday) {
+            this.birthday = birthday;
+            notifyPropertyChanged(BR.birthday);
         }
 
         public static class RolesBean {

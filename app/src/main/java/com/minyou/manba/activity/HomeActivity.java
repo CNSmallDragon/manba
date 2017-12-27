@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.minyou.manba.R;
 import com.minyou.manba.bean.ManBaUserInfo;
-import com.minyou.manba.fragment.BaseFragment;
+import com.minyou.manba.fragment.DataBindingBaseFragment;
 import com.minyou.manba.fragment.HomeFragment;
 import com.minyou.manba.fragment.MineFragment;
 import com.minyou.manba.fragment.SociationFragment;
@@ -33,7 +33,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
     protected static final String TAG = "HomeActivity";
 
     private boolean[] fragmentsUpdateFlag = {false, false, false, true};
-    private List<BaseFragment> fragments = new ArrayList<BaseFragment>();
+    private List<DataBindingBaseFragment> fragments = new ArrayList<DataBindingBaseFragment>();
 
     //private Unbinder unbinder;
     private Context context;

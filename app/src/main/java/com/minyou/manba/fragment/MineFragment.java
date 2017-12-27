@@ -2,16 +2,14 @@ package com.minyou.manba.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -26,9 +24,11 @@ import com.minyou.manba.activity.GameCenterActivity;
 import com.minyou.manba.activity.HomeActivity;
 import com.minyou.manba.activity.LoginActivity;
 import com.minyou.manba.activity.MyWalletActivity;
+import com.minyou.manba.activity.PersonInfoActivity;
 import com.minyou.manba.activity.SettingActivity;
 import com.minyou.manba.activity.ShouCangActivity;
 import com.minyou.manba.activity.SociationDetailActivity;
+import com.minyou.manba.databinding.FragmentMineBinding;
 import com.minyou.manba.event.EventInfo;
 import com.minyou.manba.imageloader.GlideImageLoader;
 import com.minyou.manba.manager.UserManager;
@@ -51,54 +51,52 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MineFragment extends BaseFragment {
+public class MineFragment extends DataBindingBaseFragment implements View.OnClickListener {
 
     private static final String TAG = "MineFragment";
     public static final int LOGIN_CODE = 100;
     public static final int HEAD_PIC = 1001;
     public static final String REQUEST = "requestInfo";
 
-    @BindView(R.id.bt_login)
-    Button bt_login;
-    @BindView(R.id.rl_after_login)
-    RelativeLayout rl_after_login;
-    @BindView(R.id.rl_before_login)
-    RelativeLayout rl_before_login;
-    @BindView(R.id.ll_after_login)
-    LinearLayout ll_after_login;
-    @BindView(R.id.iv_user_pic)
-    ImageView user_pic;
-    @BindView(R.id.tv_pub_time)
-    TextView user_name;
+    private FragmentMineBinding binding;
 
     private RequestManager glideRequest;
     private ImagePicker imagePicker;
     private ArrayList<ImageItem> images = null;
 
-
+    @Nullable
     @Override
-    public int getContentViewId() {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
         glideRequest = Glide.with(getActivity());
         imagePicker = ImagePicker.getInstance();
         imagePicker.setImageLoader(new GlideImageLoader());
-        return R.layout.fragment_mine;
-    }
-
-    @Override
-    public void initView(Bundle savedInstanceState) {
-        LogUtil.d(TAG, "initView===");
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mine, container, false);
         if (UserManager.isLogin()) {
             autoLogin();
         } else {
-            rl_after_login.setVisibility(View.GONE);
-            ll_after_login.setVisibility(View.GONE);
-            rl_before_login.setVisibility(View.VISIBLE);
+            binding.rlAfterLogin.setVisibility(View.GONE);
+            binding.llAfterLogin.setVisibility(View.GONE);
+            binding.rlBeforeLogin.setVisibility(View.VISIBLE);
         }
+        initListener();
+        return binding.getRoot();
     }
+
+    private void initListener() {
+        binding.mineGonghui.setOnClickListener(this);
+        binding.mineQianbao.setOnClickListener(this);
+        binding.mineShoucang.setOnClickListener(this);
+        binding.mineDongtai.setOnClickListener(this);
+        binding.mineXiaoxi.setOnClickListener(this);
+        binding.mineHaiwan.setOnClickListener(this);
+        binding.mineSetting.setOnClickListener(this);
+        binding.rlAfterLogin.setOnClickListener(this);
+        binding.ivUserPic.setOnClickListener(this);
+    }
+
 
     @Override
     public void onResume() {
@@ -107,30 +105,25 @@ public class MineFragment extends BaseFragment {
 
 
     @Override
-    public void initData(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         LogUtil.d(TAG, "isVisibleToUser===" + isVisibleToUser);
     }
 
-    @OnClick({R.id.mine_gonghui, R.id.mine_qianbao, R.id.mine_shoucang, R.id.mine_dongtai, R.id.mine_xiaoxi, R.id.mine_haiwan, R.id.mine_setting,R.id.rl_after_login,R.id.iv_user_pic})
-    public void itemOnClick(View button) {
+    @Override
+    public void onClick(View v) {
         Intent intent;
-        switch (button.getId()) {
+        switch (v.getId()) {
             case R.id.rl_after_login:   //个人中心
-
+                intent = new Intent(getActivity(), PersonInfoActivity.class);
+                intent.putExtra("userId",SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID));
+                startActivity(intent);
                 break;
             case R.id.iv_user_pic:      // 更换用户头像
                 chooseHeadPid();
                 break;
             case R.id.mine_gonghui:
                 // 我的公会
-                Toast.makeText(getActivity(), "我的公会", Toast.LENGTH_SHORT).show();
                 intent = new Intent(getActivity(), SociationDetailActivity.class);
                 intent.putExtra(Appconstant.FROM_WHERE, Appconstant.MINE2GONGHUI);
                 startActivity(intent);
@@ -165,6 +158,7 @@ public class MineFragment extends BaseFragment {
         }
     }
 
+
     /**
      * 选择头像
      */
@@ -180,7 +174,7 @@ public class MineFragment extends BaseFragment {
         imagePicker.setOutPutY(800);
 
         Intent intent = new Intent(getActivity(), ImageGridActivity.class);
-        intent.putExtra(ImageGridActivity.EXTRAS_IMAGES,images);
+        intent.putExtra(ImageGridActivity.EXTRAS_IMAGES, images);
         //ImagePicker.getInstance().setSelectedImages(images);
         startActivityForResult(intent, HEAD_PIC);
     }
@@ -193,29 +187,29 @@ public class MineFragment extends BaseFragment {
     private void initUserInfo(Object object) {
         if (object instanceof WeiXinResponseModel) {
             WeiXinResponseModel weiXinResponseModel = (WeiXinResponseModel) object;
-            user_name.setText(weiXinResponseModel.getNickname());
+            binding.tvUsername.setText(weiXinResponseModel.getNickname());
             if (!TextUtils.isEmpty(weiXinResponseModel.getHeadimgurl())) {
-                glideRequest.load(weiXinResponseModel.getHeadimgurl()).transform(new GlideCircleTransform(getActivity())).into(user_pic);
+                glideRequest.load(weiXinResponseModel.getHeadimgurl()).transform(new GlideCircleTransform(getActivity())).into(binding.ivUserPic);
             }
         } else if (object instanceof UserLoginResultModel.ResultBean) {// 正常登陆返回
             UserLoginResultModel.ResultBean info = (UserLoginResultModel.ResultBean) object;
             LogUtil.d(TAG, info.getNickName());
-            user_name.setText(info.getNickName());
+            binding.tvUsername.setText(info.getNickName());
             LogUtil.d(TAG, info.getPhotoUrl());
             if (!TextUtils.isEmpty(info.getPhotoUrl())) {
-                glideRequest.load(info.getPhotoUrl()).transform(new GlideCircleTransform(getActivity())).into(user_pic);
+                glideRequest.load(info.getPhotoUrl()).transform(new GlideCircleTransform(getActivity())).into(binding.ivUserPic);
             }
         } else if (object instanceof QQResponseModel) { // qq登陆返回
             QQResponseModel qqResponseModel = (QQResponseModel) object;
             LogUtil.d(TAG, "----" + qqResponseModel.getFigureurl_qq_2());
-            user_name.setText(qqResponseModel.getNickname());
+            binding.tvUsername.setText(qqResponseModel.getNickname());
             if (!TextUtils.isEmpty(qqResponseModel.getFigureurl_qq_2())) {
-                glideRequest.load(qqResponseModel.getFigureurl_qq_2()).transform(new GlideCircleTransform(getActivity())).into(user_pic);
+                glideRequest.load(qqResponseModel.getFigureurl_qq_2()).transform(new GlideCircleTransform(getActivity())).into(binding.ivUserPic);
             }
         }
-        rl_after_login.setVisibility(View.VISIBLE);
-        ll_after_login.setVisibility(View.VISIBLE);
-        rl_before_login.setVisibility(View.GONE);
+        binding.rlAfterLogin.setVisibility(View.VISIBLE);
+        binding.llAfterLogin.setVisibility(View.VISIBLE);
+        binding.rlBeforeLogin.setVisibility(View.GONE);
     }
 
 
@@ -240,11 +234,11 @@ public class MineFragment extends BaseFragment {
     public void editUserInfoReturn(EventInfo info) {
         if (info.getType() == EventInfo.SETTING_USER_INFO) {
             UserLoginResultModel.ResultBean bean = (UserLoginResultModel.ResultBean) info.getData();
-            if(!TextUtils.isEmpty(bean.getNickName())){
-                user_name.setText(bean.getNickName());
+            if (!TextUtils.isEmpty(bean.getNickName())) {
+                binding.tvUsername.setText(bean.getNickName());
             }
-            if(!TextUtils.isEmpty(bean.getPhotoUrl())){
-                glideRequest.load(bean.getPhotoUrl()).transform(new GlideCircleTransform(getActivity())).into(user_pic);
+            if (!TextUtils.isEmpty(bean.getPhotoUrl())) {
+                glideRequest.load(bean.getPhotoUrl()).transform(new GlideCircleTransform(getActivity())).into(binding.ivUserPic);
             }
         }
     }
@@ -320,10 +314,10 @@ public class MineFragment extends BaseFragment {
                 }
                 break;
             case HEAD_PIC:
-                if(resultCode == ImagePicker.RESULT_CODE_ITEMS && data != null){
+                if (resultCode == ImagePicker.RESULT_CODE_ITEMS && data != null) {
                     images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                     // 只有一个
-                    if(images.size() > 0){  // 返回成功
+                    if (images.size() > 0) {  // 返回成功
                         String picUrl = images.get(0).path;
                         uploadHeadPhoto(picUrl);
                     }
@@ -334,26 +328,27 @@ public class MineFragment extends BaseFragment {
 
     /**
      * 上传用户头像
+     *
      * @param picUrl
      */
     private void uploadHeadPhoto(final String picUrl) {
-        LogUtil.d(TAG,"picUrl==="+picUrl);
+        LogUtil.d(TAG, "picUrl===" + picUrl);
         List<File> zoneFile = new ArrayList<File>();
         File file = new File(picUrl);
-        if(!file.exists()){
+        if (!file.exists()) {
             return;
         }
         zoneFile.add(file);
         loading();
         String userID = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID);
-        HashMap<String,Object> params = new HashMap<>();
+        HashMap<String, Object> params = new HashMap<>();
         params.put(Appconstant.User.USER_ID, userID);
-        params.put("file",zoneFile);
-        ManBaRequestManager.getInstance().upLoadFile(OkHttpServiceApi.HTTP_USER_UPLOAD_PHOTO+"/"+userID, params, new ReqCallBack<String>() {
+        params.put("file", zoneFile);
+        ManBaRequestManager.getInstance().upLoadFile(OkHttpServiceApi.HTTP_USER_UPLOAD_PHOTO + "/" + userID, params, new ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
                 cancelLoading();
-                glideRequest.load(picUrl).transform(new GlideCircleTransform(getActivity())).into(user_pic);
+                glideRequest.load(picUrl).transform(new GlideCircleTransform(getActivity())).into(binding.ivUserPic);
             }
 
             @Override
@@ -372,4 +367,6 @@ public class MineFragment extends BaseFragment {
         UserLoginResultModel.ResultBean userLoginModel = data.getParcelableExtra(Appconstant.LOGIN_USER_INFO);
         initUserInfo(userLoginModel);
     }
+
+
 }

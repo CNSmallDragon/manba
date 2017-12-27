@@ -23,6 +23,7 @@ import com.minyou.manba.ui.view.MultiImageView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by Administrator on 2017/11/26.
@@ -33,6 +34,7 @@ public class DongTaiDetailActivity extends Activity {
     private ActivityDongtaiDetailBinding binding;
     private RequestManager glideRequest;
     private String info_id = null;
+    private String user_id = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +45,19 @@ public class DongTaiDetailActivity extends Activity {
         Intent intent = getIntent();
         if (null != intent) {
             info_id = intent.getStringExtra("id");
+            user_id = intent.getStringExtra("userID");
         }
         getDongTaiInfo(info_id);
     }
 
 
     private void getDongTaiInfo(String info_id) {
-
-        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_ZONE_DETAIL+"/"+info_id, ManBaRequestManager.TYPE_GET, null, new ReqCallBack<String>() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("userId", user_id);
+        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_ZONE_DETAIL + "/" + info_id, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
-                ZoneDetailResultModel zoneDetailResultModel = new Gson().fromJson(result,ZoneDetailResultModel.class);
+                ZoneDetailResultModel zoneDetailResultModel = new Gson().fromJson(result, ZoneDetailResultModel.class);
                 showUI(zoneDetailResultModel.getResult());
 
             }
@@ -91,9 +95,9 @@ public class DongTaiDetailActivity extends Activity {
         SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd HH:mm");
         Date date = new Date(itemInfo.getPublishTime());
         binding.include.tvPubTime.setText(format.format(date));
-        if(TextUtils.isEmpty(itemInfo.getGuildName())){
+        if (TextUtils.isEmpty(itemInfo.getGuildName())) {
             binding.include.tvFamilyname.setVisibility(View.GONE);
-        }else{
+        } else {
             binding.include.tvFamilyname.setText(itemInfo.getGuildName());
         }
         // 关注按钮点击事件
@@ -112,7 +116,7 @@ public class DongTaiDetailActivity extends Activity {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(DongTaiDetailActivity.this, ImageViewerActivity.class);
-                intent.putExtra("position",position);
+                intent.putExtra("position", position);
                 intent.putStringArrayListExtra("imageList", (ArrayList<String>) itemInfo.getZoneImage());
                 startActivity(intent);
             }

@@ -169,6 +169,7 @@ public class NewFragment extends BaseFragment implements SwipeRefreshLayout.OnRe
                 ZoneListResultModel.ResultBean.ZoneListBean info = zoneList.get(position);
                 Intent intent = new Intent(getActivity(), DongTaiDetailActivity.class);
                 intent.putExtra("id",info.getId()+"");    // 动态id
+                intent.putExtra("userID",info.getUserId()+"");    // 用户id
                 startActivity(intent);
             }
         });

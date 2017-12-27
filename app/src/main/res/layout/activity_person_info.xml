@@ -8,6 +8,8 @@
             name="userInfo"
             type="com.minyou.manba.network.resultModel.UserDetailResultModel.UserDetailBean"/>
 
+        <import type="android.text.TextUtils"/>
+
     </data>
 
     <LinearLayout
@@ -23,6 +25,7 @@
             app:titleText="@string/setting_user_info"></com.minyou.manba.ui.ActionTitleView>
 
         <ScrollView
+            android:id="@+id/user_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -45,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="15dp"
-                    android:text="30%"
+                    android:text="资料完整度30%"
                     android:textSize="@dimen/small_textsize" />
 
                 <LinearLayout
@@ -53,6 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:background="@drawable/common_background_press"
                     android:orientation="horizontal"
                     android:padding="10dp">
 
@@ -83,6 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:background="@android:color/background_light"
                     android:padding="10dp">
 
                     <TextView
@@ -95,7 +100,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
 
-                    <RadioButton
+                    <CheckBox
                         android:id="@+id/rb_sex_man"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -104,9 +109,10 @@
                         android:drawablePadding="@dimen/regist_text_to_pic"
                         android:gravity="center"
                         android:text="@string/regist_man"
+                        android:checked="@{userInfo.sex == 1 ? true : false}"
                         android:textColor="@color/bottom_text_color" />
 
-                    <RadioButton
+                    <CheckBox
                         android:id="@+id/rb_sex_women"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -116,6 +122,7 @@
                         android:drawablePadding="@dimen/common_to_side"
                         android:gravity="center"
                         android:text="@string/regist_woman"
+                        android:checked="@{userInfo.sex == 0 ? true : false}"
                         android:textColor="@color/bottom_text_color_women" />
                 </LinearLayout>
 
@@ -129,6 +136,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:background="@drawable/common_background_press"
                     android:padding="10dp">
 
                     <TextView
@@ -145,7 +153,7 @@
                         android:id="@+id/user_birthday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/setting_user_nickname" />
+                        android:text="@{TextUtils.isEmpty(userInfo.birthday) ? @string/setting_user_notset : userInfo.birthday}" />
 
                 </LinearLayout>
 
@@ -158,6 +166,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:background="@drawable/common_background_press"
                     android:padding="10dp">
 
                     <TextView
@@ -174,8 +183,7 @@
                         android:id="@+id/user_sign"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/setting_user_nickname" />
-
+                        android:text="@string/setting_user_notset" />
 
                 </LinearLayout>
 

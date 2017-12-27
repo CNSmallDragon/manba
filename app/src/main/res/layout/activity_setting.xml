@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:background="@drawable/common_background_press"
             android:padding="@dimen/common_to_side">
 
             <TextView
@@ -117,6 +118,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:background="@drawable/common_background_press"
             android:padding="@dimen/common_to_side">
 
             <TextView
@@ -144,6 +146,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:background="@drawable/common_background_press"
             android:padding="@dimen/common_to_side">
 
             <TextView
@@ -171,6 +174,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:background="@drawable/common_background_press"
             android:padding="@dimen/common_to_side">
 
             <TextView
@@ -198,6 +202,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:background="@drawable/common_background_press"
             android:padding="@dimen/common_to_side">
 
             <TextView
@@ -221,6 +226,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="30dp"
+            android:gravity="center"
             android:background="@drawable/shape_borderline_redfull"
             android:text="@string/setting_exit"
             android:textColor="@android:color/white" />

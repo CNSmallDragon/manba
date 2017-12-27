@@ -1,27 +1,25 @@
 package com.minyou.manba.fragment;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.minyou.manba.R;
+import com.minyou.manba.databinding.FragmentStreetBinding;
 
-public class StreetFragment extends BaseFragment {
+public class StreetFragment extends DataBindingBaseFragment {
 
+	private FragmentStreetBinding binding;
 
-
+	@Nullable
 	@Override
-	public int getContentViewId() {
-		return R.layout.fragment_street;
-	}
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_street, container, false);
 
-	@Override
-	public void initView(Bundle savedInstanceState) {
-
-	}
-
-	@Override
-	public void initData(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		
+		return binding.getRoot();
 	}
 
 }

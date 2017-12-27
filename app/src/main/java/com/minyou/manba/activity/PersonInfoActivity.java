@@ -3,11 +3,16 @@ package com.minyou.manba.activity;
 import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bigkoo.pickerview.TimePickerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.google.gson.Gson;
@@ -18,6 +23,7 @@ import com.lzy.imagepicker.view.CropImageView;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.databinding.ActivityPersonInfoBinding;
+import com.minyou.manba.databinding.DialogInputLayoutBinding;
 import com.minyou.manba.event.EventInfo;
 import com.minyou.manba.imageloader.GlideImageLoader;
 import com.minyou.manba.network.okhttputils.ManBaRequestManager;
@@ -32,7 +38,10 @@ import com.minyou.manba.util.SharedPreferencesUtil;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,6 +59,12 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
     public static final int HEAD_PIC = 1001;
 
     private String userId;
+    private long selectedTime;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
+    private DialogInputLayoutBinding dialogBinding;
+
+    private UserDetailResultModel.UserDetailBean userDetailBean;
 
 
     @Override
@@ -71,9 +86,12 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
 
 
     private void initListener() {
+        binding.rbSexMan.setOnClickListener(this);
+        binding.rbSexWomen.setOnClickListener(this);
         binding.ivUserPic.setOnClickListener(this);
         binding.llUserNickName.setOnClickListener(this);
         binding.llUserBirthday.setOnClickListener(this);
+        binding.llUserSign.setOnClickListener(this);
     }
 
     @Override
@@ -83,12 +101,104 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
                 chooseHeadPid();
                 break;
             case R.id.ll_user_nick_name:
-
+                showInputDialog();
                 break;
             case R.id.ll_user_birthday:
+//                String currentDateStr = userDetailBean.getBirthday();
+//                Date currentDate = null;
+//                if(!TextUtils.isEmpty(currentDateStr)){
+//                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//                    try {
+//                        currentDate = sdf.parse(currentDateStr);
+//                    } catch (ParseException e) {
+//                        e.printStackTrace();
+//                        currentDate = null;
+//                    }
+//                }
+                showTimePickerView();
+                break;
+            case R.id.ll_user_sign:
 
                 break;
+            case R.id.rb_sex_man:
+                binding.rbSexMan.setChecked(true);
+                binding.rbSexWomen.setChecked(false);
+                break;
+            case R.id.rb_sex_women:
+                binding.rbSexWomen.setChecked(true);
+                binding.rbSexMan.setChecked(false);
+                break;
+            case R.id.tv_cancel_dialog:    // 关闭dialog
+                dialog.dismiss();
+                break;
+            case R.id.tv_sure_dialog:
+                // 输入密码后登录校验
+                if (!TextUtils.isEmpty(dialogBinding.etInputText.getText().toString())) {
+                    userDetailBean.setNickName(dialogBinding.etInputText.getText().toString());
+                    dialog.dismiss();
+                }else{
+                    Toast.makeText(PersonInfoActivity.this, "请输入内容", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
+    }
+
+    private void showInputDialog() {
+        builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_input_layout, null, false);
+        dialogBinding = DialogInputLayoutBinding.bind(view);
+        builder.setView(view);
+        dialog = builder.create();
+        dialog.setCancelable(false);
+
+        dialogBinding.tvCancelDialog.setOnClickListener(this);
+        dialogBinding.tvSureDialog.setOnClickListener(this);
+
+        dialog.show();
+    }
+
+    private void showTimePickerView() {
+        Calendar selectedDate = Calendar.getInstance();//系统当前时间
+//        if(selectDate != null){
+//            selectedDate.setTime(new Date(selectedTime));
+//        }
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+        //正确设置方式 原因：注意事项有说明
+        startDate.set(1900,0,1);
+        //时间选择器
+        TimePickerView pvTime = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {//选中事件回调
+                //selectedTime = date.getTime();
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                LogUtil.d(TAG, "onTimeSelect: " + format.format(date));
+                if(null != userDetailBean){
+                    userDetailBean.setBirthday(format.format(date));
+                }
+            }
+        })
+                .setType(new boolean[]{true,true,true,false,false,false})
+                .setCancelText("取消")
+                .setSubmitText("确定")
+                .setContentSize(18)//滚轮文字大小
+                .setTitleSize(20)//标题文字大小
+                .setTitleText("选择日期")//标题文字
+                .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
+                .isCyclic(true)//是否循环滚动
+                .setTitleColor(Color.BLACK)//标题文字颜色
+                .setSubmitColor(Color.BLACK)//确定按钮文字颜色
+                .setCancelColor(Color.BLACK)//取消按钮文字颜色
+                //.setTitleBgColor(0xFF666666)//标题背景颜色 Night mode
+                //.setBgColor(0xFF333333)//滚轮背景颜色 Night mode
+                .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
+                .setRangDate(startDate,endDate)//起始终止年月日设定
+                .setLabel("年","月","日","时","分","秒")//默认设置为年月日时分秒
+                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .isDialog(true)//是否显示为对话框样式
+                .build();
+        pvTime.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
+        pvTime.show();
     }
 
     /**
@@ -169,16 +279,15 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
     public void getUserInfo() {
         HashMap<String,String> params = new HashMap<>();
         params.put("userId",userId);
-        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_USER_DETAIL+"/"+userId, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
+        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_USER_DETAIL+"/"+userId, ManBaRequestManager.TYPE_GET, null, new ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
                 UserDetailResultModel userDetailResultModel = new Gson().fromJson(result,UserDetailResultModel.class);
                 LogUtil.d(TAG,result);
                 LogUtil.d(TAG,new Gson().toJson(userDetailResultModel));
                 if(userDetailResultModel != null){
-                    LogUtil.d(TAG,new Gson().toJson(userDetailResultModel));
-                    LogUtil.d(TAG,new Gson().toJson(userDetailResultModel.getResult()));
-                    binding.setUserInfo(userDetailResultModel.getResult());
+                    userDetailBean = userDetailResultModel.getResult();
+                    binding.setUserInfo(userDetailBean);
                 }
             }
 
@@ -192,10 +301,8 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
     @BindingAdapter({"setUserPic"})
     public static void setUserPic(ImageView imageView, UserDetailResultModel.UserDetailBean userDetailBean){
         if(userDetailBean != null){
-            LogUtil.d(TAG,userDetailBean.getPhotoUrl());
-            Glide.with(imageView.getContext()).load(userDetailBean.getPhotoUrl()).into(imageView);
-        }else{
-            LogUtil.d(TAG,"getPhotoUrl====null");
+            Glide.with(imageView.getContext()).load(userDetailBean.getPhotoUrl())
+                    .transform(new GlideCircleTransform(imageView.getContext())).into(imageView);
         }
     }
 }

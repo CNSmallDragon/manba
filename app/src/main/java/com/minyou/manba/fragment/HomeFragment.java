@@ -1,35 +1,30 @@
 package com.minyou.manba.fragment;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.minyou.manba.R;
 import com.minyou.manba.adapter.MyViewPagerAdapter;
+import com.minyou.manba.databinding.FragmentHomeBinding;
 import com.minyou.manba.pager.BasePager;
+import com.minyou.manba.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindString;
-import butterknife.BindView;
+public class HomeFragment extends DataBindingBaseFragment implements TabLayout.OnTabSelectedListener {
 
-public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelectedListener {
+	private static final String TAG = "HomeFragment";
 	
 	private List<BasePager> tabs = new ArrayList<BasePager>();
 	private List<BaseFragment> fragments;
 
-	@BindView(R.id.tab_layou)
-	TabLayout tab_layou;
-	@BindView(R.id.pager)
-	ViewPager pager;
-
-	@BindString(R.string.home_xinxian)
-	String xinxian;
-	@BindString(R.string.home_remen)
-	String remen;
-	@BindString(R.string.home_guanzhu)
-	String guanzhu;
+	private FragmentHomeBinding binding;
 
 //	private String[] titles = new String[]{xinxian,remen,guanzhu};
 	private String[] titles;
@@ -40,42 +35,42 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 //		tabs.add(new HotPager(getActivity(), getResources().getString(R.string.home_remen)));
 //		tabs.add(new GuanZhuPager(getActivity(), getResources().getString(R.string.home_guanzhu)));
 		//循环注入标签
-		titles = new String[]{xinxian,remen,guanzhu};
+		titles = new String[]{getResources().getString(R.string.home_xinxian),getResources().getString(R.string.home_remen),getResources().getString(R.string.home_guanzhu)};
 		for(String tab:titles){
-			tab_layou.addTab(tab_layou.newTab().setText(tab));
+			LogUtil.d(TAG,tab);
+			binding.tabLayou.addTab(binding.tabLayou.newTab().setText(tab));
 		}
 	}
 
+	@Nullable
 	@Override
-	public int getContentViewId() {
-		return R.layout.fragment_home;
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
+		initView();
+		return binding.getRoot();
 	}
 
-	@Override
-	public void initView(Bundle savedInstanceState) {
-		tab_layou.setTabMode(TabLayout.MODE_FIXED);
-	}
 
-	@Override
-	public void initData(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+
+	public void initView() {
+		binding.tabLayou.setTabMode(TabLayout.MODE_FIXED);
 		initData();
 
-		tab_layou.setOnTabSelectedListener(this);
+		binding.tabLayou.setOnTabSelectedListener(this);
 		fragments = new ArrayList<BaseFragment>();
 		fragments.add(new NewFragment());
 		fragments.add(new HotFragment());
 		fragments.add(new GuanZhuFragment());
 
 		MyViewPagerAdapter adapter = new MyViewPagerAdapter(getFragmentManager(),titles,fragments);
-		pager.setAdapter(adapter);
-		tab_layou.setupWithViewPager(pager);
+		binding.pager.setAdapter(adapter);
+		binding.tabLayou.setupWithViewPager(binding.pager);
 	}
 
 
 	@Override
 	public void onTabSelected(TabLayout.Tab tab) {
-		pager.setCurrentItem(tab.getPosition());
+		binding.pager.setCurrentItem(tab.getPosition());
 	}
 
 	@Override
@@ -87,4 +82,5 @@ public class HomeFragment extends BaseFragment implements TabLayout.OnTabSelecte
 	public void onTabReselected(TabLayout.Tab tab) {
 
 	}
+
 }
