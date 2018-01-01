@@ -1,25 +1,52 @@
 package com.minyou.manba.ui.dialog;
 
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.minyou.manba.activity.BaseActivity;
+import java.lang.reflect.Field;
 
 /**
- * Created by luchunhao on 2017/12/10.
+ * Created by luchunhao on 2017/12/28.
  */
 public class BaseDialogFragment extends DialogFragment {
 
-    protected BaseActivity mActivity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActivity = (BaseActivity) getActivity();
+    }
+
+
+    public void show(FragmentManager manager, String tag) {
+        Class<?> clazz = DialogFragment.class;
+        Field mDismissed = null;
+        Field mShownByMe = null;
+        try {
+            mDismissed = clazz.getDeclaredField("mDismissed");
+            mShownByMe = clazz.getDeclaredField("mShownByMe");
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        mDismissed.setAccessible(true);
+        mShownByMe.setAccessible(true);
+
+        try {
+            mDismissed.setBoolean(this, false);
+            mShownByMe.setBoolean(this, true);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        //mDismissed = false;
+        //mShownByMe = true;
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.add(this, tag);
+        ft.commitAllowingStateLoss();
     }
 
     @Override

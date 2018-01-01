@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,36 +22,31 @@
             android:orientation="horizontal"
             android:padding="@dimen/common_to_side">
 
-            <ImageView
+            <View
                 android:layout_width="1dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="#2894FF" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/common_to_side"
                 android:text="@string/gonghui_hot"
                 android:textSize="@dimen/common_textsize" />
         </LinearLayout>
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
+        <in.srain.cube.views.ptr.PtrClassicFrameLayout
+            android:id="@+id/pcfl_refresh_sociation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-            <!--<ListView-->
-            <!--android:id="@+id/lv_gonghui_list"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:visibility="gone"-->
-            <!--android:background="@android:color/background_light">-->
-            <!--</ListView>-->
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_gonghui_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/background_light"></android.support.v7.widget.RecyclerView>
-        </android.support.v4.widget.SwipeRefreshLayout>
+        </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 
     </LinearLayout>
 </layout>

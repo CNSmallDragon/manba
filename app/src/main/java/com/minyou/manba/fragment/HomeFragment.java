@@ -22,7 +22,7 @@ public class HomeFragment extends DataBindingBaseFragment implements TabLayout.O
 	private static final String TAG = "HomeFragment";
 	
 	private List<BasePager> tabs = new ArrayList<BasePager>();
-	private List<BaseFragment> fragments;
+	private List<DataBindingBaseFragment> fragments;
 
 	private FragmentHomeBinding binding;
 
@@ -37,7 +37,6 @@ public class HomeFragment extends DataBindingBaseFragment implements TabLayout.O
 		//循环注入标签
 		titles = new String[]{getResources().getString(R.string.home_xinxian),getResources().getString(R.string.home_remen),getResources().getString(R.string.home_guanzhu)};
 		for(String tab:titles){
-			LogUtil.d(TAG,tab);
 			binding.tabLayou.addTab(binding.tabLayou.newTab().setText(tab));
 		}
 	}
@@ -57,10 +56,10 @@ public class HomeFragment extends DataBindingBaseFragment implements TabLayout.O
 		initData();
 
 		binding.tabLayou.setOnTabSelectedListener(this);
-		fragments = new ArrayList<BaseFragment>();
+		fragments = new ArrayList<DataBindingBaseFragment>();
 		fragments.add(new NewFragment());
-		fragments.add(new HotFragment());
-		fragments.add(new GuanZhuFragment());
+		fragments.add(new NewFragment());
+		fragments.add(new NewFragment());
 
 		MyViewPagerAdapter adapter = new MyViewPagerAdapter(getFragmentManager(),titles,fragments);
 		binding.pager.setAdapter(adapter);

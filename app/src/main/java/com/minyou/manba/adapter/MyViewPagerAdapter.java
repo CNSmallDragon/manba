@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.minyou.manba.fragment.BaseFragment;
+import com.minyou.manba.fragment.DataBindingBaseFragment;
 
 import java.util.List;
 
@@ -13,10 +13,10 @@ import java.util.List;
  */
 public class MyViewPagerAdapter extends FragmentPagerAdapter{
 
-    private List<BaseFragment> fragments;
+    private List<DataBindingBaseFragment> fragments;
     private String[] list = null;
 
-    public MyViewPagerAdapter(FragmentManager fm,String[] list,List<BaseFragment> fragments) {
+    public MyViewPagerAdapter(FragmentManager fm,String[] list,List<DataBindingBaseFragment> fragments) {
         super(fm);
         this.list = list;
         this.fragments = fragments;

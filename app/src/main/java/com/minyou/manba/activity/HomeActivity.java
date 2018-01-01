@@ -177,7 +177,6 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
             case R.id.rb_fayan:
                 Toast.makeText(this, "发言", Toast.LENGTH_SHORT).show();
                 if (CommonUtil.isLogin()) {
-//                    intent = new Intent(HomeActivity.this, FaBuDongTaiActivity.class);
                     intent = new Intent(HomeActivity.this, FaTieActivity.class);
                     startActivity(intent);
                 }else{

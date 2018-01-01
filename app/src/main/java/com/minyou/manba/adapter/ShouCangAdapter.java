@@ -55,7 +55,7 @@ public class ShouCangAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 glideRequest.load(bean.getUser_pic()).transform(new GlideCircleTransform(context)).into(viewHolder.iv_user_pic);
             }
             viewHolder.tv_user_name.setText(bean.getUser_name());
-            viewHolder.tv_time.setText(CommonUtil.transformTime(bean.getShouc_time()));
+            viewHolder.tv_time.setText(CommonUtil.transformTimeToMinute(bean.getShouc_time()));
             if(TextUtils.isEmpty(bean.getPub_pic())){
                 viewHolder.iv_pic.setVisibility(View.GONE);
             }else{

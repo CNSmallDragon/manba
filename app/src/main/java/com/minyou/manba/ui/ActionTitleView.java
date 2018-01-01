@@ -3,7 +3,6 @@ package com.minyou.manba.ui;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources.Theme;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -23,7 +22,7 @@ public class ActionTitleView extends LinearLayout implements OnClickListener {
 	private ImageView iv_back;
 	private Context context;
 	private TextView tv_title;
-	private ImageView iv_title_right;
+	private TextView tv_title_right;
 	private String title;
 
 	public ActionTitleView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -84,23 +83,19 @@ public class ActionTitleView extends LinearLayout implements OnClickListener {
 	/**
 	 * 设置右侧按钮显示及事件
 	 *
-	 * @param id
-	 *            传入右侧按钮要显示的resource id
-	 * @param theme
-	 *            按钮样式主题
+	 * @param what
+	 *            传入右侧按钮要显示的文字
 	 * @param listener
 	 *            按钮点击事件
 	 *
 	 */
 	@SuppressLint("NewApi")
-	public void setRightToDo(int id, Theme theme, OnClickListener listener) {
-		iv_title_right = (ImageView) view.findViewById(R.id.iv_title_right);
-		if (id == 0) {
-			iv_title_right.setVisibility(View.GONE);
-		} else {
-			iv_title_right.setVisibility(View.VISIBLE);
-			iv_title_right.setBackground(context.getResources().getDrawable(id));
-			iv_title_right.setOnClickListener(listener);
+	public void setRightToDo(String what, OnClickListener listener) {
+		tv_title_right = (TextView) view.findViewById(R.id.tv_title_right);
+		if(!TextUtils.isEmpty(what)){
+			tv_title_right.setVisibility(View.VISIBLE);
+			tv_title_right.setText(what);
+			tv_title_right.setOnClickListener(listener);
 		}
 	}
 

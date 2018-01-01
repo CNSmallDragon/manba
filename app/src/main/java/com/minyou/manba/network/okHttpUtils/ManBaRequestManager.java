@@ -262,7 +262,7 @@ public class ManBaRequestManager {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String string = response.body().string();
-                    LogUtil.e(TAG, "response ----->" + string);
+                    LogUtil.e(TAG, "response() ----->" + string);
                     if (response.isSuccessful()) {
                         successCallBack((T) string, callBack);
                     } else {
@@ -301,6 +301,7 @@ public class ManBaRequestManager {
             RequestBody body = RequestBody.create(MEDIA_TYPE_JSON, params);
             String requestUrl = String.format("%s/%s", BASE_URL, actionUrl);
             final Request request = addHeadersWithToken().url(requestUrl).post(body).build();
+            LogUtil.d("params-->",params);
             final Call call = mOkHttpClient.newCall(request);
             call.enqueue(new Callback() {
                 @Override

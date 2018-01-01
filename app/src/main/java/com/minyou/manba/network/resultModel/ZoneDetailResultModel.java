@@ -1,5 +1,10 @@
 package com.minyou.manba.network.resultModel;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
+import com.minyou.manba.BR;
+
 import java.util.List;
 
 /**
@@ -23,7 +28,7 @@ public class ZoneDetailResultModel extends BaseResultModel {
         this.result = result;
     }
 
-    public static class ZoneDetailBean {
+    public static class ZoneDetailBean extends BaseObservable{
         /**
          * id : 7
          * userId : 2
@@ -57,6 +62,9 @@ public class ZoneDetailResultModel extends BaseResultModel {
         private int sex;
         private String userPhotoUrl;
         private List<String> zoneImage;
+        private boolean follow;
+        private boolean upvote;
+        private boolean favorite;
 
         public int getId() {
             return id;
@@ -106,20 +114,24 @@ public class ZoneDetailResultModel extends BaseResultModel {
             this.guildName = guildName;
         }
 
+        @Bindable
         public int getUpvoteNum() {
             return upvoteNum;
         }
 
         public void setUpvoteNum(int upvoteNum) {
             this.upvoteNum = upvoteNum;
+            notifyPropertyChanged(BR.upvoteNum);
         }
 
+        @Bindable
         public int getFavoriteNum() {
             return favoriteNum;
         }
 
         public void setFavoriteNum(int favoriteNum) {
             this.favoriteNum = favoriteNum;
+            notifyPropertyChanged(BR.favoriteNum);
         }
 
         public int getCommentNum() {
@@ -177,5 +189,58 @@ public class ZoneDetailResultModel extends BaseResultModel {
         public void setZoneImage(List<String> zoneImage) {
             this.zoneImage = zoneImage;
         }
+
+        public boolean isFollow() {
+            return follow;
+        }
+
+        public void setFollow(boolean follow) {
+            this.follow = follow;
+        }
+
+        @Bindable
+        public boolean isFavorite() {
+            return favorite;
+        }
+
+        public void setFavorite(boolean favorite) {
+            this.favorite = favorite;
+            notifyPropertyChanged(BR.favorite);
+        }
+
+        @Bindable
+        public boolean isUpvote() {
+            return upvote;
+        }
+
+        public void setUpvote(boolean upvote) {
+            this.upvote = upvote;
+            notifyPropertyChanged(BR.upvote);
+
+        }
+
+        public ZoneListResultModel.ResultBean.ZoneListBean toZoneListBean(){
+            ZoneListResultModel.ResultBean.ZoneListBean zoneListBean = new ZoneListResultModel.ResultBean.ZoneListBean();
+
+            zoneListBean.setNickName(getNickName());
+            zoneListBean.setSex(getSex());
+            zoneListBean.setCommentNum(getCommentNum());
+            zoneListBean.setFavoriteNum(getFavoriteNum());
+            zoneListBean.setGuildId(getGuildId());
+            zoneListBean.setGuildName(getGuildName());
+            zoneListBean.setId(getId());
+            zoneListBean.setUserId(getUserId());
+            zoneListBean.setZoneContent(getZoneContent());
+            zoneListBean.setZoneImage(getZoneImage());
+            zoneListBean.setPublishTime(getPublishTime());
+            zoneListBean.setUpvoteNum(getUpvoteNum());
+            zoneListBean.setFavoriteNum(getFavoriteNum());
+            zoneListBean.setPhone(getPhone());
+            zoneListBean.setUserPhotoUrl(getUserPhotoUrl());
+
+
+            return zoneListBean;
+        }
+
     }
 }

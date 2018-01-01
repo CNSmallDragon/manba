@@ -1,60 +1,63 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.MainActivity">
-
-    <ImageView
-        android:id="@+id/iv_welcome"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="100dp"
-        android:scaleType="fitXY" />
-
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/common_to_side"
-        android:layout_marginTop="@dimen/common_to_side"
-        android:text="123"
-        android:textColor="@color/colorCommon"
-        android:background="@drawable/shape_borderline_home_grey"/>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:paddingBottom="20dp">
+        android:layout_height="match_parent"
+        tools:context=".activity.MainActivity">
 
         <ImageView
-            android:id="@+id/iv_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher" />
+            android:id="@+id/iv_welcome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="100dp"
+            android:scaleType="fitXY" />
 
         <TextView
-            android:id="@+id/tv_app_name"
+            android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/iv_logo"
-            android:textColor="@color/colorCommon"
-            android:text="@string/my_app_name" />
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/common_to_side"
+            android:layout_marginTop="@dimen/common_to_side"
+            android:background="@drawable/shape_borderline_home_grey"
+            android:text="123"
+            android:textColor="@color/colorCommon" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_toRightOf="@id/iv_logo"
-            android:layout_below="@id/tv_app_name"
-            android:textColor="@color/colorCommon"
-            android:text="@string/my_app_desc"
-            android:typeface="monospace"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:paddingBottom="20dp">
+
+            <ImageView
+                android:id="@+id/iv_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_launcher" />
+
+            <TextView
+                android:id="@+id/tv_app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/iv_logo"
+                android:text="@string/my_app_name"
+                android:textColor="@color/colorCommon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_app_name"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/iv_logo"
+                android:text="@string/my_app_desc"
+                android:textColor="@color/colorCommon"
+                android:typeface="monospace" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
-
-</RelativeLayout>
+</layout>

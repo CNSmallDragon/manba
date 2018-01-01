@@ -74,16 +74,12 @@ public class MineFragment extends DataBindingBaseFragment implements View.OnClic
         imagePicker = ImagePicker.getInstance();
         imagePicker.setImageLoader(new GlideImageLoader());
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mine, container, false);
-        if (UserManager.isLogin()) {
-            autoLogin();
-        } else {
-            binding.rlAfterLogin.setVisibility(View.GONE);
-            binding.llAfterLogin.setVisibility(View.GONE);
-            binding.rlBeforeLogin.setVisibility(View.VISIBLE);
-        }
+
         initListener();
         return binding.getRoot();
     }
+
+
 
     private void initListener() {
         binding.mineGonghui.setOnClickListener(this);
@@ -101,6 +97,9 @@ public class MineFragment extends DataBindingBaseFragment implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
+        if (UserManager.isLogin()) {
+            autoLogin();
+        }
     }
 
 
@@ -207,9 +206,9 @@ public class MineFragment extends DataBindingBaseFragment implements View.OnClic
                 glideRequest.load(qqResponseModel.getFigureurl_qq_2()).transform(new GlideCircleTransform(getActivity())).into(binding.ivUserPic);
             }
         }
-        binding.rlAfterLogin.setVisibility(View.VISIBLE);
-        binding.llAfterLogin.setVisibility(View.VISIBLE);
-        binding.rlBeforeLogin.setVisibility(View.GONE);
+//        binding.rlAfterLogin.setVisibility(View.VISIBLE);
+//        binding.llAfterLogin.setVisibility(View.VISIBLE);
+//        binding.rlBeforeLogin.setVisibility(View.GONE);
     }
 
 

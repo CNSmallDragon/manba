@@ -146,7 +146,7 @@ public class NewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             // 加载内容
             mItemViewHolder.tv_content_desc.setText(zoneList.get(position).getZoneContent());
             // 加载次数
-            mItemViewHolder.tv_content_fenxiang.setText((int) (Math.random() * 100) + "");
+            mItemViewHolder.tv_content_fenxiang.setText(zoneList.get(position).getLookNum()+"");
             mItemViewHolder.tv_content_zan.setText(zoneList.get(position).getUpvoteNum() + "");
             mItemViewHolder.tv_content_comment.setText(zoneList.get(position).getCommentNum() + "");
             // 设置点击事件
@@ -170,17 +170,18 @@ public class NewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             });
 
             // 点击分享按钮
-            mItemViewHolder.tv_content_fenxiang.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(context, "点击分享", Toast.LENGTH_SHORT).show();
-                }
-            });
+//            mItemViewHolder.tv_content_fenxiang.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Toast.makeText(context, "点击分享", Toast.LENGTH_SHORT).show();
+//                }
+//            });
             // 点击赞按钮
             mItemViewHolder.tv_content_zan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(context, "点击赞按钮", Toast.LENGTH_SHORT).show();
+                    //ManBaRequestManager.getInstance().requestAsyn()
                 }
             });
             // 点击评论按钮

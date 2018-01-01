@@ -1,7 +1,11 @@
 package com.minyou.manba.network.resultModel;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.minyou.manba.BR;
 
 import java.util.List;
 
@@ -82,7 +86,7 @@ public class ZoneListResultModel extends BaseResultModel {
             this.resultList = resultList;
         }
 
-        public static class ZoneListBean implements Parcelable {
+        public static class ZoneListBean extends BaseObservable implements Parcelable {
             /**
              * id : 1
              * userId : 1
@@ -98,6 +102,8 @@ public class ZoneListResultModel extends BaseResultModel {
              * nickName
              * sex
              * userPhotoUrl
+             * follow       是否收藏
+             * upvote       是否点赞
              *
              */
 
@@ -110,11 +116,18 @@ public class ZoneListResultModel extends BaseResultModel {
             private int upvoteNum;
             private int favoriteNum;
             private int commentNum;
+            private int lookNum;
             private List<String> zoneImage;
             private String phone;
             private String nickName;
             private int sex;
             private String userPhotoUrl;
+            private boolean follow;
+            private boolean upvote;
+
+            public ZoneListBean(){
+
+            }
 
             protected ZoneListBean(Parcel in) {
                 id = in.readInt();
@@ -126,11 +139,14 @@ public class ZoneListResultModel extends BaseResultModel {
                 upvoteNum = in.readInt();
                 favoriteNum = in.readInt();
                 commentNum = in.readInt();
+                lookNum = in.readInt();
                 zoneImage = in.createStringArrayList();
                 phone = in.readString();
                 nickName = in.readString();
                 sex = in.readInt();
                 userPhotoUrl = in.readString();
+                follow = in.readByte() != 0;
+                upvote = in.readByte() != 0;
             }
 
             public static final Creator<ZoneListBean> CREATOR = new Creator<ZoneListBean>() {
@@ -177,7 +193,7 @@ public class ZoneListResultModel extends BaseResultModel {
                 this.publishTime = publishTime;
             }
 
-            public Object getGuildId() {
+            public int getGuildId() {
                 return guildId;
             }
 
@@ -193,12 +209,14 @@ public class ZoneListResultModel extends BaseResultModel {
                 this.guildName = guildName;
             }
 
+            @Bindable
             public int getUpvoteNum() {
                 return upvoteNum;
             }
 
             public void setUpvoteNum(int upvoteNum) {
                 this.upvoteNum = upvoteNum;
+                notifyPropertyChanged(BR.upvoteNum);
             }
 
             public int getFavoriteNum() {
@@ -215,6 +233,14 @@ public class ZoneListResultModel extends BaseResultModel {
 
             public void setCommentNum(int commentNum) {
                 this.commentNum = commentNum;
+            }
+
+            public int getLookNum() {
+                return lookNum;
+            }
+
+            public void setLookNum(int lookNum) {
+                this.lookNum = lookNum;
             }
 
             public List<String> getZoneImage() {
@@ -257,6 +283,26 @@ public class ZoneListResultModel extends BaseResultModel {
                 this.userPhotoUrl = userPhotoUrl;
             }
 
+            @Bindable
+            public boolean isUpvote() {
+                return upvote;
+            }
+
+            public void setUpvote(boolean upvote) {
+                this.upvote = upvote;
+                notifyPropertyChanged(BR.upvote);
+            }
+
+            @Bindable
+            public boolean isFollow() {
+                return follow;
+            }
+
+            public void setFollow(boolean follow) {
+                this.follow = follow;
+                notifyPropertyChanged(BR.follow);
+            }
+
             @Override
             public int describeContents() {
                 return 0;
@@ -273,11 +319,14 @@ public class ZoneListResultModel extends BaseResultModel {
                 dest.writeInt(upvoteNum);
                 dest.writeInt(favoriteNum);
                 dest.writeInt(commentNum);
+                dest.writeInt(lookNum);
                 dest.writeStringList(zoneImage);
                 dest.writeString(phone);
                 dest.writeString(nickName);
                 dest.writeInt(sex);
                 dest.writeString(userPhotoUrl);
+                dest.writeByte((byte) (follow ? 1 : 0));
+                dest.writeByte((byte) (upvote ? 1 : 0));
             }
         }
     }

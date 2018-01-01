@@ -59,6 +59,18 @@ public class UserDetailResultModel extends BaseResultModel {
         private String weixin;
         private List<RolesBean> roles;
         private String birthday;
+        private String signName;
+
+        @Bindable
+        public String getSignName() {
+            return signName;
+
+        }
+
+        public void setSignName(String signName) {
+            this.signName = signName;
+            notifyPropertyChanged(BR.signName);
+        }
 
         public String getMvpPin() {
             return mvpPin;
@@ -118,12 +130,14 @@ public class UserDetailResultModel extends BaseResultModel {
             this.refreshToken = refreshToken;
         }
 
+        @Bindable
         public int getSex() {
             return sex;
         }
 
         public void setSex(int sex) {
             this.sex = sex;
+            notifyPropertyChanged(BR.sex);
         }
 
         public String getToken() {

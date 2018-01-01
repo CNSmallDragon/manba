@@ -11,6 +11,8 @@ import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import com.minyou.manba.Appconstant;
 
@@ -75,6 +77,29 @@ public class CommonUtil {
         return dm.heightPixels;
     }
 
+    /**
+     * 打卡软键盘
+     *
+     * @param mEditText 输入框
+     * @param mContext  上下文
+     */
+    public static void openKeybord(EditText mEditText, Context mContext) {
+        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mEditText, InputMethodManager.RESULT_SHOWN);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+    }
+
+    /**
+     * 关闭软键盘
+     *
+     * @param mEditText 输入框
+     * @param mContext  上下文
+     */
+    public static void closeKeybord(EditText mEditText, Context mContext) {
+        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
+    }
+
 
     /**
      * 根据手机的分辨率从 dip 的单位 转成为 px(像素)
@@ -97,8 +122,19 @@ public class CommonUtil {
      * @param time
      * @return   要转换成的类型 "yy/MM/dd HH:mm"
      */
-    public static String transformTime(long time){
+    public static String transformTimeToMinute(long time){
         SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd HH:mm");
+        Date date = new Date(time);
+        return format.format(date);
+    }
+
+    /**
+     * 将long类型时间转换为String
+     * @param time
+     * @return   要转换成的类型 "yyyy-MM-dd"
+     */
+    public static String transformTimeToDay(long time){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(time);
         return format.format(date);
     }

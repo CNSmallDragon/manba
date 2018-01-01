@@ -3,6 +3,7 @@
 
     <item android:drawable="@drawable/home_icon_zan_pre" android:state_pressed="true"></item>
     <item android:drawable="@drawable/home_icon_zan_pre" android:state_selected="true"></item>
+    <item android:drawable="@drawable/home_icon_zan_pre" android:state_checked="true"></item>
     <item android:drawable="@drawable/home_icon_zan"></item>
 
 </selector>

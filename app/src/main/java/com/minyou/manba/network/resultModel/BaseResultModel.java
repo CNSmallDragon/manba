@@ -1,9 +1,13 @@
 package com.minyou.manba.network.resultModel;
 
+import android.databinding.BaseObservable;
+
+import java.io.Serializable;
+
 /**
  * Created by luchunhao on 2017/12/13.
  */
-public class BaseResultModel {
+public class BaseResultModel extends BaseObservable implements Serializable {
 
     protected String code;
     protected String msg;

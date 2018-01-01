@@ -21,7 +21,7 @@ import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.adapter.ChooseSociationAdapter;
 import com.minyou.manba.adapter.ImagePickerAdapter;
-import com.minyou.manba.dialog.SelectDialog;
+import com.minyou.manba.ui.dialog.SelectDialog;
 import com.minyou.manba.network.okhttputils.ManBaRequestManager;
 import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
 import com.minyou.manba.network.okhttputils.ReqCallBack;
@@ -136,7 +136,7 @@ public class FaTieActivity extends AppCompatActivity implements ImagePickerAdapt
     private void initWidget() {
         // 初始化头部信息
         actTitle.setTitle(getResources().getString(R.string.fabu_dongtai));
-        actTitle.setRightToDo(R.drawable.details_icon_guanzhu, null, new View.OnClickListener() {
+        actTitle.setRightToDo(getResources().getString(R.string.fabu_publish), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // 发布帖子

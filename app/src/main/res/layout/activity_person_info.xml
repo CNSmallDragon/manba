@@ -122,7 +122,7 @@
                         android:drawablePadding="@dimen/common_to_side"
                         android:gravity="center"
                         android:text="@string/regist_woman"
-                        android:checked="@{userInfo.sex == 0 ? true : false}"
+                        android:checked="@{userInfo.sex == 2 ? true : false}"
                         android:textColor="@color/bottom_text_color_women" />
                 </LinearLayout>
 
@@ -183,7 +183,7 @@
                         android:id="@+id/user_sign"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/setting_user_notset" />
+                        android:text="@{TextUtils.isEmpty(userInfo.signName) ? @string/setting_user_notset : userInfo.signName}" />
 
                 </LinearLayout>
 

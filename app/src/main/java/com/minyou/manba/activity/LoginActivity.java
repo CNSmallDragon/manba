@@ -180,6 +180,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void login() {
+        loading();
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
 //                .add(Appconstant.Config.LOGIN_YPTE,Appconstant.Config.LOGIN_YPTE_NORMAL)
@@ -223,7 +224,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 } else if (userLoginModel.getCode().equals("14")) {        // 用户不存在
 
                 }
-
+                cancelLoading();
             }
         });
     }

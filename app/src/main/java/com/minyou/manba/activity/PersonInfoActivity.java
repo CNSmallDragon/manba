@@ -4,10 +4,7 @@ import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -23,14 +20,15 @@ import com.lzy.imagepicker.view.CropImageView;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.databinding.ActivityPersonInfoBinding;
-import com.minyou.manba.databinding.DialogInputLayoutBinding;
 import com.minyou.manba.event.EventInfo;
 import com.minyou.manba.imageloader.GlideImageLoader;
 import com.minyou.manba.network.okhttputils.ManBaRequestManager;
 import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
 import com.minyou.manba.network.okhttputils.ReqCallBack;
+import com.minyou.manba.network.resultModel.BaseResultModel;
 import com.minyou.manba.network.resultModel.UserDetailResultModel;
 import com.minyou.manba.network.resultModel.UserLoginResultModel;
+import com.minyou.manba.ui.dialog.OneEditDialog;
 import com.minyou.manba.ui.view.GlideCircleTransform;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
@@ -60,9 +58,6 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
 
     private String userId;
     private long selectedTime;
-    private AlertDialog.Builder builder;
-    private AlertDialog dialog;
-    private DialogInputLayoutBinding dialogBinding;
 
     private UserDetailResultModel.UserDetailBean userDetailBean;
 
@@ -74,7 +69,7 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
         imagePicker = ImagePicker.getInstance();
         imagePicker.setImageLoader(new GlideImageLoader());
         Intent intent = getIntent();
-        if(intent == null){
+        if (intent == null) {
             Toast.makeText(PersonInfoActivity.this, "传入ID为空", Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -84,7 +79,6 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
     }
 
 
-
     private void initListener() {
         binding.rbSexMan.setOnClickListener(this);
         binding.rbSexWomen.setOnClickListener(this);
@@ -92,16 +86,20 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
         binding.llUserNickName.setOnClickListener(this);
         binding.llUserBirthday.setOnClickListener(this);
         binding.llUserSign.setOnClickListener(this);
+
+        binding.atvTitle.setRightToDo(getString(R.string.setting_save),this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_user_pic:
                 chooseHeadPid();
+
                 break;
             case R.id.ll_user_nick_name:
-                showInputDialog();
+                //showInputDialog();
+                showEditNickNameDialog();
                 break;
             case R.id.ll_user_birthday:
 //                String currentDateStr = userDetailBean.getBirthday();
@@ -118,45 +116,99 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
                 showTimePickerView();
                 break;
             case R.id.ll_user_sign:
-
+                showEditSignDialog();
                 break;
             case R.id.rb_sex_man:
-                binding.rbSexMan.setChecked(true);
-                binding.rbSexWomen.setChecked(false);
+                userDetailBean.setSex(1);
+//                binding.rbSexMan.setChecked(true);
+//                binding.rbSexWomen.setChecked(false);
                 break;
             case R.id.rb_sex_women:
-                binding.rbSexWomen.setChecked(true);
-                binding.rbSexMan.setChecked(false);
+                userDetailBean.setSex(2);
+//                binding.rbSexWomen.setChecked(true);
+//                binding.rbSexMan.setChecked(false);
                 break;
-            case R.id.tv_cancel_dialog:    // 关闭dialog
-                dialog.dismiss();
-                break;
-            case R.id.tv_sure_dialog:
-                // 输入密码后登录校验
-                if (!TextUtils.isEmpty(dialogBinding.etInputText.getText().toString())) {
-                    userDetailBean.setNickName(dialogBinding.etInputText.getText().toString());
-                    dialog.dismiss();
-                }else{
-                    Toast.makeText(PersonInfoActivity.this, "请输入内容", Toast.LENGTH_SHORT).show();
-                }
+
+            case R.id.tv_title_right:       // 保存
+                savePersonInfo();
                 break;
         }
     }
 
-    private void showInputDialog() {
-        builder = new AlertDialog.Builder(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_input_layout, null, false);
-        dialogBinding = DialogInputLayoutBinding.bind(view);
-        builder.setView(view);
-        dialog = builder.create();
-        dialog.setCancelable(false);
 
-        dialogBinding.tvCancelDialog.setOnClickListener(this);
-        dialogBinding.tvSureDialog.setOnClickListener(this);
+     private void savePersonInfo() {
+         HashMap<String,String> params = new HashMap<>();
+         params.put("userId",userId);
+         params.put("nickName",userDetailBean.getNickName());
+         params.put("sex",userDetailBean.getSex()+"");
+         params.put("birthday",userDetailBean.getBirthday());
+         params.put("signName",userDetailBean.getSignName());
 
-        dialog.show();
+         ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_POST_USER_UPDATE, ManBaRequestManager.TYPE_POST_JSON, params, new ReqCallBack<String>() {
+             @Override
+             public void onReqSuccess(String result) {
+                 BaseResultModel resultModel = new Gson().fromJson(result,BaseResultModel.class);
+                 if(resultModel != null && resultModel.getCode().equals("0")){
+                     // 成功
+                     EventInfo eventInfo = new EventInfo();
+                     eventInfo.setType(EventInfo.SETTING_USER_INFO);
+                     UserLoginResultModel.ResultBean bean = new UserLoginResultModel.ResultBean();
+                     bean.setNickName(userDetailBean.getNickName());
+                     eventInfo.setData(bean);
+                     EventBus.getDefault().post(eventInfo);
+                     finish();
+                 }
+             }
+
+             @Override
+             public void onReqFailed(String errorMsg) {
+
+             }
+         });
+
     }
 
+    // 设置用户昵称
+    private void showEditNickNameDialog() {
+        final OneEditDialog dialog = new OneEditDialog(this);
+        dialog.show();
+        dialog.setHintText(getResources().getString(R.string.setting_input_hint));
+        dialog.setLeftButton(getResources().getString(R.string.cancel), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setRightButton(getResources().getString(R.string.ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userDetailBean.setNickName(dialog.getInputString());
+                dialog.dismiss();
+            }
+        });
+    }
+
+    // 设置用户签名
+    private void showEditSignDialog() {
+        final OneEditDialog dialog = new OneEditDialog(this);
+        dialog.show();
+        dialog.setHintText(getResources().getString(R.string.setting_input_hint));
+        dialog.setLeftButton(getResources().getString(R.string.cancel), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setRightButton(getResources().getString(R.string.ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userDetailBean.setSignName(dialog.getInputString());
+                dialog.dismiss();
+            }
+        });
+    }
+
+    // 设置用户生日
     private void showTimePickerView() {
         Calendar selectedDate = Calendar.getInstance();//系统当前时间
 //        if(selectDate != null){
@@ -165,7 +217,7 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
         Calendar startDate = Calendar.getInstance();
         Calendar endDate = Calendar.getInstance();
         //正确设置方式 原因：注意事项有说明
-        startDate.set(1900,0,1);
+        startDate.set(1900, 0, 1);
         //时间选择器
         TimePickerView pvTime = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
             @Override
@@ -173,12 +225,12 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
                 //selectedTime = date.getTime();
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                 LogUtil.d(TAG, "onTimeSelect: " + format.format(date));
-                if(null != userDetailBean){
+                if (null != userDetailBean) {
                     userDetailBean.setBirthday(format.format(date));
                 }
             }
         })
-                .setType(new boolean[]{true,true,true,false,false,false})
+                .setType(new boolean[]{true, true, true, false, false, false})
                 .setCancelText("取消")
                 .setSubmitText("确定")
                 .setContentSize(18)//滚轮文字大小
@@ -192,8 +244,8 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
                 //.setTitleBgColor(0xFF666666)//标题背景颜色 Night mode
                 //.setBgColor(0xFF333333)//滚轮背景颜色 Night mode
                 .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
-                .setRangDate(startDate,endDate)//起始终止年月日设定
-                .setLabel("年","月","日","时","分","秒")//默认设置为年月日时分秒
+                .setRangDate(startDate, endDate)//起始终止年月日设定
+                .setLabel("年", "月", "日", "时", "分", "秒")//默认设置为年月日时分秒
                 .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
                 .isDialog(true)//是否显示为对话框样式
                 .build();
@@ -216,7 +268,7 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
         imagePicker.setOutPutY(800);
 
         Intent intent = new Intent(PersonInfoActivity.this, ImageGridActivity.class);
-        intent.putExtra(ImageGridActivity.EXTRAS_IMAGES,images);
+        intent.putExtra(ImageGridActivity.EXTRAS_IMAGES, images);
         startActivityForResult(intent, HEAD_PIC);
     }
 
@@ -225,10 +277,10 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case HEAD_PIC:
-                if(resultCode == ImagePicker.RESULT_CODE_ITEMS && data != null){
+                if (resultCode == ImagePicker.RESULT_CODE_ITEMS && data != null) {
                     images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                     // 只有一个
-                    if(images.size() > 0){  // 返回成功
+                    if (images.size() > 0) {  // 返回成功
                         String picUrl = images.get(0).path;
                         uploadHeadPhoto(picUrl);
                     }
@@ -239,22 +291,23 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
 
     /**
      * 上传用户头像
+     *
      * @param picUrl
      */
     private void uploadHeadPhoto(final String picUrl) {
-        LogUtil.d(TAG,"picUrl==="+picUrl);
+        LogUtil.d(TAG, "picUrl===" + picUrl);
         List<File> zoneFile = new ArrayList<File>();
         File file = new File(picUrl);
-        if(!file.exists()){
+        if (!file.exists()) {
             return;
         }
         zoneFile.add(file);
         loading();
         String userID = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID);
-        HashMap<String,Object> params = new HashMap<>();
+        HashMap<String, Object> params = new HashMap<>();
         params.put(Appconstant.User.USER_ID, userID);
-        params.put("file",zoneFile);
-        ManBaRequestManager.getInstance().upLoadFile(OkHttpServiceApi.HTTP_USER_UPLOAD_PHOTO+"/"+userID, params, new ReqCallBack<String>() {
+        params.put("file", zoneFile);
+        ManBaRequestManager.getInstance().upLoadFile(OkHttpServiceApi.HTTP_USER_UPLOAD_PHOTO + "/" + userID, params, new ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
                 cancelLoading();
@@ -277,15 +330,15 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
     }
 
     public void getUserInfo() {
-        HashMap<String,String> params = new HashMap<>();
-        params.put("userId",userId);
-        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_USER_DETAIL+"/"+userId, ManBaRequestManager.TYPE_GET, null, new ReqCallBack<String>() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("userId", userId);
+        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_USER_DETAIL + "/" + userId, ManBaRequestManager.TYPE_GET, null, new ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
-                UserDetailResultModel userDetailResultModel = new Gson().fromJson(result,UserDetailResultModel.class);
-                LogUtil.d(TAG,result);
-                LogUtil.d(TAG,new Gson().toJson(userDetailResultModel));
-                if(userDetailResultModel != null){
+                UserDetailResultModel userDetailResultModel = new Gson().fromJson(result, UserDetailResultModel.class);
+                LogUtil.d(TAG, result);
+                LogUtil.d(TAG, new Gson().toJson(userDetailResultModel));
+                if (userDetailResultModel != null) {
                     userDetailBean = userDetailResultModel.getResult();
                     binding.setUserInfo(userDetailBean);
                 }
@@ -299,8 +352,8 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
     }
 
     @BindingAdapter({"setUserPic"})
-    public static void setUserPic(ImageView imageView, UserDetailResultModel.UserDetailBean userDetailBean){
-        if(userDetailBean != null){
+    public static void setUserPic(ImageView imageView, UserDetailResultModel.UserDetailBean userDetailBean) {
+        if (userDetailBean != null) {
             Glide.with(imageView.getContext()).load(userDetailBean.getPhotoUrl())
                     .transform(new GlideCircleTransform(imageView.getContext())).into(imageView);
         }

@@ -1,4 +1,4 @@
-package com.minyou.manba.dialog;
+package com.minyou.manba.ui.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;

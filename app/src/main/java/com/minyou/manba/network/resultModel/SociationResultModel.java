@@ -83,7 +83,7 @@ public class SociationResultModel extends BaseResultModel {
              * id : 3
              * guildName : 我的公会
              * memberNum : 20
-             * liveness : null
+             * liveness : null          活跃度
              * guildPhoto : null
              * declaration : 测试
              * createUser : 1
@@ -95,12 +95,12 @@ public class SociationResultModel extends BaseResultModel {
             private int id;
             private String guildName;
             private int memberNum;
-            private Object liveness;
+            private int liveness;
             private String guildPhoto;
             private String declaration;
             private int createUser;
             private long createTime;
-            private Object updateTime;
+            private long updateTime;
             private int yn;
             private boolean isChecked = false;
 
@@ -128,11 +128,11 @@ public class SociationResultModel extends BaseResultModel {
                 this.memberNum = memberNum;
             }
 
-            public Object getLiveness() {
+            public int getLiveness() {
                 return liveness;
             }
 
-            public void setLiveness(Object liveness) {
+            public void setLiveness(int liveness) {
                 this.liveness = liveness;
             }
 
@@ -168,11 +168,11 @@ public class SociationResultModel extends BaseResultModel {
                 this.createTime = createTime;
             }
 
-            public Object getUpdateTime() {
+            public long getUpdateTime() {
                 return updateTime;
             }
 
-            public void setUpdateTime(Object updateTime) {
+            public void setUpdateTime(long updateTime) {
                 this.updateTime = updateTime;
             }
 

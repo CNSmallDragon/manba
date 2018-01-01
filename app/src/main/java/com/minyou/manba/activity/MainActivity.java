@@ -1,9 +1,9 @@
 package com.minyou.manba.activity;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -11,15 +11,13 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
+import com.minyou.manba.databinding.ActivityMainBinding;
 import com.minyou.manba.manager.UserManager;
 import com.minyou.manba.network.api.ManBaApi;
 import com.minyou.manba.network.resultModel.UserLoginResultModel;
@@ -29,9 +27,6 @@ import com.minyou.manba.util.SharedPreferencesUtil;
 import java.io.IOException;
 import java.util.Random;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -40,7 +35,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends DataBindingBaseActivity implements OnClickListener {
 
     private static final String TAG = "MainActivity";
     private String[] ads = {"http://chatm-icon.oss-cn-beijing.aliyuncs.com/pic/pic_20171109135437541.png",
@@ -51,28 +46,22 @@ public class MainActivity extends Activity implements OnClickListener {
     private static final String PHONE = "username";
     private static final String PASSWORD = "password";
 
+    private ActivityMainBinding binding;
+
     // 总倒计时时间
     private static final long MILLIS_IN_FUTURE = 5 * 1000;
     // 每次减去1秒
     private static final long COUNT_DOWN_INTERVAL = 1000;
 
     private static final long WAIT_HOME = 3000;
-    private Unbinder unbinder;
-    @BindView(R.id.iv_welcome)
-    ImageView iv_welcome;
-    @BindView(R.id.tv_time)
-    TextView tv_time;
 
     private String picUrl;
     private String lastLoginType;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+    public void setContentViewAndBindData() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_main);
-        unbinder = ButterKnife.bind(this);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
         // 计算屏幕宽高
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
@@ -102,9 +91,17 @@ public class MainActivity extends Activity implements OnClickListener {
         Glide.with(this)
                 .load(picUrl)
                 .override(width,height)
-                .into(iv_welcome);
+                .into(binding.ivWelcome);
 
         startCountDown();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+
 
         // 延时3s进入主界面
 //        new Thread(){
@@ -121,6 +118,8 @@ public class MainActivity extends Activity implements OnClickListener {
 //        }.start();
     }
 
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -134,6 +133,9 @@ public class MainActivity extends Activity implements OnClickListener {
         // 判断用户是否登陆未登录跳转登陆界面
         if(UserManager.isLogin()){
             autoLogin();
+            // 进入主界面
+            //Intent intent = new Intent(MainActivity.this,HomeActivity.class);
+            //startActivity(intent);
         }else{
             Intent intent = new Intent(MainActivity.this,LoginActivity.class);
             startActivity(intent);
@@ -214,7 +216,7 @@ public class MainActivity extends Activity implements OnClickListener {
             @Override
             public void onTick(long millisUntilFinished) {
                 // 刷新文字
-                tv_time.setText(getResources().getString(R.string.home_pass, millisUntilFinished / COUNT_DOWN_INTERVAL - 1));
+                binding.tvTime.setText(getResources().getString(R.string.home_pass, millisUntilFinished / COUNT_DOWN_INTERVAL - 1));
             }
 
             @Override
@@ -231,6 +233,5 @@ public class MainActivity extends Activity implements OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
     }
 }
