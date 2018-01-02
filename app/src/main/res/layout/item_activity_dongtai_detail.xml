@@ -115,5 +115,57 @@
             android:layout_height="wrap_content"
             app:maxRowCount="1"></com.minyou.manba.ui.view.MultiImageView>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_to_top"
+            android:background="@android:color/background_light"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/common_to_side">
+
+            <TextView
+                android:id="@+id/tv_count_zan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableBottom="@drawable/details_icon_zan"
+                android:textSize="@dimen/small_textsize" />
+
+            <LinearLayout
+                android:id="@+id/ll_zan_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/common_to_side"
+                android:layout_weight="1"
+                android:orientation="horizontal" />
+
+            <ImageView
+                android:id="@+id/iv_more"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/common_to_side"
+                android:layout_marginRight="@dimen/common_to_side"
+                android:src="@drawable/details_icon_more" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_to_side"
+            android:background="@color/aliceblue" />
+
+        <TextView
+            android:id="@+id/all_reply_num_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="@dimen/common_to_side"
+            android:text="@string/comment_number"
+            android:textSize="16dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_to_side"
+            android:background="@color/aliceblue" />
+
     </LinearLayout>
 </layout>

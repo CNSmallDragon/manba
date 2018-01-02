@@ -129,6 +129,22 @@ public class CommonUtil {
     }
 
     /**
+     * 将时间转换为String，评论用
+     * @param commentTime
+     * @return
+     */
+    public static String transformTimeToComment(long commentTime){
+        SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd HH:mm");
+        Date commentDate = new Date(commentTime);
+        long currentTime = System.currentTimeMillis();
+        if((currentTime - commentTime) < 1000 * 60 * 60){     // 毫秒单位，一小时以内
+            int a = (int) ((currentTime - commentTime) / 1000 * 60);
+        }
+
+        return format.format(commentDate);
+    }
+
+    /**
      * 将long类型时间转换为String
      * @param time
      * @return   要转换成的类型 "yyyy-MM-dd"

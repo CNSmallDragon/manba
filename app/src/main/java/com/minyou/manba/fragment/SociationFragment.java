@@ -9,15 +9,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.BR;
 import com.minyou.manba.R;
 import com.minyou.manba.activity.SociationDetailActivity;
-import com.minyou.manba.adapter.SociationListAdapter;
-import com.minyou.manba.adapter.SociationRecyclerAdapter;
 import com.minyou.manba.adapter.mvvm.MyMvvmAdapter;
 import com.minyou.manba.databinding.FragmentGonghuiBinding;
 import com.minyou.manba.network.okhttputils.ManBaRequestManager;
@@ -43,14 +40,12 @@ public class SociationFragment extends DataBindingBaseFragment {
     private int pageSize = 20;
     private int pageNo = 1;
 
-    private ListView lv_gonghui_list;
-    private SociationListAdapter adapter;
-    private SociationRecyclerAdapter mRecyclerAdapter;
     private List<SociationResultModel.ResultBean.SociationResultBean> sociationList;
     private MyMvvmAdapter<SociationResultModel.ResultBean.SociationResultBean> myMvvmAdapter;
     private LinearLayoutManager layoutManager;
 
     private FragmentGonghuiBinding binding;
+    private View footView;
 
     @Nullable
     @Override
@@ -101,7 +96,8 @@ public class SociationFragment extends DataBindingBaseFragment {
         myMvvmAdapter = new MyMvvmAdapter<>(getActivity(), sociationList, R.layout.item_gonghui_list, BR.SociationBean);
         // 底部刷新控件
         binding.pcflRefreshSociation.setHeaderView(new DefalutRefreshView(getActivity()));
-        binding.pcflRefreshSociation.setFooterView(new DefalutRefreshView(getActivity()));
+        footView = new DefalutRefreshView(getActivity());
+        binding.pcflRefreshSociation.setFooterView(footView);
         layoutManager = new LinearLayoutManager(getActivity()) {
 
         };
@@ -124,6 +120,7 @@ public class SociationFragment extends DataBindingBaseFragment {
                     sociationList.addAll(sociationResultModel.getResult().getResultList());
                     myMvvmAdapter.notifyDataSetChanged();
                 }
+                footView.setVisibility(View.GONE);
                 binding.pcflRefreshSociation.refreshComplete();
             }
 
