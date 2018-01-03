@@ -20,15 +20,18 @@ public class ActionTitleView extends LinearLayout implements OnClickListener {
 	private static final String TAG = "ActionTitleView";
 	private LinearLayout view;
 	private ImageView iv_back;
+	private View viewLine;
 	private Context context;
 	private TextView tv_title;
 	private TextView tv_title_right;
 	private String title;
+	private boolean isShowBorderLine = false;
 
 	public ActionTitleView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.ActionTitle);
 		title = typedArray.getString(R.styleable.ActionTitle_titleText);
+		isShowBorderLine = typedArray.getBoolean(R.styleable.ActionTitle_borderLine,false);
 		typedArray.recycle();
 		this.context = context;
 		view = (LinearLayout) LinearLayout.inflate(context, R.layout.view_action_title, this);
@@ -46,6 +49,12 @@ public class ActionTitleView extends LinearLayout implements OnClickListener {
 
 	private void init() {
 		tv_title = (TextView) view.findViewById(R.id.tv_title);
+		viewLine = view.findViewById(R.id.titlebar_line);
+		if(isShowBorderLine){
+			viewLine.setVisibility(View.VISIBLE);
+		}else{
+			viewLine.setVisibility(View.GONE);
+		}
 		if(TextUtils.isEmpty(title)){
 			tv_title.setVisibility(View.GONE);
 		}else{

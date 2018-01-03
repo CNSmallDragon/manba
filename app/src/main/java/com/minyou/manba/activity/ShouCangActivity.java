@@ -1,12 +1,13 @@
 package com.minyou.manba.activity;
 
-import android.os.Bundle;
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.minyou.manba.R;
 import com.minyou.manba.adapter.ShouCangAdapter;
 import com.minyou.manba.bean.ShouCangBean;
+import com.minyou.manba.databinding.ActivityShoucangBinding;
 import com.minyou.manba.ui.ActionTitleView;
 import com.minyou.manba.ui.RefreshItemDecoration;
 
@@ -18,7 +19,7 @@ import butterknife.BindView;
 /**
  * Created by Administrator on 2017/11/28.
  */
-public class ShouCangActivity extends BaseActivity {
+public class ShouCangActivity extends DataBindingBaseActivity {
 
     @BindView(R.id.atv_title)
     ActionTitleView atv_title;
@@ -28,14 +29,16 @@ public class ShouCangActivity extends BaseActivity {
     private List<ShouCangBean> list = new ArrayList<>();
     private ShouCangAdapter mAdapter;
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.activity_shoucang;
-    }
+    private ActivityShoucangBinding binding;
 
     @Override
-    public void initView(Bundle savedInstanceState) {
-        atv_title.setTitle(getResources().getString(R.string.my_shoucang));
+    public void setContentViewAndBindData() {
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_shoucang);
+        initView();
+    }
+
+
+    public void initView() {
         initData();
         mAdapter = new ShouCangAdapter(this,list);
         rv_shoucang.setLayoutManager(new LinearLayoutManager(this));
@@ -50,5 +53,6 @@ public class ShouCangActivity extends BaseActivity {
         bean.setPub_content(getResources().getString(R.string.test_more));
         list.add(bean);
     }
+
 
 }

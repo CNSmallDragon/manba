@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <data>
-
-        <variable
-            name="CommentItemBean"
-            type="com.minyou.manba.network.resultModel.CommentListResultModel.ResultBean.CommentItemBean" />
-
-        <import type="com.minyou.manba.util.DateFormatUtil" />
-
-        <import type="java.lang.String" />
-
-        <import type="android.view.View" />
-    </data>
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,24 +17,27 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:gravity="center_vertical"
-            android:padding="@dimen/common_to_side">
+            android:paddingLeft="@dimen/common_to_side"
+            android:paddingRight="@dimen/common_to_side"
+            android:paddingTop="@dimen/common_to_side">
 
             <ImageView
                 android:id="@+id/list_head_image"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:src="@drawable/login_icon_qq"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true" />
+                android:layout_alignParentStart="true"/>
 
             <TextView
                 android:id="@+id/list_name_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
                 android:layout_marginLeft="@dimen/dongtai_common_left"
-                android:text="@{CommentItemBean.nickName}"
-                android:textSize="@dimen/common_textsize" />
+                android:text="张三"
+                android:textSize="@dimen/common_textsize"
+                android:layout_alignParentTop="true"/>
 
             <!--  放会员等级  -->
             <ImageView
@@ -55,42 +45,37 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_marginLeft="@dimen/common_to_side"
-                android:layout_toRightOf="@+id/list_name_text" />
+                android:layout_toRightOf="@+id/list_name_text"/>
 
-            <!-- 楼层数 -->
             <TextView
                 android:id="@+id/tv_floor_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="@{String.format(@string/comment_floor,CommentItemBean.commentId)}"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="@dimen/small_textsize" />
+                android:text="3楼"
+                android:textSize="@dimen/small_textsize"/>
 
-            <!-- 回复内容 -->
             <TextView
                 android:id="@+id/list_info_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/list_name_text"
-                android:layout_marginLeft="@dimen/dongtai_common_left"
-                android:layout_marginTop="@dimen/common_to_side"
                 android:lineSpacingExtra="3dp"
-                android:text="@{CommentItemBean.content}"
-                android:textSize="@dimen/common_textsize" />
+                android:layout_marginTop="@dimen/common_to_side"
+                android:layout_marginLeft="@dimen/dongtai_common_left"
+                android:text="这是一条评论"
+                android:textSize="@dimen/common_textsize"
+                android:layout_below="@+id/list_name_text" />
 
-            <!-- 回复日期 -->
             <TextView
                 android:id="@+id/list_date_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/list_name_text"
+                android:text="2017"
                 android:layout_marginTop="@dimen/common_to_side"
+                android:textSize="@dimen/small_textsize"
                 android:layout_below="@+id/list_info_text"
-                android:text="@{DateFormatUtil.format(CommentItemBean.commentTime)}"
-                android:textSize="@dimen/small_textsize" />
+                android:layout_alignStart="@+id/list_name_text" />
 
-            <!-- 点赞图标 -->
             <ImageView
                 android:id="@+id/iv_comment_zan"
                 android:layout_width="wrap_content"

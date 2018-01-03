@@ -42,10 +42,15 @@
                         android:background="@android:color/background_light"></android.support.v7.widget.RecyclerView>
                 </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 
+                <TextView
+                    android:id="@+id/tv_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_to_side"
+                    android:visibility="gone"
+                    android:text="@string/comment_empty"/>
+
             </LinearLayout>
-
-        <!--</ScrollView>-->
-
 
         <RelativeLayout
             android:id="@+id/rl_menu"

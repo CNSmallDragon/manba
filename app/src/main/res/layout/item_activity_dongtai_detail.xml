@@ -131,6 +131,7 @@
                 android:drawableBottom="@drawable/details_icon_zan"
                 android:textSize="@dimen/small_textsize" />
 
+            <!-- 显示点赞列表  -->
             <LinearLayout
                 android:id="@+id/ll_zan_list"
                 android:layout_width="wrap_content"

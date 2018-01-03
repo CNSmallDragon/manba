@@ -7,6 +7,9 @@
         <variable
             name="SociationBean"
             type="com.minyou.manba.network.resultModel.SociationResultModel.ResultBean.SociationResultBean" />
+
+        <import type="android.text.TextUtils"/>
+        <import type="java.lang.String"/>
     </data>
 
     <LinearLayout
@@ -68,7 +71,7 @@
                     android:id="@+id/tv_gonghui_hot_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="活跃度：100"
+                    android:text="@{String.format(@string/guild_liveness,String.valueOf(SociationBean.liveness))}"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="@dimen/small_textsize" />
             </LinearLayout>

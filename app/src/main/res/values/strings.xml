@@ -90,6 +90,11 @@
     <string name="detail_send_hint">说点什么...</string>
     <string name="comment_floor">%s楼</string>
     <string name="comment_number">全部评论（%s）</string>
+    <string name="comment_empty">暂无数据，抢占沙发！</string>
+    <string name="comment_detail_num">第%s楼</string>
+
+    <!--  公会界面   -->
+    <string name="guild_liveness">活跃度: %s</string>
 
     <!--  查看图片界面   -->
     <string name="image_sendto_friend">发送给好友</string>

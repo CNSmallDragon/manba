@@ -92,24 +92,30 @@ public class SociationResultModel extends BaseResultModel {
              * yn : 0
              */
 
-            private int id;
+            private int guildId;
             private String guildName;
             private int memberNum;
             private int liveness;
             private String guildPhoto;
             private String declaration;
             private int createUser;
-            private long createTime;
-            private long updateTime;
-            private int yn;
+            private int currentNum;
             private boolean isChecked = false;
 
-            public int getId() {
-                return id;
+            public int getGuildId() {
+                return guildId;
             }
 
-            public void setId(int id) {
-                this.id = id;
+            public void setGuildId(int guildId) {
+                this.guildId = guildId;
+            }
+
+            public int getCurrentNum() {
+                return currentNum;
+            }
+
+            public void setCurrentNum(int currentNum) {
+                this.currentNum = currentNum;
             }
 
             public String getGuildName() {
@@ -160,29 +166,6 @@ public class SociationResultModel extends BaseResultModel {
                 this.createUser = createUser;
             }
 
-            public long getCreateTime() {
-                return createTime;
-            }
-
-            public void setCreateTime(long createTime) {
-                this.createTime = createTime;
-            }
-
-            public long getUpdateTime() {
-                return updateTime;
-            }
-
-            public void setUpdateTime(long updateTime) {
-                this.updateTime = updateTime;
-            }
-
-            public int getYn() {
-                return yn;
-            }
-
-            public void setYn(int yn) {
-                this.yn = yn;
-            }
 
             public boolean isChecked() {
                 return isChecked;

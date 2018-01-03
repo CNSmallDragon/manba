@@ -1,23 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.minyou.manba.ui.ActionTitleView
-        android:id="@+id/atv_title"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/common_title_height_wallet"
-        android:background="@android:color/white"
-        android:gravity="center_vertical"></com.minyou.manba.ui.ActionTitleView>
-    <View
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@drawable/divider"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_shoucang"
-        android:background="@android:color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+        <com.minyou.manba.ui.ActionTitleView
+            android:id="@+id/atv_title"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/common_title_height_wallet"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            app:borderLine="true"
+            app:titleText="@string/my_shoucang"></com.minyou.manba.ui.ActionTitleView>
 
-</LinearLayout>
+        <in.srain.cube.views.ptr.PtrClassicFrameLayout
+            android:id="@+id/pcfl_refresh_favorite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_shoucang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"></android.support.v7.widget.RecyclerView>
+        </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+
+    </LinearLayout>
+</layout>

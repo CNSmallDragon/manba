@@ -24,7 +24,10 @@ import com.minyou.manba.network.okhttputils.ReqCallBack;
 import com.minyou.manba.network.resultModel.CommentListResultModel;
 import com.minyou.manba.network.resultModel.UserZanListResultModel;
 import com.minyou.manba.network.resultModel.ZoneDetailResultModel;
+import com.minyou.manba.ui.view.DefalutRefreshView;
 import com.minyou.manba.util.CommonUtil;
+import com.minyou.manba.util.LogUtil;
+import com.minyou.manba.util.OnItemClickLitener;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -32,6 +35,10 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import in.srain.cube.views.ptr.PtrDefaultHandler2;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler2;
 
 /**
  * Created by Administrator on 2017/11/26.
@@ -44,12 +51,13 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
     private String info_id = null;
     private String user_id = null;
 
-    private int pageSize = 20;
+    private int pageSize = 10;
     private int pageNo = 1;
 
     private ZoneDetailResultModel.ZoneDetailBean zoneDetailBean;
     private CommentListAdapter mAdapter;
     private List<CommentListResultModel.ResultBean.CommentItemBean> commentItemBeanList;
+    private View footView;
 
     @Override
     public void setContentViewAndBindData() {
@@ -67,7 +75,7 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
         getZanList(info_id);
         // 获取评论列表
 
-        getCommnetList(info_id, pageNo, pageSize);
+        getCommnetList(info_id);
 
         initListener();
     }
@@ -87,6 +95,8 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
         binding.recyclerComment.setLayoutManager(new LinearLayoutManager(this));
 //        binding.recyclerComment.setLayoutManager(new FullyLinearLayoutManager(this));
         binding.recyclerComment.setAdapter(mAdapter);
+        footView = new DefalutRefreshView(this);
+        binding.pcflRefreshComment.setFooterView(footView);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -109,24 +119,76 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-//        binding.scrollviewDetal.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-//            @Override
-//            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-//                binding.llComment.setVisibility(View.GONE);
-//                binding.rlMenu.setVisibility(View.VISIBLE);
-//                CommonUtil.closeKeybord(binding.etCommentText,binding.etCommentText.getContext());
-//            }
-//        });
+
+        // 分页加载
+        binding.pcflRefreshComment.setPtrHandler(new PtrHandler2() {
+            @Override
+            public boolean checkCanDoLoadMore(PtrFrameLayout frame, View content, View footer) {
+                return !binding.pcflRefreshComment.isRefreshing() && PtrDefaultHandler2.checkContentCanBePulledUp(frame, content, footer);
+            }
+
+            @Override
+            public void onLoadMoreBegin(PtrFrameLayout frame) {
+                loadMoreComment();
+            }
+
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return false;
+            }
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+
+            }
+        });
+
+        // 点击评论条目
+        mAdapter.setOnItemClickedListener(new OnItemClickLitener() {
+            @Override
+            public void onItemClick(int position) {
+                LogUtil.d(TAG,"id=====" + commentItemBeanList.get(position).getCommentId());
+            }
+        });
+    }
+
+    /**
+     * 获取更多评论
+     */
+    private void loadMoreComment() {
+        pageNo ++;
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("zoneId", info_id);
+        params.put("pageSize", String.valueOf(pageSize));
+        params.put("pageNo", String.valueOf(pageNo));
+        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_POST_ZONE_COMMENTLIST, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
+            @Override
+            public void onReqSuccess(String result) {
+                CommentListResultModel commentListResultModel = new Gson().fromJson(result, CommentListResultModel.class);
+                if (commentListResultModel.isSuccess() && commentListResultModel.getResult().getResultList().size() > 0) {
+                    binding.pcflRefreshComment.refreshComplete();
+                    commentItemBeanList.addAll(commentListResultModel.getResult().getResultList());
+                    mAdapter.notifyDataSetChanged();
+                }else{
+                    binding.pcflRefreshComment.refreshComplete();
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+                binding.pcflRefreshComment.refreshComplete();
+            }
+        });
     }
 
     /**
      * 获取评论列表
      *
      * @param info_id
-     * @param pageNo
-     * @param pageSize
      */
-    private void getCommnetList(String info_id, int pageNo, int pageSize) {
+    private void getCommnetList(String info_id) {
+        pageNo = 1;
+        commentItemBeanList.clear();
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("zoneId", info_id);
         params.put("pageSize", String.valueOf(pageSize));
@@ -138,6 +200,12 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
                 if (commentListResultModel.isSuccess() && commentListResultModel.getResult().getResultList().size() > 0) {
                     commentItemBeanList.addAll(commentListResultModel.getResult().getResultList());
                     mAdapter.notifyDataSetChanged();
+                    binding.tvEmpty.setVisibility(View.GONE);
+                    binding.pcflRefreshComment.refreshComplete();
+                }else{
+                    footView.setVisibility(View.GONE);
+                    binding.pcflRefreshComment.refreshComplete();
+                    binding.tvEmpty.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -279,6 +347,7 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
                 break;
 
             case R.id.tv_send:
+                loading();
                 if (TextUtils.isEmpty(binding.etCommentText.getText().toString())) {
                     Toast.makeText(this, "请输入评论内容", Toast.LENGTH_SHORT).show();
                     return;
@@ -292,12 +361,15 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
 
                         @Override
                         public void onReqSuccess(String result) {
-
+                            cancelLoading();
+                            binding.llComment.setVisibility(View.GONE);
+                            binding.rlMenu.setVisibility(View.VISIBLE);
+                            // TODO 更新评论列表数据
                         }
 
                         @Override
                         public void onReqFailed(String errorMsg) {
-
+                            cancelLoading();
                         }
                     });
                 }

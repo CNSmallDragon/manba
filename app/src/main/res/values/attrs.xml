@@ -25,6 +25,7 @@
 
     <declare-styleable name="ActionTitle">
         <attr name="titleText" format="string"></attr>
+        <attr name="borderLine" format="boolean"></attr>
     </declare-styleable>
 
 
