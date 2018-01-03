@@ -2,29 +2,20 @@ package com.minyou.manba.activity;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
 import com.minyou.manba.R;
 import com.minyou.manba.adapter.ShouCangAdapter;
 import com.minyou.manba.bean.ShouCangBean;
 import com.minyou.manba.databinding.ActivityShoucangBinding;
-import com.minyou.manba.ui.ActionTitleView;
 import com.minyou.manba.ui.RefreshItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-
 /**
  * Created by Administrator on 2017/11/28.
  */
 public class ShouCangActivity extends DataBindingBaseActivity {
-
-    @BindView(R.id.atv_title)
-    ActionTitleView atv_title;
-    @BindView(R.id.rv_shoucang)
-    RecyclerView rv_shoucang;
 
     private List<ShouCangBean> list = new ArrayList<>();
     private ShouCangAdapter mAdapter;
@@ -41,9 +32,9 @@ public class ShouCangActivity extends DataBindingBaseActivity {
     public void initView() {
         initData();
         mAdapter = new ShouCangAdapter(this,list);
-        rv_shoucang.setLayoutManager(new LinearLayoutManager(this));
-        rv_shoucang.addItemDecoration(new RefreshItemDecoration(this,RefreshItemDecoration.VERTICAL_LIST));
-        rv_shoucang.setAdapter(mAdapter);
+        binding.rvShoucang.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvShoucang.addItemDecoration(new RefreshItemDecoration(this,RefreshItemDecoration.VERTICAL_LIST));
+        binding.rvShoucang.setAdapter(mAdapter);
     }
 
     private void initData() {
