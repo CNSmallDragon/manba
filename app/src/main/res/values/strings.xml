@@ -92,6 +92,7 @@
     <string name="comment_number">全部评论（%s）</string>
     <string name="comment_empty">暂无数据，抢占沙发！</string>
     <string name="comment_detail_num">第%s楼</string>
+    <string name="comment_more_reply">%s回复</string>
 
     <!--  公会界面   -->
     <string name="guild_liveness">活跃度: %s</string>

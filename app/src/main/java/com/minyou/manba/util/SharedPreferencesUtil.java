@@ -10,7 +10,7 @@ import com.minyou.manba.MyApplication;
  */
 public class SharedPreferencesUtil {
 
-    public static final String mTAG = "manba";
+    private static final String mTAG = "manba";
     //创建一个写入器
     private static SharedPreferences mPreferences;
     private static SharedPreferences.Editor mEditor;

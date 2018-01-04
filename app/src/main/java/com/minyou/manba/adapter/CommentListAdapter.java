@@ -12,11 +12,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
+import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.activity.ImageViewerActivity;
 import com.minyou.manba.databinding.ItemActivityDongtaiDetailBinding;
 import com.minyou.manba.databinding.ItemCommentListBinding;
 import com.minyou.manba.fragment.NewFragment;
+import com.minyou.manba.network.okhttputils.ManBaRequestManager;
+import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
 import com.minyou.manba.network.resultModel.CommentListResultModel;
 import com.minyou.manba.network.resultModel.UserZanListResultModel;
 import com.minyou.manba.network.resultModel.ZoneDetailResultModel;
@@ -24,10 +27,12 @@ import com.minyou.manba.ui.view.GlideCircleTransform;
 import com.minyou.manba.ui.view.MultiImageView;
 import com.minyou.manba.util.CommonUtil;
 import com.minyou.manba.util.OnItemClickLitener;
+import com.minyou.manba.util.SharedPreferencesUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -158,6 +163,23 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 Glide.with(context).load(list.get(position - 1).getPhotoUrl()).transform(new GlideCircleTransform(context)).into(viewHolder.binding.listHeadImage);
             }
 
+            // 评论点赞
+            viewHolder.binding.cbCommentZan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(viewHolder.binding.cbCommentZan.isChecked()){    // 点赞
+                        list.get(position - 1).setUpvote(true);
+                    }else{
+                        list.get(position - 1).setUpvote(false);
+                    }
+                    HashMap<String,String> params = new HashMap<String, String>();
+                    params.put("userId", SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID));
+                    params.put("commentId",list.get(position - 1).getCommentId()+"");
+                    ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_ZONE_COMMENTUPVOTE, ManBaRequestManager.TYPE_POST_JSON, params, null);
+                }
+            });
+
+            // item点击事件
             if(null != mLitener){
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

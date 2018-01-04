@@ -90,16 +90,32 @@
                 android:text="@{DateFormatUtil.format(CommentItemBean.commentTime)}"
                 android:textSize="@dimen/small_textsize" />
 
-            <!-- 点赞图标 -->
-            <ImageView
-                android:id="@+id/iv_comment_zan"
+            <!-- 更多回复 -->
+            <TextView
+                android:id="@+id/list_more_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_to_side"
+                android:layout_marginLeft="@dimen/common_to_side"
+                android:layout_below="@+id/list_info_text"
+                android:layout_toRightOf="@+id/list_date_text"
+                android:visibility="@{CommentItemBean.replyNum == 0 ? View.GONE : View.VISIBLE}"
+                android:text="@{String.format(@string/comment_more_reply,CommentItemBean.replyNum)}"
+                android:textColor="@color/royalblue"
+                android:textSize="@dimen/small_textsize" />
+
+            <!-- 点赞图标 -->
+
+            <CheckBox
+                android:id="@+id/cb_comment_zan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/common_to_side"
                 android:layout_below="@+id/list_info_text"
-                android:src="@drawable/details_icon_dazan"
-                android:textSize="@dimen/small_textsize"/>
+                android:drawableLeft="@drawable/select_detail_zan"
+                android:checked="@{CommentItemBean.upvote == true ? true : false}"/>
 
 
         </RelativeLayout>

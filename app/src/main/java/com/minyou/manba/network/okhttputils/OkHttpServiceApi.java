@@ -37,7 +37,7 @@ public class OkHttpServiceApi {
     // 点赞某条动态
     public static String HTTP_POST_ZONE_UPVOTE = "api/zone/upvote";
 
-    // 点赞某条动态
+    // 收藏动态
     public static String HTTP_POST_ZONE_FAVORITE = "api/zone/favorite";
 
     // 评论某条动态
@@ -46,6 +46,12 @@ public class OkHttpServiceApi {
     // 点赞列表
     public static String HTTP_POST_ZONE_UPVOTELIST = "api/zone/upvoteList";
 
-    // 评论列表
-    public static String HTTP_POST_ZONE_COMMENTLIST = "api/zone/queryCommentList";
+    // 查询评论列表（只查询父评论）
+    public static String HTTP_GET_ZONE_COMMENTLIST = "api/zone/queryCommentList";
+
+    // 查询评论回复列表
+    public static String HTTP_GET_ZONE_REPLYCOMMENTLIST = "api/zone/queryReplyCommentList";
+
+    // 评论点赞
+    public static String HTTP_ZONE_COMMENTUPVOTE = "api/zone/commentUpvote";
 }

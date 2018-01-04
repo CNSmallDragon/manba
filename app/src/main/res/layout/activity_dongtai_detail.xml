@@ -75,12 +75,13 @@
                 android:id="@+id/tv_zan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:button="@null"
                 android:drawableLeft="@drawable/select_detail_zan"
                 android:drawablePadding="@dimen/common_text_side"
                 android:checked="@{ZoneDetailBean.upvote ? true : false}"
-                android:text="@{String.valueOf(ZoneDetailBean.upvoteNum)}" />
+                android:text="@{String.valueOf(ZoneDetailBean.upvoteNum)}"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
 
             <TextView
                 android:id="@+id/tv_comment"

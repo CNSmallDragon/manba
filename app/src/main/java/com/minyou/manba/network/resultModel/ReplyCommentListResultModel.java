@@ -1,23 +1,17 @@
 package com.minyou.manba.network.resultModel;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.minyou.manba.BR;
-
 import java.util.List;
 
 /**
- * Created by Administrator on 2018/1/2.
+ * Created by Administrator on 2018/1/4.
  */
 
-public class CommentListResultModel extends BaseResultModel {
+public class ReplyCommentListResultModel extends BaseResultModel {
+
 
     /**
      * detail : null
-     * result : {"pageNo":1,"pageSize":10,"maxPageSize":100,"totalCount":2,"resultList":[{"commentId":1,"userId":null,"zoneId":20,"content":"评论","commentTime":1514807598000,"parentId":0,"commentUserId":7,"photoUrl":"http://res.mymanba.cn/FvFLrq8XzCJmjZ-zrEaYn23ttRUW","nickName":"秦时明月","sex":2},{"commentId":3,"userId":null,"zoneId":20,"content":"再来一条","commentTime":1514893056000,"parentId":0,"commentUserId":7,"photoUrl":"http://res.mymanba.cn/FvFLrq8XzCJmjZ-zrEaYn23ttRUW","nickName":"秦时明月","sex":2}]}
+     * result : {"pageNo":1,"pageSize":10,"maxPageSize":100,"totalCount":2,"resultList":[{"commentId":19,"userId":null,"zoneId":20,"content":"楼中楼","commentTime":1515071187000,"parentId":3,"commentUserId":7,"photoUrl":"http://res.mymanba.cn/FvFLrq8XzCJmjZ-zrEaYn23ttRUW","nickName":"秦时明月","sex":2,"upvote":null,"upvoteNum":null,"replyNum":null,"createTime":null},{"commentId":20,"userId":null,"zoneId":20,"content":"楼中楼22","commentTime":1515071196000,"parentId":3,"commentUserId":7,"photoUrl":"http://res.mymanba.cn/FvFLrq8XzCJmjZ-zrEaYn23ttRUW","nickName":"秦时明月","sex":2,"upvote":null,"upvoteNum":null,"replyNum":null,"createTime":null}]}
      */
 
     private ResultBean result;
@@ -36,14 +30,14 @@ public class CommentListResultModel extends BaseResultModel {
          * pageSize : 10
          * maxPageSize : 100
          * totalCount : 2
-         * resultList : [{"commentId":1,"userId":null,"zoneId":20,"content":"评论","commentTime":1514807598000,"parentId":0,"commentUserId":7,"photoUrl":"http://res.mymanba.cn/FvFLrq8XzCJmjZ-zrEaYn23ttRUW","nickName":"秦时明月","sex":2},{"commentId":3,"userId":null,"zoneId":20,"content":"再来一条","commentTime":1514893056000,"parentId":0,"commentUserId":7,"photoUrl":"http://res.mymanba.cn/FvFLrq8XzCJmjZ-zrEaYn23ttRUW","nickName":"秦时明月","sex":2}]
+         * resultList : [{"commentId":19,"userId":null,"zoneId":20,"content":"楼中楼","commentTime":1515071187000,"parentId":3,"commentUserId":7,"photoUrl":"http://res.mymanba.cn/FvFLrq8XzCJmjZ-zrEaYn23ttRUW","nickName":"秦时明月","sex":2,"upvote":null,"upvoteNum":null,"replyNum":null,"createTime":null},{"commentId":20,"userId":null,"zoneId":20,"content":"楼中楼22","commentTime":1515071196000,"parentId":3,"commentUserId":7,"photoUrl":"http://res.mymanba.cn/FvFLrq8XzCJmjZ-zrEaYn23ttRUW","nickName":"秦时明月","sex":2,"upvote":null,"upvoteNum":null,"replyNum":null,"createTime":null}]
          */
 
         private int pageNo;
         private int pageSize;
         private int maxPageSize;
         private int totalCount;
-        private List<CommentItemBean> resultList;
+        private List<ReplyCommentListBean> resultList;
 
         public int getPageNo() {
             return pageNo;
@@ -77,30 +71,34 @@ public class CommentListResultModel extends BaseResultModel {
             this.totalCount = totalCount;
         }
 
-        public List<CommentItemBean> getResultList() {
+        public List<ReplyCommentListBean> getResultList() {
             return resultList;
         }
 
-        public void setResultList(List<CommentItemBean> resultList) {
+        public void setResultList(List<ReplyCommentListBean> resultList) {
             this.resultList = resultList;
         }
 
-        public static class CommentItemBean extends BaseObservable implements Parcelable{
+        public static class ReplyCommentListBean {
             /**
-             * commentId : 1
+             * commentId : 19
              * userId : null
              * zoneId : 20
-             * content : 评论
-             * commentTime : 1514807598000
-             * parentId : 0
+             * content : 楼中楼
+             * commentTime : 1515071187000
+             * parentId : 3
              * commentUserId : 7
              * photoUrl : http://res.mymanba.cn/FvFLrq8XzCJmjZ-zrEaYn23ttRUW
              * nickName : 秦时明月
              * sex : 2
+             * upvote : null
+             * upvoteNum : null
+             * replyNum : null
+             * createTime : null
              */
 
             private int commentId;
-            private Object userId;
+            private String userId;
             private int zoneId;
             private String content;
             private long commentTime;
@@ -109,36 +107,10 @@ public class CommentListResultModel extends BaseResultModel {
             private String photoUrl;
             private String nickName;
             private int sex;
-            private boolean upvote;
-            private int upvoteNum;
-            private int replyNum;
-
-            protected CommentItemBean(Parcel in) {
-                commentId = in.readInt();
-                zoneId = in.readInt();
-                content = in.readString();
-                commentTime = in.readLong();
-                parentId = in.readInt();
-                commentUserId = in.readInt();
-                photoUrl = in.readString();
-                nickName = in.readString();
-                sex = in.readInt();
-                upvote = in.readByte() != 0;
-                upvoteNum = in.readInt();
-                replyNum = in.readInt();
-            }
-
-            public static final Creator<CommentItemBean> CREATOR = new Creator<CommentItemBean>() {
-                @Override
-                public CommentItemBean createFromParcel(Parcel in) {
-                    return new CommentItemBean(in);
-                }
-
-                @Override
-                public CommentItemBean[] newArray(int size) {
-                    return new CommentItemBean[size];
-                }
-            };
+            private Object upvote;
+            private Object upvoteNum;
+            private Object replyNum;
+            private Object createTime;
 
             public int getCommentId() {
                 return commentId;
@@ -148,11 +120,11 @@ public class CommentListResultModel extends BaseResultModel {
                 this.commentId = commentId;
             }
 
-            public Object getUserId() {
+            public String getUserId() {
                 return userId;
             }
 
-            public void setUserId(Object userId) {
+            public void setUserId(String userId) {
                 this.userId = userId;
             }
 
@@ -220,51 +192,36 @@ public class CommentListResultModel extends BaseResultModel {
                 this.sex = sex;
             }
 
-            @Bindable
-            public boolean isUpvote() {
+            public Object getUpvote() {
                 return upvote;
             }
 
-            public void setUpvote(boolean upvote) {
+            public void setUpvote(Object upvote) {
                 this.upvote = upvote;
-                notifyPropertyChanged(BR.upvote);
             }
 
-            public int getUpvoteNum() {
+            public Object getUpvoteNum() {
                 return upvoteNum;
             }
 
-            public void setUpvoteNum(int upvoteNum) {
+            public void setUpvoteNum(Object upvoteNum) {
                 this.upvoteNum = upvoteNum;
             }
 
-            public int getReplyNum() {
+            public Object getReplyNum() {
                 return replyNum;
             }
 
-            public void setReplyNum(int replyNum) {
+            public void setReplyNum(Object replyNum) {
                 this.replyNum = replyNum;
             }
 
-            @Override
-            public int describeContents() {
-                return 0;
+            public Object getCreateTime() {
+                return createTime;
             }
 
-            @Override
-            public void writeToParcel(Parcel dest, int flags) {
-                dest.writeInt(commentId);
-                dest.writeInt(zoneId);
-                dest.writeString(content);
-                dest.writeLong(commentTime);
-                dest.writeInt(parentId);
-                dest.writeInt(commentUserId);
-                dest.writeString(photoUrl);
-                dest.writeString(nickName);
-                dest.writeInt(sex);
-                dest.writeByte((byte) (upvote ? 1 : 0));
-                dest.writeInt(upvoteNum);
-                dest.writeInt(replyNum);
+            public void setCreateTime(Object createTime) {
+                this.createTime = createTime;
             }
         }
     }

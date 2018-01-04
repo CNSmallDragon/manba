@@ -15,6 +15,7 @@ import com.bumptech.glide.RequestManager;
 import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
+import com.minyou.manba.activity.detail.CommentDetailActivity;
 import com.minyou.manba.adapter.CommentListAdapter;
 import com.minyou.manba.databinding.ActivityDongtaiDetailBinding;
 import com.minyou.manba.event.EventInfo;
@@ -74,7 +75,6 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
         // 获取点赞列表
         getZanList(info_id);
         // 获取评论列表
-
         getCommnetList(info_id);
 
         initListener();
@@ -148,6 +148,9 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
             @Override
             public void onItemClick(int position) {
                 LogUtil.d(TAG,"id=====" + commentItemBeanList.get(position).getCommentId());
+                Intent intent = new Intent(DongTaiDetailActivity.this, CommentDetailActivity.class);
+                intent.putExtra("commentItem",commentItemBeanList.get(position));
+                startActivity(intent);
             }
         });
     }
@@ -161,16 +164,18 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
         params.put("zoneId", info_id);
         params.put("pageSize", String.valueOf(pageSize));
         params.put("pageNo", String.valueOf(pageNo));
-        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_POST_ZONE_COMMENTLIST, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
+        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_ZONE_COMMENTLIST, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
                 CommentListResultModel commentListResultModel = new Gson().fromJson(result, CommentListResultModel.class);
                 if (commentListResultModel.isSuccess() && commentListResultModel.getResult().getResultList().size() > 0) {
                     binding.pcflRefreshComment.refreshComplete();
+                    footView.setVisibility(View.GONE);
                     commentItemBeanList.addAll(commentListResultModel.getResult().getResultList());
                     mAdapter.notifyDataSetChanged();
                 }else{
                     binding.pcflRefreshComment.refreshComplete();
+                    footView.setVisibility(View.GONE);
                 }
             }
 
@@ -193,7 +198,7 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
         params.put("zoneId", info_id);
         params.put("pageSize", String.valueOf(pageSize));
         params.put("pageNo", String.valueOf(pageNo));
-        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_POST_ZONE_COMMENTLIST, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
+        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_ZONE_COMMENTLIST, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
                 CommentListResultModel commentListResultModel = new Gson().fromJson(result, CommentListResultModel.class);
@@ -202,6 +207,7 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
                     mAdapter.notifyDataSetChanged();
                     binding.tvEmpty.setVisibility(View.GONE);
                     binding.pcflRefreshComment.refreshComplete();
+                    footView.setVisibility(View.GONE);
                 }else{
                     footView.setVisibility(View.GONE);
                     binding.pcflRefreshComment.refreshComplete();
@@ -365,6 +371,7 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
                             binding.llComment.setVisibility(View.GONE);
                             binding.rlMenu.setVisibility(View.VISIBLE);
                             // TODO 更新评论列表数据
+                            getCommnetList(info_id);
                         }
 
                         @Override
