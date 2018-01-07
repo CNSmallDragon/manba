@@ -44,6 +44,9 @@ public class Appconstant {
 	public static String FROM_WHERE = "from_where";
 	public static String MINE2GONGHUI = "mine2gonghui";
 
+	// 进入个人主页
+	public static String PERSON_CENTER = "person_center";
+
 	// token所需参数
 	public static final class NET_WORK_TOKEN_PARAMS {
 		// 请求token的参数

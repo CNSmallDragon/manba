@@ -237,7 +237,7 @@ public class ZoneDetailResultModel extends BaseResultModel {
             zoneListBean.setFavoriteNum(getFavoriteNum());
             zoneListBean.setPhone(getPhone());
             zoneListBean.setUserPhotoUrl(getUserPhotoUrl());
-
+            zoneListBean.setFollow(isFollow());
 
             return zoneListBean;
         }

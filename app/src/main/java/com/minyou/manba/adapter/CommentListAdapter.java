@@ -17,6 +17,7 @@ import com.minyou.manba.R;
 import com.minyou.manba.activity.ImageViewerActivity;
 import com.minyou.manba.databinding.ItemActivityDongtaiDetailBinding;
 import com.minyou.manba.databinding.ItemCommentListBinding;
+import com.minyou.manba.databinding.LoadMoreFootviewLayoutBinding;
 import com.minyou.manba.fragment.NewFragment;
 import com.minyou.manba.network.okhttputils.ManBaRequestManager;
 import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
@@ -26,14 +27,15 @@ import com.minyou.manba.network.resultModel.ZoneDetailResultModel;
 import com.minyou.manba.ui.view.GlideCircleTransform;
 import com.minyou.manba.ui.view.MultiImageView;
 import com.minyou.manba.util.CommonUtil;
+import com.minyou.manba.util.DateFormatUtil;
 import com.minyou.manba.util.OnItemClickLitener;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import static android.databinding.DataBindingUtil.inflate;
 
 /**
  * Created by Administrator on 2018/1/2.
@@ -43,8 +45,19 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private static final String TAG = "CommentListAdapter";
 
-    protected final int ITEM_TYPE_HEADER = 1001;//头视图
-    protected final int ITEM_TYPE_NORMAL = 1002;//头视图
+    private static final int ITEM_TYPE_HEADER = 1001;//头视图
+    private static final int ITEM_TYPE_NORMAL = 1002;//头视图
+    private static final int ITEM_TYPE_FOOTER = 1003;
+
+    //上拉加载更多
+    public static final int PULLUP_LOAD_MORE = 0;
+    //正在加载中
+    public static final int LOADING_MORE = 1;
+    //没有加载更多 隐藏
+    public static final int NO_LOAD_MORE = 2;
+
+    //上拉加载更多状态-默认为0
+    private int mLoadMoreStatus = 0;
 
     private List<CommentListResultModel.ResultBean.CommentItemBean> list;
     private Context context;
@@ -60,15 +73,20 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(viewType == ITEM_TYPE_HEADER){   // 头视图
-            ItemActivityDongtaiDetailBinding headBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.item_activity_dongtai_detail,parent,false);
+            ItemActivityDongtaiDetailBinding headBinding = inflate(LayoutInflater.from(context), R.layout.item_activity_dongtai_detail,parent,false);
             HeadViewHolder headViewHolder = new HeadViewHolder(headBinding.getRoot());
             headViewHolder.headBinding = headBinding;
             return headViewHolder;
         }else if(viewType == ITEM_TYPE_NORMAL){
-            ItemCommentListBinding binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.item_comment_list,parent,false);
+            ItemCommentListBinding binding = inflate(LayoutInflater.from(context), R.layout.item_comment_list,parent,false);
             CommentViewHolder commentViewHolder = new CommentViewHolder(binding.getRoot());
             commentViewHolder.binding = binding;
             return commentViewHolder;
+        }else if(viewType == ITEM_TYPE_FOOTER){
+            LoadMoreFootviewLayoutBinding binding = DataBindingUtil.inflate(LayoutInflater.from(context),R.layout.load_more_footview_layout,parent,false);
+            FooterViewHolder footerViewHolder = new FooterViewHolder(binding.getRoot());
+            footerViewHolder.binding = binding;
+            return footerViewHolder;
         }
         return null;
     }
@@ -82,9 +100,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 NewFragment.setUserPicList(headViewHolder.headBinding.rlUserPic,itemInfo.toZoneListBean());
                 headViewHolder.headBinding.tvUsername.setText(itemInfo.getNickName());
                 // 加载发布时间
-                SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-                Date date = new Date(itemInfo.getPublishTime());
-                headViewHolder.headBinding.tvPubTime.setText(format.format(date));
+                headViewHolder.headBinding.tvPubTime.setText(DateFormatUtil.format(itemInfo.getPublishTime()));
                 if (TextUtils.isEmpty(itemInfo.getGuildName())) {
                     headViewHolder.headBinding.tvFamilyname.setVisibility(View.GONE);
                 } else {
@@ -95,7 +111,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 // 显示点赞数量
                 headViewHolder.headBinding.tvCountZan.setText(String.valueOf(itemInfo.getUpvoteNum()));
                 // 显示评论数量
-                headViewHolder.headBinding.allReplyNumTv.setText(String.format(context.getResources().getString(R.string.comment_number),itemInfo.getCommentNum()+""));
+                headViewHolder.headBinding.allReplyNumTv.setText(String.format(context.getResources().getString(R.string.comment_number),list.size()+""));
                 // 加载发布图片
                 if(null != itemInfo.getZoneImage() && itemInfo.getZoneImage().size() > 0){
                     headViewHolder.headBinding.multiImagView.setList(itemInfo.getZoneImage());
@@ -150,17 +166,25 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     }
                 }
 
+                // 选择排序方式
+                headViewHolder.headBinding.tvSortType.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sortTypeChangedListener.setSortTypeChangedListener();
+                    }
+                });
+
             }
 
         }else if(holder instanceof CommentViewHolder){
             final CommentViewHolder viewHolder = (CommentViewHolder) holder;
-            viewHolder.binding.setCommentItemBean(list.get(position - 1));
+            viewHolder.binding.setCommentItemBean(list.get(position));
             viewHolder.binding.executePendingBindings();
             // 加载头像图片
-            if(TextUtils.isEmpty(list.get(position - 1).getPhotoUrl())){
+            if(TextUtils.isEmpty(list.get(position).getPhotoUrl())){
                 Glide.with(context).load(R.drawable.register_home_pre).into(viewHolder.binding.listHeadImage);
             }else{
-                Glide.with(context).load(list.get(position - 1).getPhotoUrl()).transform(new GlideCircleTransform(context)).into(viewHolder.binding.listHeadImage);
+                Glide.with(context).load(list.get(position).getPhotoUrl()).transform(new GlideCircleTransform(context)).into(viewHolder.binding.listHeadImage);
             }
 
             // 评论点赞
@@ -168,13 +192,13 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View v) {
                     if(viewHolder.binding.cbCommentZan.isChecked()){    // 点赞
-                        list.get(position - 1).setUpvote(true);
+                        list.get(position).setUpvote(true);
                     }else{
-                        list.get(position - 1).setUpvote(false);
+                        list.get(position).setUpvote(false);
                     }
                     HashMap<String,String> params = new HashMap<String, String>();
                     params.put("userId", SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID));
-                    params.put("commentId",list.get(position - 1).getCommentId()+"");
+                    params.put("commentId",list.get(position).getCommentId()+"");
                     ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_ZONE_COMMENTUPVOTE, ManBaRequestManager.TYPE_POST_JSON, params, null);
                 }
             });
@@ -185,25 +209,44 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     @Override
                     public void onClick(View v) {
                         int pos = viewHolder.getLayoutPosition();
-                        mLitener.onItemClick(pos - 1);
+                        mLitener.onItemClick(pos);
                     }
                 });
+            }
+        }else if(holder instanceof FooterViewHolder){
+            FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
+            switch (mLoadMoreStatus){
+                case PULLUP_LOAD_MORE:
+                    //上拉加载更多
+                    //footerViewHolder.tvLoadText.setText(loadmore);
+                    footerViewHolder.binding.tvLoadText.setText(context.getResources().getString(R.string.gonghui_loadmore));
+                    break;
+                case LOADING_MORE:
+                    //footerViewHolder.tvLoadText.setText(loading);
+                    footerViewHolder.binding.tvLoadText.setText(context.getResources().getString(R.string.gonghui_loading));
+                    //正在加载中
+                    break;
+                case NO_LOAD_MORE:
+                    //没有加载更多 隐藏
+                    footerViewHolder.binding.loadLayout.setVisibility(View.GONE);
+                    break;
             }
         }
     }
 
     @Override
     public int getItemCount() {
-        return list.size() + 1; // 显示头view
+        return list.size(); // 显示头view
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(position == 0){
-            return ITEM_TYPE_HEADER;
-        }else{
-            return ITEM_TYPE_NORMAL;
-        }
+//        if (position == getItemCount()) {
+//            return ITEM_TYPE_FOOTER;
+//        } else {
+//            return ITEM_TYPE_NORMAL;
+//        }
+        return ITEM_TYPE_NORMAL;
     }
 
     public void setZoneDetailBean(ZoneDetailResultModel.ZoneDetailBean itemInfo){
@@ -214,10 +257,19 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.userZanListInnerBeanList = userZanListInnerBeanList;
     }
 
-    private OnItemClickLitener mLitener;
+    private OnItemClickLitener mLitener;            // 条目点击事件
+    private SortTypeChangedListener sortTypeChangedListener;        // 排序点击事件
 
     public void setOnItemClickedListener(OnItemClickLitener mLitener){
         this.mLitener = mLitener;
+    }
+
+    public interface SortTypeChangedListener{
+        void setSortTypeChangedListener();
+    }
+
+    public void setSortTypeChangedListener(SortTypeChangedListener listener){
+        this.sortTypeChangedListener = listener;
     }
 
     public static class CommentViewHolder extends RecyclerView.ViewHolder{
@@ -233,8 +285,26 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         private ItemActivityDongtaiDetailBinding headBinding;
 
+        public ItemActivityDongtaiDetailBinding getHeadBinding() {
+            return headBinding;
+        }
+
         public HeadViewHolder(View itemView) {
             super(itemView);
         }
+    }
+
+    public static class FooterViewHolder extends RecyclerView.ViewHolder {
+
+        private LoadMoreFootviewLayoutBinding binding;
+
+        public FooterViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    public void changeMoreStatus(int status) {
+        mLoadMoreStatus = status;
+        notifyDataSetChanged();
     }
 }

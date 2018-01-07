@@ -15,9 +15,10 @@
         <import type="android.view.View" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <com.minyou.manba.ui.ActionTitleView
@@ -25,117 +26,162 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_title_height"
             android:gravity="center_vertical"
-            app:titleText="@string/comment_detail_num"
-            app:borderLine="true"></com.minyou.manba.ui.ActionTitleView>
+            app:borderLine="true"
+            app:titleText="@string/comment_detail_num"></com.minyou.manba.ui.ActionTitleView>
 
-        <RelativeLayout
-            android:id="@+id/bottom_lay"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/common_to_side"
-            android:paddingRight="@dimen/common_to_side"
-            android:paddingTop="@dimen/common_to_side">
+        <com.minyou.manba.ui.view.HeadZoomScrollView
+            android:id="@+id/comment_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
+            android:layout_below="@id/act_comment_title">
 
-            <!--  头像  -->
-            <ImageView
-                android:id="@+id/comment_detail_head_image"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"/>
+            <RelativeLayout
+                android:id="@+id/bottom_lay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/common_to_side"
+                android:paddingRight="@dimen/common_to_side"
+                android:paddingTop="@dimen/common_to_side">
 
-            <!--  用户名  -->
-            <TextView
-                android:id="@+id/comment_detail_name_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dongtai_common_left"
-                android:text="@{CommentItemBean.nickName}"
-                android:textSize="@dimen/common_textsize"
-                android:layout_alignParentTop="true"/>
-
-            <!--  放会员等级  -->
-            <ImageView
-                android:id="@+id/comment_detail_sex_image"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginLeft="@dimen/common_to_side"
-                android:layout_toRightOf="@+id/comment_detail_name_text"/>
-
-            <!--  楼层数  -->
-            <TextView
-                android:id="@+id/tv_floor_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="@{String.format(@string/comment_floor,CommentItemBean.commentId)}"
-                android:textSize="@dimen/small_textsize"/>
-
-            <!--  评论内容  -->
-            <TextView
-                android:id="@+id/comment_detail_info_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="3dp"
-                android:layout_marginTop="@dimen/common_to_side"
-                android:layout_marginLeft="@dimen/dongtai_common_left"
-                android:text="@{CommentItemBean.content}"
-                android:textSize="@dimen/common_textsize"
-                android:layout_below="@+id/comment_detail_sex_image" />
-
-            <!--  日期  -->
-            <TextView
-                android:id="@+id/comment_detail_date_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/comment_detail_info_text"
-                android:layout_marginTop="@dimen/common_to_side"
-                android:text="@{DateFormatUtil.format(CommentItemBean.commentTime)}"
-                android:textSize="@dimen/small_textsize"
-                android:layout_alignStart="@+id/comment_detail_name_text" />
-
-            <!-- 点赞图标 -->
-            <ImageView
-                android:id="@+id/iv_comment_detail_zan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/common_to_side"
-                android:layout_below="@+id/comment_detail_info_text"
-                android:src="@drawable/details_icon_dazan"
-                android:textSize="@dimen/small_textsize"/>
-
-            <FrameLayout
-                android:id="@+id/comment_detail_more"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/common_to_side"
-                android:layout_marginLeft="@dimen/dongtai_common_left"
-                android:background="@color/whitesmoke"
-                android:visibility="@{CommentItemBean.parentId > 0 ? View.VISIBLE : View.GONE}"
-                android:orientation="vertical"
-                android:padding="10dp"
-                android:layout_below="@+id/comment_detail_date_text"
-                android:layout_alignParentEnd="true">
-
-                <in.srain.cube.views.ptr.PtrClassicFrameLayout
-                    android:id="@+id/pcfl_refresh_comment_detail"
+                <ImageView
+                    android:id="@+id/iv_bg_head"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
+
+                <!--  头像  -->
+                <ImageView
+                    android:id="@+id/comment_detail_head_image"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true" />
+
+                <!--  用户名  -->
+                <TextView
+                    android:id="@+id/comment_detail_name_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="@dimen/dongtai_common_left"
+                    android:text="@{CommentItemBean.nickName}"
+                    android:textSize="@dimen/common_textsize" />
+
+                <!--  放会员等级  -->
+                <ImageView
+                    android:id="@+id/comment_detail_sex_image"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginLeft="@dimen/common_to_side"
+                    android:layout_toRightOf="@+id/comment_detail_name_text" />
+
+                <!--  楼层数  -->
+                <TextView
+                    android:id="@+id/tv_floor_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="@{String.format(@string/comment_floor,CommentItemBean.levelNum)}"
+                    android:textSize="@dimen/small_textsize" />
+
+                <!--  评论内容  -->
+                <TextView
+                    android:id="@+id/comment_detail_info_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/comment_detail_sex_image"
+                    android:layout_marginLeft="@dimen/dongtai_common_left"
+                    android:layout_marginTop="@dimen/common_to_side"
+                    android:lineSpacingExtra="3dp"
+                    android:text="@{CommentItemBean.content}"
+                    android:textSize="@dimen/common_textsize" />
+
+                <!--  日期  -->
+                <TextView
+                    android:id="@+id/comment_detail_date_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/comment_detail_name_text"
+                    android:layout_below="@+id/comment_detail_info_text"
+                    android:layout_marginTop="@dimen/common_to_side"
+                    android:text="@{DateFormatUtil.format(CommentItemBean.commentTime)}"
+                    android:textSize="@dimen/small_textsize" />
+
+                <!-- 点赞图标 -->
+                <ImageView
+                    android:id="@+id/iv_comment_detail_zan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/comment_detail_info_text"
+                    android:layout_marginTop="@dimen/common_to_side"
+                    android:src="@drawable/details_icon_dazan"
+                    android:textSize="@dimen/small_textsize" />
+
+                <FrameLayout
+                    android:id="@+id/comment_detail_more"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/comment_detail_date_text"
+                    android:layout_marginLeft="@dimen/dongtai_common_left"
+                    android:layout_marginTop="@dimen/common_to_side"
+                    android:background="@color/whitesmoke"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recycler_comment_detail"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/background_light"></android.support.v7.widget.RecyclerView>
-                </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+                        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
 
-            </FrameLayout>
+                </FrameLayout>
 
-        </RelativeLayout>
+            </RelativeLayout>
+        </com.minyou.manba.ui.view.HeadZoomScrollView>
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_comment"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"
+            android:background="@android:color/background_light"
+            android:orientation="horizontal">
+
+
+            <EditText
+                android:id="@+id/et_comment_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/common_to_side"
+                android:layout_weight="1"
+                android:background="@drawable/et_line_bg_style"
+                android:textCursorDrawable="@drawable/et_cursor_color_drawable"
+                android:paddingBottom="@dimen/common_text_side"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="bottom"
+                android:textSize="@dimen/large_textsize"
+                android:hint="@string/detail_send_hint" />
+
+            <TextView
+                android:id="@+id/tv_send"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_marginLeft="@dimen/common_to_side"
+                android:layout_marginRight="@dimen/common_to_side"
+                android:background="@drawable/select_common_bg"
+                android:gravity="center"
+                android:text="@string/detail_send"
+                android:textColor="@android:color/background_light" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 </layout>

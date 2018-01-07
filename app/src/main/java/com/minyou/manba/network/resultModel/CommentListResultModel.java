@@ -97,6 +97,10 @@ public class CommentListResultModel extends BaseResultModel {
              * photoUrl : http://res.mymanba.cn/FvFLrq8XzCJmjZ-zrEaYn23ttRUW
              * nickName : 秦时明月
              * sex : 2
+             * upvote   是否点赞
+             * upvoteNum    点赞数
+             * replyNum     回复数
+             * levelNum     楼层数
              */
 
             private int commentId;
@@ -112,6 +116,7 @@ public class CommentListResultModel extends BaseResultModel {
             private boolean upvote;
             private int upvoteNum;
             private int replyNum;
+            private int levelNum;
 
             protected CommentItemBean(Parcel in) {
                 commentId = in.readInt();
@@ -126,6 +131,7 @@ public class CommentListResultModel extends BaseResultModel {
                 upvote = in.readByte() != 0;
                 upvoteNum = in.readInt();
                 replyNum = in.readInt();
+                levelNum = in.readInt();
             }
 
             public static final Creator<CommentItemBean> CREATOR = new Creator<CommentItemBean>() {
@@ -139,6 +145,14 @@ public class CommentListResultModel extends BaseResultModel {
                     return new CommentItemBean[size];
                 }
             };
+
+            public int getLevelNum() {
+                return levelNum;
+            }
+
+            public void setLevelNum(int levelNum) {
+                this.levelNum = levelNum;
+            }
 
             public int getCommentId() {
                 return commentId;
@@ -265,6 +279,7 @@ public class CommentListResultModel extends BaseResultModel {
                 dest.writeByte((byte) (upvote ? 1 : 0));
                 dest.writeInt(upvoteNum);
                 dest.writeInt(replyNum);
+                dest.writeInt(levelNum);
             }
         }
     }

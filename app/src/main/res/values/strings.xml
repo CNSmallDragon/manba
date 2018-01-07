@@ -90,9 +90,14 @@
     <string name="detail_send_hint">说点什么...</string>
     <string name="comment_floor">%s楼</string>
     <string name="comment_number">全部评论（%s）</string>
-    <string name="comment_empty">暂无数据，抢占沙发！</string>
+    <string name="comment_empty">暂无评论，抢占沙发！</string>
     <string name="comment_detail_num">第%s楼</string>
     <string name="comment_more_reply">%s回复</string>
+    <string name="comment_sort_zheng">正序查看</string>
+    <string name="comment_sort_dao">倒序查看</string>
+    <string name="comment_sort_hot">热门评论</string>
+    <string name="comment_sort_normal">回复</string>
+    <string name="comment_pub">评论</string>
 
     <!--  公会界面   -->
     <string name="guild_liveness">活跃度: %s</string>

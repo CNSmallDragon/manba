@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="@{String.format(@string/comment_floor,CommentItemBean.commentId)}"
+                android:text="@{String.format(@string/comment_floor,CommentItemBean.levelNum)}"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/small_textsize" />
 

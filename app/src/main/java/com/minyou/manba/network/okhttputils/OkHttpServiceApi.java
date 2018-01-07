@@ -54,4 +54,7 @@ public class OkHttpServiceApi {
 
     // 评论点赞
     public static String HTTP_ZONE_COMMENTUPVOTE = "api/zone/commentUpvote";
+
+    // 获取用户主页
+    public static String HTTP_USER_MYHOME = "api/user/myHome";
 }

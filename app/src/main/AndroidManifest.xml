@@ -47,8 +47,7 @@
             android:name="com.minyou.manba.activity.SociationDetailActivity"
             android:theme="@android:style/Theme.Light.NoTitleBar" />
         <activity
-            android:name="com.minyou.manba.activity.PersonContentActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar" />
+            android:name="com.minyou.manba.activity.PersonContentActivity"/>
         <activity android:name="com.minyou.manba.activity.DongTaiDetailActivity" />
         <activity android:name="com.minyou.manba.activity.ImageViewerActivity" />
         <activity android:name="com.minyou.manba.activity.MyWalletActivity" />

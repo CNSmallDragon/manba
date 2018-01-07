@@ -80,37 +80,30 @@ public class ReplyCommentListResultModel extends BaseResultModel {
         }
 
         public static class ReplyCommentListBean {
+
             /**
-             * commentId : 19
-             * userId : null
+             * commentId : 33
              * zoneId : 20
-             * content : 楼中楼
-             * commentTime : 1515071187000
-             * parentId : 3
+             * content : 二楼
+             * commentTime : 1515317971000
+             * rootId : 30
+             * parentId : 30
+             * replyUserId : 9
+             * replyUserName : 测试
              * commentUserId : 7
-             * photoUrl : http://res.mymanba.cn/FvFLrq8XzCJmjZ-zrEaYn23ttRUW
-             * nickName : 秦时明月
-             * sex : 2
-             * upvote : null
-             * upvoteNum : null
-             * replyNum : null
-             * createTime : null
+             * commentUserName : 秦时明月
              */
 
             private int commentId;
-            private String userId;
             private int zoneId;
             private String content;
             private long commentTime;
+            private int rootId;
             private int parentId;
+            private int replyUserId;
+            private String replyUserName;
             private int commentUserId;
-            private String photoUrl;
-            private String nickName;
-            private int sex;
-            private Object upvote;
-            private Object upvoteNum;
-            private Object replyNum;
-            private Object createTime;
+            private String commentUserName;
 
             public int getCommentId() {
                 return commentId;
@@ -118,14 +111,6 @@ public class ReplyCommentListResultModel extends BaseResultModel {
 
             public void setCommentId(int commentId) {
                 this.commentId = commentId;
-            }
-
-            public String getUserId() {
-                return userId;
-            }
-
-            public void setUserId(String userId) {
-                this.userId = userId;
             }
 
             public int getZoneId() {
@@ -152,12 +137,36 @@ public class ReplyCommentListResultModel extends BaseResultModel {
                 this.commentTime = commentTime;
             }
 
+            public int getRootId() {
+                return rootId;
+            }
+
+            public void setRootId(int rootId) {
+                this.rootId = rootId;
+            }
+
             public int getParentId() {
                 return parentId;
             }
 
             public void setParentId(int parentId) {
                 this.parentId = parentId;
+            }
+
+            public int getReplyUserId() {
+                return replyUserId;
+            }
+
+            public void setReplyUserId(int replyUserId) {
+                this.replyUserId = replyUserId;
+            }
+
+            public String getReplyUserName() {
+                return replyUserName;
+            }
+
+            public void setReplyUserName(String replyUserName) {
+                this.replyUserName = replyUserName;
             }
 
             public int getCommentUserId() {
@@ -168,60 +177,12 @@ public class ReplyCommentListResultModel extends BaseResultModel {
                 this.commentUserId = commentUserId;
             }
 
-            public String getPhotoUrl() {
-                return photoUrl;
+            public String getCommentUserName() {
+                return commentUserName;
             }
 
-            public void setPhotoUrl(String photoUrl) {
-                this.photoUrl = photoUrl;
-            }
-
-            public String getNickName() {
-                return nickName;
-            }
-
-            public void setNickName(String nickName) {
-                this.nickName = nickName;
-            }
-
-            public int getSex() {
-                return sex;
-            }
-
-            public void setSex(int sex) {
-                this.sex = sex;
-            }
-
-            public Object getUpvote() {
-                return upvote;
-            }
-
-            public void setUpvote(Object upvote) {
-                this.upvote = upvote;
-            }
-
-            public Object getUpvoteNum() {
-                return upvoteNum;
-            }
-
-            public void setUpvoteNum(Object upvoteNum) {
-                this.upvoteNum = upvoteNum;
-            }
-
-            public Object getReplyNum() {
-                return replyNum;
-            }
-
-            public void setReplyNum(Object replyNum) {
-                this.replyNum = replyNum;
-            }
-
-            public Object getCreateTime() {
-                return createTime;
-            }
-
-            public void setCreateTime(Object createTime) {
-                this.createTime = createTime;
+            public void setCommentUserName(String commentUserName) {
+                this.commentUserName = commentUserName;
             }
         }
     }

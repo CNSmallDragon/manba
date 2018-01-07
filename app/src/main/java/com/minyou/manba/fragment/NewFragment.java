@@ -243,7 +243,7 @@ public class NewFragment extends DataBindingBaseFragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(view.getContext(), PersonContentActivity.class);
-                    intent.putExtra("userID", zoneBean.getUserId());
+                    intent.putExtra(Appconstant.PERSON_CENTER, zoneBean.getUserId());
                     view.getContext().startActivity(intent);
                 }
             });
@@ -307,6 +307,7 @@ public class NewFragment extends DataBindingBaseFragment {
     public static void setDongTaiGuanZhu(final TextView textView,final ZoneListResultModel.ResultBean.ZoneListBean zoneBean){
         if(zoneBean != null){
             // 是否是自己发布动态
+            LogUtil.d(TAG,"zoneBean=========" + zoneBean.isFollow());
             if(zoneBean.getUserId() == Integer.parseInt(SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID))){
                 textView.setVisibility(View.GONE);
             }else {

@@ -98,7 +98,6 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
 
                 break;
             case R.id.ll_user_nick_name:
-                //showInputDialog();
                 showEditNickNameDialog();
                 break;
             case R.id.ll_user_birthday:

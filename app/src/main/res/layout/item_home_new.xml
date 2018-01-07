@@ -11,7 +11,7 @@
         <import type="java.lang.String" />
         <import type="android.view.View"/>
         <import type="android.text.TextUtils"/>
-        <import type="com.minyou.manba.util.CommonUtil"/>
+        <import type="com.minyou.manba.util.DateFormatUtil"/>
     </data>
 
     <LinearLayout
@@ -82,7 +82,7 @@
                         android:id="@+id/tv_pub_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{CommonUtil.transformTimeToDay(zoneBean.publishTime)}"
+                        android:text="@{DateFormatUtil.format(zoneBean.publishTime)}"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="@dimen/small_textsize" />
 
@@ -107,10 +107,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:visibility="gone"
                 android:background="@drawable/shape_borderline_grey_guanzhu"
                 android:drawableLeft="@drawable/home_icon_guanzhu"
                 android:drawablePadding="@dimen/common_text_side"
-                app:setDongTaiGuanZhu="@{zoneBean}"
                 android:text="@string/home_guanzhu"
                 android:textColor="@color/colorCommon"
                 android:textSize="@dimen/small_textsize" />

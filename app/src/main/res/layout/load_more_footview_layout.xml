@@ -1,39 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/loadLayout"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="@dimen/common_to_side">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/loadLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/common_text_side"
-        android:layout_marginTop="@dimen/common_text_side"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/common_to_side">
 
-        <ProgressBar
-            android:id="@+id/pbLoad"
-            android:layout_width="@dimen/progress_side"
-            android:layout_height="@dimen/progress_side"
-            android:layout_centerVertical="true"
-            android:indeterminateDrawable="@drawable/progressbar"
-            android:indeterminate="false" />
-
-        <TextView
-            android:id="@+id/tvLoadText"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/common_text_side"
-            android:layout_toRightOf="@id/pbLoad"
-            android:clickable="true"
-            android:text="@string/gonghui_loadmore"
-            android:textColor="#000000"
-            android:textSize="@dimen/common_textsize" />
-    </RelativeLayout>
+            android:layout_marginBottom="@dimen/common_text_side"
+            android:layout_marginTop="@dimen/common_text_side"
+            android:gravity="center">
 
-</LinearLayout>
+            <ProgressBar
+                android:id="@+id/pbLoad"
+                android:layout_width="@dimen/progress_side"
+                android:layout_height="@dimen/progress_side"
+                android:layout_centerVertical="true"
+                android:indeterminate="false"
+                android:indeterminateDrawable="@drawable/progressbar" />
+
+            <TextView
+                android:id="@+id/tvLoadText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/common_text_side"
+                android:layout_toRightOf="@id/pbLoad"
+                android:clickable="true"
+                android:text="@string/gonghui_loadmore"
+                android:textColor="#000000"
+                android:textSize="@dimen/common_textsize" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</layout>

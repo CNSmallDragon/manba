@@ -10,6 +10,9 @@ public class EventInfo {
     public static final int SETTING_USER_INFO = 1002;      //个人资料修改信息后返回
     public static final int ZONE_UPDATE_ZAN = 1003;      //更新首页赞按钮变化
 
+    public static final int COMMENT_TYPE_NORMAL = 1005;      //普通评论
+    public static final int COMMENT_TYPE_HOT = 1006;      //热门评论
+
     private int type;
     private Object data;
 

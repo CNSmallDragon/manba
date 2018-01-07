@@ -107,6 +107,9 @@ public class MineFragment extends DataBindingBaseFragment implements View.OnClic
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         LogUtil.d(TAG, "isVisibleToUser===" + isVisibleToUser);
+        if(null != getActivity()){
+            autoLogin();
+        }
     }
 
     @Override
