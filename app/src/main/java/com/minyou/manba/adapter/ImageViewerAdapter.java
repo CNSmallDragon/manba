@@ -1,13 +1,11 @@
 package com.minyou.manba.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -24,6 +22,7 @@ public class ImageViewerAdapter extends PagerAdapter {
     private Context context;
     private List<String> list;
     private RequestManager glideRequest;
+    private OnItemLongClickListener onItemLongClick;
 
     public ImageViewerAdapter(Context context,List<String> list){
         glideRequest = Glide.with(context);
@@ -57,8 +56,9 @@ public class ImageViewerAdapter extends PagerAdapter {
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                Toast.makeText(((Activity)context), "position="+position, Toast.LENGTH_SHORT).show();
-                ((ImageViewerActivity)context).showPupWindowMenu(view);
+                if(null != onItemLongClick){
+                    onItemLongClick.setOnItemLongClickListener(view,position);
+                }
                 return true;
             }
         });
@@ -69,5 +69,13 @@ public class ImageViewerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View)object);
+    }
+
+    public interface OnItemLongClickListener{
+        void setOnItemLongClickListener(View view,int position);
+    }
+
+    public void setOnItemLongClick(OnItemLongClickListener onItemLongClick){
+        this.onItemLongClick = onItemLongClick;
     }
 }

@@ -59,6 +59,7 @@
         <activity android:name="com.minyou.manba.activity.FaTieActivity" />
         <activity android:name="com.minyou.manba.activity.PersonInfoActivity" />
         <activity android:name="com.minyou.manba.activity.detail.CommentDetailActivity" />
+        <activity android:name="com.minyou.manba.activity.PersonGalleryActivity" />
 
         <!-- qq官方申请的key的配置 -->
         <activity

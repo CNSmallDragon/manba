@@ -30,9 +30,7 @@ import com.minyou.manba.R;
 import com.minyou.manba.activity.DongTaiDetailActivity;
 import com.minyou.manba.activity.ImageViewerActivity;
 import com.minyou.manba.activity.PersonContentActivity;
-import com.minyou.manba.adapter.NewRecyclerAdapter;
 import com.minyou.manba.adapter.mvvm.MyMvvmAdapter;
-import com.minyou.manba.bean.ItemInfo;
 import com.minyou.manba.databinding.FragmentNewBinding;
 import com.minyou.manba.event.EventInfo;
 import com.minyou.manba.network.okhttputils.ManBaRequestManager;
@@ -66,9 +64,7 @@ public class NewFragment extends DataBindingBaseFragment {
 
     private FragmentNewBinding binding;
 
-    private NewRecyclerAdapter adapter;
     private MyMvvmAdapter<ZoneListResultModel.ResultBean.ZoneListBean> myMvvmAdapter;
-    private List<ItemInfo> list;
     private List<ZoneListResultModel.ResultBean.ZoneListBean> zoneList;
 
     private int pageSize = 10;
@@ -92,7 +88,6 @@ public class NewFragment extends DataBindingBaseFragment {
     }
 
     private void initView() {
-        list = new ArrayList<ItemInfo>();
         zoneList = new ArrayList<ZoneListResultModel.ResultBean.ZoneListBean>();
         getData();
 

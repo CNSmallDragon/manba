@@ -47,8 +47,8 @@ public class PersonHomeResultModel extends BaseResultModel {
         private int fenNum;
         private int followNum;
         private boolean follow;
-        private Object imageList;
-        private List<PersonInnerBean> zoneList;
+        private List<String> imageList;
+        private List<ZoneListResultModel.ResultBean.ZoneListBean> zoneList;
 
         public int getUserId() {
             return userId;
@@ -122,19 +122,19 @@ public class PersonHomeResultModel extends BaseResultModel {
             this.follow = follow;
         }
 
-        public Object getImageList() {
+        public List<String> getImageList() {
             return imageList;
         }
 
-        public void setImageList(Object imageList) {
+        public void setImageList(List<String> imageList) {
             this.imageList = imageList;
         }
 
-        public List<PersonInnerBean> getZoneList() {
+        public List<ZoneListResultModel.ResultBean.ZoneListBean> getZoneList() {
             return zoneList;
         }
 
-        public void setZoneList(List<PersonInnerBean> zoneList) {
+        public void setZoneList(List<ZoneListResultModel.ResultBean.ZoneListBean> zoneList) {
             this.zoneList = zoneList;
         }
 
@@ -322,6 +322,8 @@ public class PersonHomeResultModel extends BaseResultModel {
             public void setZoneImage(List<String> zoneImage) {
                 this.zoneImage = zoneImage;
             }
+
+
         }
     }
 }

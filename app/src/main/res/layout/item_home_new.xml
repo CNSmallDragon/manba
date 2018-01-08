@@ -144,7 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/home_to_side"
-                android:drawableLeft="@drawable/home_icon_zf"
+                android:drawableLeft="@drawable/ic_browse"
                 android:drawablePadding="@dimen/common_text_side"
                 android:gravity="center"
                 android:text="@{String.valueOf(zoneBean.lookNum)}"

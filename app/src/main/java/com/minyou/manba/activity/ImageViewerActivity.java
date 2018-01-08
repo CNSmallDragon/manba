@@ -1,43 +1,42 @@
 package com.minyou.manba.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.minyou.manba.R;
 import com.minyou.manba.adapter.ImageViewerAdapter;
+import com.minyou.manba.databinding.ActivityImageViewerBinding;
+import com.minyou.manba.util.SDFileHelper;
 
 import java.util.ArrayList;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2017/11/26.
  */
 public class ImageViewerActivity extends Activity {
 
-    private Unbinder unbinder;
+    private ActivityImageViewerBinding binding;
 
-    @BindView(R.id.tv_view)
-    TextView tv_view;
-    @BindView(R.id.image_menu)
-    ImageView image_menu;
-    @BindView(R.id.viewpager_image)
-    ViewPager viewpager_image;
+    private static final int MY_PERMISSION_REQUEST_CODE = 1000;
 
     private ImageViewerAdapter mAdapter;
     private View view;
@@ -53,7 +52,7 @@ public class ImageViewerActivity extends Activity {
 
     private PopupWindow popupWindow;
     private ArrayList<String> images;
-    private int position;
+    private int currentPosition = 0;
 
 
     @Override
@@ -61,18 +60,18 @@ public class ImageViewerActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_image_viewer);
-        unbinder = ButterKnife.bind(this);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_image_viewer);
 
         Intent intent = getIntent();
         if(null == intent){
             finish();
         }
 
-        position = intent.getIntExtra("position",0);
+        currentPosition = intent.getIntExtra("position",0);
         images = intent.getStringArrayListExtra("imageList");
 
-        image_menu.setOnClickListener(new View.OnClickListener() {
+        // 点击顶部菜单
+        binding.imageMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                showDialogMenu();
@@ -80,18 +79,20 @@ public class ImageViewerActivity extends Activity {
             }
         });
 
+
         mAdapter = new ImageViewerAdapter(this,images);
-        viewpager_image.setAdapter(mAdapter);
+        binding.viewpagerImage.setAdapter(mAdapter);
         // 初始化数目
-        tv_view.setText(1 + "/" + (images.size()));
-        viewpager_image.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        binding.tvView.setText(1 + "/" + (images.size()));
+        binding.viewpagerImage.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
 
             @Override
             public void onPageSelected(int position) {
-                tv_view.setText(position+1 + "/" + (images.size()));
+                currentPosition = position;
+                binding.tvView.setText(position+1 + "/" + (images.size()));
             }
 
             @Override
@@ -99,7 +100,16 @@ public class ImageViewerActivity extends Activity {
 
             }
         });
-        viewpager_image.setCurrentItem(position);
+        binding.viewpagerImage.setCurrentItem(currentPosition);
+
+        // 长按item
+        mAdapter.setOnItemLongClick(new ImageViewerAdapter.OnItemLongClickListener() {
+            @Override
+            public void setOnItemLongClickListener(View view, int position) {
+                currentPosition = position;
+                showPupWindowMenu(view);
+            }
+        });
 
     }
 
@@ -128,13 +138,15 @@ public class ImageViewerActivity extends Activity {
         tv_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // TODO 分享给好友
             }
         });
         tv_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // 保存本地
+                getPermission();
+                popupWindow.dismiss();
             }
         });
         tv_cancel.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +155,46 @@ public class ImageViewerActivity extends Activity {
                 popupWindow.dismiss();
             }
         });
+    }
+
+    private void  getPermission(){
+        /**
+         * 第 1 步: 检查是否有相应的权限
+         */
+        boolean isAllGranted = checkPermissionAllGranted(
+                new String[] {
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                }
+        );
+
+        if(isAllGranted){
+            SDFileHelper.getInstance().savePicture(images.get(currentPosition));
+            return;
+        }
+
+        /**
+         * 第 2 步: 请求权限
+         */
+        // 一次请求多个权限, 如果其他有权限是已经授予的将会自动忽略掉
+        ActivityCompat.requestPermissions(
+                this,
+                new String[] {
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                },
+                MY_PERMISSION_REQUEST_CODE
+        );
+    }
+
+    private boolean checkPermissionAllGranted(String[] permissions) {
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                // 只要有一个权限没有被授予, 则直接返回 false
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -195,8 +247,28 @@ public class ImageViewerActivity extends Activity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_PERMISSION_REQUEST_CODE) {
+            boolean isAllGranted = true;
+
+            // 判断是否所有的权限都已经授予了
+            for (int grant : grantResults) {
+                if (grant != PackageManager.PERMISSION_GRANTED) {
+                    isAllGranted = false;
+                    break;
+                }
+            }
+
+            if (isAllGranted) {
+                // 如果所有的权限都授予了, 则执行备份代码
+                SDFileHelper.getInstance().savePicture(images.get(currentPosition));
+
+            } else {
+                // 弹出对话框告诉用户需要权限的原因, 并引导用户去应用权限管理中手动打开权限按钮
+                Toast.makeText(this, "需要授权,请到 “应用信息 -> 权限” 中授予！", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
+
 }

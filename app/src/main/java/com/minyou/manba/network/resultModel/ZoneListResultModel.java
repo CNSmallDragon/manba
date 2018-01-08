@@ -124,6 +124,7 @@ public class ZoneListResultModel extends BaseResultModel {
             private String userPhotoUrl;
             private boolean follow;
             private boolean upvote;
+            private boolean favorite;
 
             public ZoneListBean(){
 
@@ -147,6 +148,7 @@ public class ZoneListResultModel extends BaseResultModel {
                 userPhotoUrl = in.readString();
                 follow = in.readByte() != 0;
                 upvote = in.readByte() != 0;
+                favorite = in.readByte() != 0;
             }
 
             public static final Creator<ZoneListBean> CREATOR = new Creator<ZoneListBean>() {
@@ -327,6 +329,7 @@ public class ZoneListResultModel extends BaseResultModel {
                 dest.writeString(userPhotoUrl);
                 dest.writeByte((byte) (follow ? 1 : 0));
                 dest.writeByte((byte) (upvote ? 1 : 0));
+                dest.writeByte((byte) (favorite ? 1 : 0));
             }
         }
     }

@@ -301,6 +301,7 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
         params.put("pageSize", String.valueOf(pageSize));
         params.put("pageNo", String.valueOf(pageNo));
         params.put("sortType", String.valueOf(sortType));
+        params.put("userId", SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID));
         ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_ZONE_COMMENTLIST, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
@@ -330,6 +331,7 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
         params.put("pageSize", String.valueOf(pageSize));
         params.put("pageNo", String.valueOf(pageNo));
         params.put("sortType", String.valueOf(sortType));
+        params.put("userId", SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID));
         ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_ZONE_COMMENTLIST, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {

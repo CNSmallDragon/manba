@@ -1,33 +1,42 @@
 package com.minyou.manba.activity;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
+import com.minyou.manba.adapter.mvvm.MyMvvmAdapter;
 import com.minyou.manba.databinding.ActivityPersonContentBinding;
+import com.minyou.manba.databinding.ItemHomeNewBinding;
 import com.minyou.manba.network.okhttputils.ManBaRequestManager;
 import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
 import com.minyou.manba.network.okhttputils.ReqCallBack;
 import com.minyou.manba.network.resultModel.PersonHomeResultModel;
+import com.minyou.manba.network.resultModel.ZoneListResultModel;
 import com.minyou.manba.ui.view.GlideCircleTransform;
 import com.minyou.manba.ui.view.HeadZoomScrollView;
 import com.minyou.manba.util.CommonUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/11/25.
@@ -47,6 +56,8 @@ public class PersonContentActivity extends DataBindingBaseActivity implements Vi
     private int personId;
 
     private PersonHomeResultModel.PersonResultBean resultBean = null;
+    private MyMvvmAdapter<ZoneListResultModel.ResultBean.ZoneListBean> myMvvmAdapter;
+    private List<ZoneListResultModel.ResultBean.ZoneListBean> zoneList;
 
     @Override
     public void setContentViewAndBindData() {
@@ -115,6 +126,7 @@ public class PersonContentActivity extends DataBindingBaseActivity implements Vi
     }
 
     private void initListener() {
+        binding.tvPersonPics.setOnClickListener(this);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -177,6 +189,49 @@ public class PersonContentActivity extends DataBindingBaseActivity implements Vi
                 }
             });
         }
+
+        // 加载相册列表
+        if(null != resultBean.getImageList() && resultBean.getImageList().size() > 0){
+            binding.llContentPicList.removeAllViews();
+            for(final String image : resultBean.getImageList()){
+                ImageView imageView = new ImageView(this);
+                // 计算宽高
+                int screenWidth = CommonUtil.getScreenWidth(this);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(screenWidth/6,screenWidth/6);
+                params.setMarginStart(CommonUtil.dip2px(this,10));
+                imageView.setLayoutParams(params);
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                Glide.with(this).load(image).into(imageView);
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ArrayList<String> list = new ArrayList<String>();
+                        list.add(image);
+                        Intent intent = new Intent(PersonContentActivity.this, ImageViewerActivity.class);
+                        intent.putStringArrayListExtra("imageList", list);
+                        startActivity(intent);
+                    }
+                });
+                binding.llContentPicList.addView(imageView);
+            }
+        }
+
+        // recycler加载最近动态
+//        zoneList = new ArrayList<ZoneListResultModel.ResultBean.ZoneListBean>();
+//        zoneList.addAll(resultBean.getZoneList());
+//
+//        myMvvmAdapter = new MyMvvmAdapter<>(this, zoneList, R.layout.item_home_new, BR.zoneBean);
+//        binding.rvPersonDongtai.setLayoutManager(new FullyLinearLayoutManager(this));
+//        binding.rvPersonDongtai.setAdapter(myMvvmAdapter);
+
+        // LinearLayout加载最近动态
+        binding.llRecentDongtai.removeAllViews();
+        for(ZoneListResultModel.ResultBean.ZoneListBean bean : resultBean.getZoneList()){
+            ItemHomeNewBinding itemBinding = DataBindingUtil.inflate(LayoutInflater.from(this),R.layout.item_home_new,binding.llRecentDongtai,false);
+            itemBinding.setZoneBean(bean);
+            binding.llRecentDongtai.addView(itemBinding.getRoot());
+        }
+
     }
 
     /**
@@ -208,7 +263,12 @@ public class PersonContentActivity extends DataBindingBaseActivity implements Vi
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-
+            case R.id.tv_person_pics:
+                // 相册
+                Intent intent = new Intent(PersonContentActivity.this,PersonGalleryActivity.class);
+                intent.putExtra(Appconstant.User.USER_ID,String.valueOf(personId));
+                startActivity(intent);
+                break;
         }
     }
 }

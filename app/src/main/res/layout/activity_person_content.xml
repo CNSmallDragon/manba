@@ -5,9 +5,11 @@
 
         <variable
             name="PersonResultBean"
-            type="com.minyou.manba.network.resultModel.PersonHomeResultModel.PersonResultBean"/>
+            type="com.minyou.manba.network.resultModel.PersonHomeResultModel.PersonResultBean" />
 
-        <import type="java.lang.String"/>
+        <import type="java.lang.String" />
+
+        <import type="android.view.View" />
 
     </data>
 
@@ -20,266 +22,211 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!--<com.minyou.manba.ui.MyScrollView-->
-                <!--android:id="@+id/scrollview"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent">-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/iv_bg_head"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/background_light"
-                    android:orientation="vertical">
+                    android:layout_height="@dimen/person_bg_height"
+                    android:scaleType="fitXY" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_user_pic"
+                    android:layout_width="@dimen/icon_width"
+                    android:layout_height="@dimen/icon_width"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="end"
+                    android:layout_marginRight="@dimen/person_icon_margin_right"
+                    android:layout_marginTop="@dimen/person_icon_margin">
 
                     <ImageView
-                        android:id="@+id/iv_bg_head"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/person_bg_height"
-                        android:scaleType="fitXY" />
-
-                    <RelativeLayout
-                        android:id="@+id/rl_user_pic"
+                        android:id="@+id/iv_user_pic"
                         android:layout_width="@dimen/icon_width"
                         android:layout_height="@dimen/icon_width"
                         android:layout_centerVertical="true"
-                        android:layout_gravity="end"
-                        android:layout_marginRight="@dimen/person_icon_margin_right"
-                        android:layout_marginTop="@dimen/person_icon_margin">
+                        android:src="@drawable/login_icon_qq" />
 
-                        <ImageView
-                            android:id="@+id/iv_user_pic"
-                            android:layout_width="@dimen/icon_width"
-                            android:layout_height="@dimen/icon_width"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/login_icon_qq" />
+                    <ImageView
+                        android:id="@+id/iv_sex"
+                        android:layout_width="@dimen/icon_sex_width"
+                        android:layout_height="@dimen/icon_sex_width"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/home_icon_nan" />
 
-                        <ImageView
-                            android:id="@+id/iv_sex"
-                            android:layout_width="@dimen/icon_sex_width"
-                            android:layout_height="@dimen/icon_sex_width"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignParentEnd="true"
-                            android:src="@drawable/home_icon_nan" />
+                </RelativeLayout>
 
-                    </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/ll_person_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/common_to_side">
 
-                    <LinearLayout
-                        android:id="@+id/ll_person_name"
+                    <TextView
+                        android:id="@+id/tv_person_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingLeft="@dimen/common_to_side">
+                        android:text="@{PersonResultBean.nickName}"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/username_textsize" />
 
-                        <TextView
-                            android:id="@+id/tv_person_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{PersonResultBean.nickName}"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/username_textsize" />
-
-                        <TextView
-                            android:id="@+id/tv_familyname"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/home_to_side"
-                            android:visibility="gone"
-                            android:background="@drawable/shape_borderline_grey_homename"
-                            android:text="@string/regist_lingyu"
-                            android:textColor="@android:color/darker_gray"
-                            android:textSize="@dimen/small_textsize" />
-                    </LinearLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tv_familyname"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/common_to_top">
-
-                        <TextView
-                            android:id="@+id/tv_fensi"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="@string/my_fensi"
-                            android:textSize="@dimen/small_textsize"
-                            android:layout_alignTop="@+id/view_line"
-                            android:layout_alignParentStart="true" />
-
-                        <TextView
-                            android:id="@+id/tv_fensi_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/common_text_side"
-                            android:layout_toRightOf="@id/tv_fensi"
-                            android:text="@{String.valueOf(PersonResultBean.fenNum)}"
-                            android:textSize="@dimen/small_textsize" />
-
-                        <View
-                            android:id="@+id/view_line"
-                            android:layout_width="0.5dp"
-                            android:layout_height="@dimen/small_textsize"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/common_to_side"
-                            android:layout_toRightOf="@id/tv_fensi_count"
-                            android:background="@android:color/darker_gray" />
-
-                        <TextView
-                            android:id="@+id/tv_guanzhu"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/common_to_side"
-                            android:layout_toRightOf="@id/view_line"
-                            android:text="@string/my_guanzhu"
-                            android:textSize="@dimen/small_textsize" />
-
-                        <TextView
-                            android:id="@+id/tv_guanzhu_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/common_text_side"
-                            android:layout_toRightOf="@id/tv_guanzhu"
-                            android:text="@{String.valueOf(PersonResultBean.followNum)}"
-                            android:textSize="@dimen/small_textsize" />
-
-                        <TextView
-                            android:id="@+id/tv_person_guanzhu"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/shape_borderline_blue"
-                            android:drawableLeft="@drawable/home_icon_guanzhu"
-                            android:paddingBottom="@dimen/common_text_side"
-                            android:paddingTop="@dimen/common_text_side"
-                            android:text="@string/person_guanzhu"
-                            android:textColor="@color/colorCommon" />
-
-                        <TextView
-                            android:id="@+id/tv_pick"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/common_to_side"
-                            android:layout_toLeftOf="@id/tv_person_guanzhu"
-                            android:background="@drawable/shape_borderline_blue"
-                            android:visibility="gone"
-                            android:paddingBottom="@dimen/common_text_side"
-                            android:paddingTop="@dimen/common_text_side"
-                            android:text="@string/person_pick"
-                            android:textColor="@color/colorCommon" />
-
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/common_to_top"
-                        android:background="@color/colorCommon_gray" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/me_icon_go"
-                        android:padding="@dimen/common_to_side"
-                        android:text="@string/person_gallery" />
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv_person_gallery"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/common_to_top"
-                        android:background="#F2F2F2" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/me_icon_go"
-                        android:padding="@dimen/common_to_side"
-                        android:text="@string/person_dongtai" />
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv_person_dongtai"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:drawableRight="@drawable/me_icon_go"
-                        android:padding="@dimen/common_to_side"
-                        android:text="@string/person_dongtai" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:drawableRight="@drawable/me_icon_go"
-                        android:padding="@dimen/common_to_side"
-                        android:text="@string/person_dongtai" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:drawableRight="@drawable/me_icon_go"
-                        android:padding="@dimen/common_to_side"
-                        android:text="@string/person_dongtai" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:drawableRight="@drawable/me_icon_go"
-                        android:padding="@dimen/common_to_side"
-                        android:text="@string/person_dongtai" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:drawableRight="@drawable/me_icon_go"
-                        android:padding="@dimen/common_to_side"
-                        android:text="@string/person_dongtai" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:drawableRight="@drawable/me_icon_go"
-                        android:padding="@dimen/common_to_side"
-                        android:text="@string/person_dongtai" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:drawableRight="@drawable/me_icon_go"
-                        android:padding="@dimen/common_to_side"
-                        android:text="@string/person_dongtai" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:drawableRight="@drawable/me_icon_go"
-                        android:padding="@dimen/common_to_side"
-                        android:text="@string/person_dongtai" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:drawableRight="@drawable/me_icon_go"
-                        android:padding="@dimen/common_to_side"
-                        android:text="@string/person_dongtai" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:drawableRight="@drawable/me_icon_go"
-                        android:padding="@dimen/common_to_side"
-                        android:text="@string/person_dongtai" />
+                        android:layout_marginLeft="@dimen/home_to_side"
+                        android:background="@drawable/shape_borderline_grey_homename"
+                        android:text="@string/regist_lingyu"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="@dimen/small_textsize"
+                        android:visibility="gone" />
                 </LinearLayout>
 
-            <!--</com.minyou.manba.ui.MyScrollView>-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_to_top">
+
+                    <TextView
+                        android:id="@+id/tv_fensi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignTop="@+id/view_line"
+                        android:layout_centerVertical="true"
+                        android:text="@string/my_fensi"
+                        android:textSize="@dimen/small_textsize" />
+
+                    <TextView
+                        android:id="@+id/tv_fensi_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/common_text_side"
+                        android:layout_toRightOf="@id/tv_fensi"
+                        android:text="@{String.valueOf(PersonResultBean.fenNum)}"
+                        android:textSize="@dimen/small_textsize" />
+
+                    <View
+                        android:id="@+id/view_line"
+                        android:layout_width="0.5dp"
+                        android:layout_height="@dimen/small_textsize"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/common_to_side"
+                        android:layout_toRightOf="@id/tv_fensi_count"
+                        android:background="@android:color/darker_gray" />
+
+                    <TextView
+                        android:id="@+id/tv_guanzhu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/common_to_side"
+                        android:layout_toRightOf="@id/view_line"
+                        android:text="@string/my_guanzhu"
+                        android:textSize="@dimen/small_textsize" />
+
+                    <TextView
+                        android:id="@+id/tv_guanzhu_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/common_text_side"
+                        android:layout_toRightOf="@id/tv_guanzhu"
+                        android:text="@{String.valueOf(PersonResultBean.followNum)}"
+                        android:textSize="@dimen/small_textsize" />
+
+                    <TextView
+                        android:id="@+id/tv_person_guanzhu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/shape_borderline_blue"
+                        android:drawableLeft="@drawable/home_icon_guanzhu"
+                        android:paddingBottom="@dimen/common_text_side"
+                        android:paddingTop="@dimen/common_text_side"
+                        android:text="@string/person_guanzhu"
+                        android:textColor="@color/colorCommon" />
+
+                    <TextView
+                        android:id="@+id/tv_pick"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/common_to_side"
+                        android:layout_toLeftOf="@id/tv_person_guanzhu"
+                        android:background="@drawable/shape_borderline_blue"
+                        android:paddingBottom="@dimen/common_text_side"
+                        android:paddingTop="@dimen/common_text_side"
+                        android:text="@string/person_pick"
+                        android:textColor="@color/colorCommon"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/common_to_top"
+                    android:background="@color/colorCommon_gray" />
+
+                <TextView
+                    android:id="@+id/tv_person_pics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/me_icon_go"
+                    android:padding="@dimen/common_to_side"
+                    android:text="@string/person_gallery"
+                    android:textSize="@dimen/common_textsize" />
+
+                <LinearLayout
+                    android:id="@+id/ll_content_pic_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/common_to_side"
+                        android:padding="@dimen/common_to_side"
+                        android:text="@string/person_empty"
+                        android:visibility="@{PersonResultBean.imageList == null ? View.VISIBLE : View.GONE}" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/common_to_top"
+                    android:background="#F2F2F2" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/me_icon_go"
+                    android:padding="@dimen/common_to_side"
+                    android:textSize="@dimen/common_textsize"
+                    android:text="@string/person_dongtai" />
+
+                <LinearLayout
+                    android:id="@+id/ll_recent_dongtai"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"></LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_person_dongtai"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+            </LinearLayout>
+
         </com.minyou.manba.ui.view.HeadZoomScrollView>
 
         <com.minyou.manba.ui.ActionTitleView

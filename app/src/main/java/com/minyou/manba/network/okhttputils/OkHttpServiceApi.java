@@ -57,4 +57,7 @@ public class OkHttpServiceApi {
 
     // 获取用户主页
     public static String HTTP_USER_MYHOME = "api/user/myHome";
+
+    // 获取用户相册
+    public static String HTTP_USER_GALLERY = "api/zone/photoList";
 }

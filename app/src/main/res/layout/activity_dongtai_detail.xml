@@ -85,7 +85,7 @@
                 android:layout_marginLeft="@dimen/common_to_side"
                 android:button="@null"
                 android:checked="@{ZoneDetailBean.favorite ? true : false}"
-                android:drawableLeft="@drawable/details_icon_shouchang"
+                android:drawableLeft="@drawable/select_detail_favorite"
                 android:drawablePadding="@dimen/common_text_side"
                 android:text="@{String.valueOf(ZoneDetailBean.favoriteNum)}" />
 

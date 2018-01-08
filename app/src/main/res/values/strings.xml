@@ -81,7 +81,8 @@
     <string name="person_pick">撩一下</string>
     <string name="person_guanzhu">关注</string>
     <string name="person_gallery">相册</string>
-    <string name="person_dongtai">动态</string>
+    <string name="person_dongtai">最近动态</string>
+    <string name="person_empty">暂未发布图片</string>
 
     <!--  动态详情界面   -->
     <string name="detail_title">动态详情</string>
@@ -98,6 +99,8 @@
     <string name="comment_sort_hot">热门评论</string>
     <string name="comment_sort_normal">回复</string>
     <string name="comment_pub">评论</string>
+
+
 
     <!--  公会界面   -->
     <string name="guild_liveness">活跃度: %s</string>
