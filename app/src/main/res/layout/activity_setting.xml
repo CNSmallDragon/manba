@@ -89,6 +89,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:background="@drawable/common_background_press"
             android:padding="@dimen/common_to_side">
 
             <TextView
@@ -100,10 +101,10 @@
                 android:textSize="@dimen/common_textsize" />
 
             <TextView
+                android:id="@+id/tv_cache_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/common_to_side"
-                android:text="100M"
                 android:textSize="@dimen/common_textsize" />
         </LinearLayout>
 

@@ -29,7 +29,7 @@
             app:borderLine="true"
             app:titleText="@string/comment_detail_num"></com.minyou.manba.ui.ActionTitleView>
 
-        <com.minyou.manba.ui.view.HeadZoomScrollView
+        <android.support.v4.widget.NestedScrollView
             android:id="@+id/comment_scrollview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -44,12 +44,6 @@
                 android:paddingLeft="@dimen/common_to_side"
                 android:paddingRight="@dimen/common_to_side"
                 android:paddingTop="@dimen/common_to_side">
-
-                <ImageView
-                    android:id="@+id/iv_bg_head"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"/>
 
                 <!--  头像  -->
                 <ImageView
@@ -111,15 +105,16 @@
                     android:textSize="@dimen/small_textsize" />
 
                 <!-- 点赞图标 -->
-                <ImageView
-                    android:id="@+id/iv_comment_detail_zan"
+                <CheckBox
+                    android:id="@+id/cb_comment_detail_zan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/comment_detail_info_text"
                     android:layout_marginTop="@dimen/common_to_side"
-                    android:src="@drawable/details_icon_dazan"
-                    android:textSize="@dimen/small_textsize" />
+                    android:button="@null"
+                    android:drawableLeft="@drawable/select_detail_zan"
+                    android:checked="@{CommentItemBean.upvote == true ? true : false}"/>
 
                 <FrameLayout
                     android:id="@+id/comment_detail_more"
@@ -142,7 +137,7 @@
                 </FrameLayout>
 
             </RelativeLayout>
-        </com.minyou.manba.ui.view.HeadZoomScrollView>
+        </android.support.v4.widget.NestedScrollView>
 
         <LinearLayout
             android:id="@+id/ll_comment"

@@ -39,4 +39,8 @@ public class UserManager {
         }
         return false;
     }
+
+    public static String getUserId(){
+        return SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID);
+    }
 }

@@ -22,7 +22,6 @@ import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
 import com.minyou.manba.network.okhttputils.ReqCallBack;
 import com.minyou.manba.network.resultModel.SociationResultModel;
 import com.minyou.manba.ui.view.DefalutRefreshView;
-import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
 import java.util.ArrayList;
@@ -62,7 +61,6 @@ public class SociationFragment extends DataBindingBaseFragment {
 
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                LogUtil.d(TAG, "checkCanDoRefresh===" + (!binding.pcflRefreshSociation.isRefreshing() && PtrDefaultHandler2.checkContentCanBePulledDown(frame, content, header)));
                 return !binding.pcflRefreshSociation.isRefreshing() && PtrDefaultHandler2.checkContentCanBePulledDown(frame, content, header);
             }
 
@@ -73,7 +71,6 @@ public class SociationFragment extends DataBindingBaseFragment {
 
             @Override
             public boolean checkCanDoLoadMore(PtrFrameLayout frame, View content, View footer) {
-                LogUtil.d(TAG, "checkCanDoLoadMore===" + (!binding.pcflRefreshSociation.isRefreshing() && PtrDefaultHandler2.checkContentCanBePulledDown(frame, content, footer)));
                 return !binding.pcflRefreshSociation.isRefreshing() && PtrDefaultHandler2.checkContentCanBePulledUp(frame, content, footer);
             }
 

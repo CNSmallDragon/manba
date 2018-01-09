@@ -1,6 +1,7 @@
 package com.minyou.manba.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,10 +10,12 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.minyou.manba.R;
+import com.minyou.manba.activity.ImageViewerActivity;
 import com.minyou.manba.databinding.ItemGalleryLayoutBinding;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.OnItemClickLitener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,6 +47,15 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             LogUtil.d("lch---",list.get(position));
             final ImageViewHolder viewHolder = (ImageViewHolder) holder;
             Glide.with(context).load(list.get(position)).into(viewHolder.binding.image);
+            viewHolder.binding.image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ImageViewerActivity.class);
+                    intent.putExtra("position", position);
+                    intent.putStringArrayListExtra("imageList", (ArrayList<String>) list);
+                    context.startActivity(intent);
+                }
+            });
 //            viewHolder.binding.image.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {

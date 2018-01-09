@@ -23,7 +23,10 @@
             android:gravity="center_vertical"
             app:titleText="@string/detail_title"></com.minyou.manba.ui.ActionTitleView>
 
-        <com.minyou.manba.ui.view.HeadZoomScrollView
+
+
+        <!--<com.minyou.manba.ui.view.HeadZoomScrollView-->
+        <android.support.v4.widget.NestedScrollView
             android:id="@+id/scrollview_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -35,29 +38,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/iv_bg_head"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"/>
-
                 <include
                     android:id="@+id/include_dongtai_detail"
                     layout="@layout/item_activity_dongtai_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <!--<in.srain.cube.views.ptr.PtrClassicFrameLayout-->
-                <!--android:id="@+id/pcfl_refresh_comment"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent">-->
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_comment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/background_light"></android.support.v7.widget.RecyclerView>
-                <!--</in.srain.cube.views.ptr.PtrClassicFrameLayout>-->
 
                 <TextView
                     android:id="@+id/tv_empty"
@@ -68,7 +59,8 @@
                     android:visibility="gone" />
 
             </LinearLayout>
-        </com.minyou.manba.ui.view.HeadZoomScrollView>
+        </android.support.v4.widget.NestedScrollView>
+        <!--</com.minyou.manba.ui.view.HeadZoomScrollView>-->
 
         <RelativeLayout
             android:id="@+id/rl_menu"

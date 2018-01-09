@@ -1,7 +1,9 @@
 package com.minyou.manba.activity.detail;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -21,7 +23,6 @@ import com.minyou.manba.network.okhttputils.ReqCallBack;
 import com.minyou.manba.network.resultModel.CommentListResultModel;
 import com.minyou.manba.network.resultModel.ReplyCommentListResultModel;
 import com.minyou.manba.ui.view.GlideCircleTransform;
-import com.minyou.manba.ui.view.HeadZoomScrollView;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.OnItemClickLitener;
 import com.minyou.manba.util.SharedPreferencesUtil;
@@ -66,6 +67,7 @@ public class CommentDetailActivity extends DataBindingBaseActivity implements Vi
         initListener();
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     private void initListener() {
         // 编辑框获取焦点
         binding.etCommentText.setOnClickListener(this);
@@ -73,10 +75,12 @@ public class CommentDetailActivity extends DataBindingBaseActivity implements Vi
         binding.tvSend.setOnClickListener(this);
         // 点击空白区域隐藏输入框
         binding.bottomLay.setOnClickListener(this);
+        // 点赞按钮
+        binding.cbCommentDetailZan.setOnClickListener(this);
 
-        binding.commentScrollview.setOnScrollListener(new HeadZoomScrollView.OnScrollListener() {
+        binding.commentScrollview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
-            public void onScroll(int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 replyUserId = 0;
                 binding.etCommentText.setHint(getResources().getString(R.string.detail_send_hint));
                 binding.llComment.setVisibility(View.GONE);
@@ -183,7 +187,12 @@ public class CommentDetailActivity extends DataBindingBaseActivity implements Vi
         // 显示楼中楼
         manager = new LinearLayoutManager(this);
         mAdapter = new CommentDetailAdapter(this,list);
+        manager = new LinearLayoutManager(this);
+        manager.setSmoothScrollbarEnabled(true);
+        manager.setAutoMeasureEnabled(true);
         binding.recyclerCommentDetail.setLayoutManager(manager);
+        binding.recyclerCommentDetail.setHasFixedSize(true);
+        binding.recyclerCommentDetail.setNestedScrollingEnabled(false);
         binding.recyclerCommentDetail.setAdapter(mAdapter);
         // 将楼主ID传过去
         mAdapter.setFloorMasterId(floorMasterId);
@@ -238,6 +247,17 @@ public class CommentDetailActivity extends DataBindingBaseActivity implements Vi
                 replyUserId = 0;
                 binding.etCommentText.setHint(getResources().getString(R.string.detail_send_hint));
                 binding.llComment.setVisibility(View.GONE);
+                break;
+            case R.id.cb_comment_detail_zan:
+                if(binding.cbCommentDetailZan.isChecked()){    // 点赞
+                    commentItem.setUpvote(true);
+                }else{
+                    commentItem.setUpvote(false);
+                }
+                HashMap<String,String> params = new HashMap<String, String>();
+                params.put("userId", SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID));
+                params.put("commentId",commentItem.getCommentId()+"");
+                ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_ZONE_COMMENTUPVOTE, ManBaRequestManager.TYPE_POST_JSON, params, null);
                 break;
         }
     }

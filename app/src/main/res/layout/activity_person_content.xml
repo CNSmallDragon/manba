@@ -181,6 +181,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableRight="@drawable/me_icon_go"
+                    android:background="@drawable/common_background_press"
                     android:padding="@dimen/common_to_side"
                     android:text="@string/person_gallery"
                     android:textSize="@dimen/common_textsize" />
@@ -207,9 +208,11 @@
                     android:background="#F2F2F2" />
 
                 <TextView
+                    android:id="@+id/tv_recent_dongtai"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableRight="@drawable/me_icon_go"
+                    android:background="@drawable/common_background_press"
                     android:padding="@dimen/common_to_side"
                     android:textSize="@dimen/common_textsize"
                     android:text="@string/person_dongtai" />
@@ -220,10 +223,15 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"></LinearLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_person_dongtai"
+                <TextView
+                    android:id="@+id/tv_show_all"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="@dimen/common_to_side"
+                    android:background="@drawable/common_background_press"
+                    android:textColor="@color/colorCommon"
+                    android:text="@string/person_show_all"/>
 
             </LinearLayout>
 

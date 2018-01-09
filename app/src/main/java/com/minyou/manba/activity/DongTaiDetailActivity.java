@@ -89,7 +89,11 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
 
         mAdapter = new CommentListAdapter(this, commentItemBeanList);
         manager = new LinearLayoutManager(this);
+        manager.setSmoothScrollbarEnabled(true);
+        manager.setAutoMeasureEnabled(true);
         binding.recyclerComment.setLayoutManager(manager);
+        binding.recyclerComment.setHasFixedSize(true);
+        binding.recyclerComment.setNestedScrollingEnabled(false);
         binding.recyclerComment.setAdapter(mAdapter);
     }
 
@@ -149,13 +153,13 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
      * 记载点赞列表
      * @param userZanListInnerBeanList
      */
-    private void initZanListView(List<UserZanListResultModel.UserZanListInnerBean> userZanListInnerBeanList) {
+    private void initZanListView(final List<UserZanListResultModel.UserZanListInnerBean> userZanListInnerBeanList) {
         // 获取点赞列表
         if(null != userZanListInnerBeanList){
             binding.includeDongtaiDetail.llZanList.removeAllViews();
             if(userZanListInnerBeanList.size() > 0 && userZanListInnerBeanList.size() < 6){
                 binding.includeDongtaiDetail.ivMore.setVisibility(View.GONE);
-                for(UserZanListResultModel.UserZanListInnerBean bean : userZanListInnerBeanList){
+                for(final UserZanListResultModel.UserZanListInnerBean bean : userZanListInnerBeanList){
                     ImageView imageView = new ImageView(binding.includeDongtaiDetail.llZanList.getContext());
                     // 计算宽高
                     int screenWidth = CommonUtil.getScreenWidth(binding.includeDongtaiDetail.llZanList.getContext());
@@ -167,10 +171,19 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
                     }else{
                         Glide.with(binding.includeDongtaiDetail.llZanList.getContext()).load(bean.getPhotoUrl()).transform(new GlideCircleTransform(binding.includeDongtaiDetail.llZanList.getContext())).into(imageView);
                     }
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(DongTaiDetailActivity.this, PersonContentActivity.class);
+                            intent.putExtra(Appconstant.PERSON_CENTER, bean.getUserId());
+                            startActivity(intent);
+                        }
+                    });
                     binding.includeDongtaiDetail.llZanList.addView(imageView);
                 }
             }else if(userZanListInnerBeanList.size() > 6){
                 for(int i=0;i <= 5;i++){
+                    final int userId = userZanListInnerBeanList.get(i).getUserId();
                     ImageView imageView = new ImageView(binding.includeDongtaiDetail.llZanList.getContext());
                     // 计算宽高
                     int screenWidth = CommonUtil.getScreenWidth(binding.includeDongtaiDetail.llZanList.getContext());
@@ -181,6 +194,14 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
                     }else{
                         Glide.with(binding.includeDongtaiDetail.llZanList.getContext()).load(userZanListInnerBeanList.get(i).getPhotoUrl()).transform(new GlideCircleTransform(binding.includeDongtaiDetail.llZanList.getContext())).into(imageView);
                     }
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(DongTaiDetailActivity.this, PersonContentActivity.class);
+                            intent.putExtra(Appconstant.PERSON_CENTER, userId);
+                            startActivity(intent);
+                        }
+                    });
                     binding.includeDongtaiDetail.llZanList.addView(imageView);
                 }
                 binding.includeDongtaiDetail.ivMore.setVisibility(View.VISIBLE);
@@ -370,8 +391,8 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
                 if (userZanListResultModel.isSuccess()) {
                     List<UserZanListResultModel.UserZanListInnerBean> userZanListInnerBeanList = userZanListResultModel.getResult();
                     initZanListView(userZanListInnerBeanList);
-                    mAdapter.setZanList(userZanListInnerBeanList);
-                    mAdapter.notifyDataSetChanged();
+                    //mAdapter.setZanList(userZanListInnerBeanList);
+                    //mAdapter.notifyDataSetChanged();
                 }
 
             }

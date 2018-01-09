@@ -1,7 +1,7 @@
 package com.minyou.manba.activity;
 
 import android.databinding.DataBindingUtil;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 
 import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
@@ -12,6 +12,7 @@ import com.minyou.manba.network.okhttputils.ManBaRequestManager;
 import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
 import com.minyou.manba.network.okhttputils.ReqCallBack;
 import com.minyou.manba.network.resultModel.GalleryResultModel;
+import com.minyou.manba.ui.SpacesItemDecoration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,8 +42,8 @@ public class PersonGalleryActivity extends DataBindingBaseActivity {
 
 
         mAdapter = new GalleryAdapter(this,list);
-        binding.galleryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //binding.galleryRecyclerView.setLayoutManager(new GridLayoutManager(this,3));
+        binding.galleryRecyclerView.setLayoutManager(new GridLayoutManager(this,3));
+        binding.galleryRecyclerView.addItemDecoration(new SpacesItemDecoration(16));
         binding.galleryRecyclerView.setAdapter(mAdapter);
         getData();
 

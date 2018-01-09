@@ -77,12 +77,14 @@
     <string name="home_pass">跳过 %s</string>
 
 
-    <!--  主页条目界面   -->
+    <!--  个人主页   -->
     <string name="person_pick">撩一下</string>
     <string name="person_guanzhu">关注</string>
     <string name="person_gallery">相册</string>
     <string name="person_dongtai">最近动态</string>
     <string name="person_empty">暂未发布图片</string>
+    <string name="person_show_all">查看更多动态</string>
+    <string name="person_all_dongtai">TA的动态</string>
 
     <!--  动态详情界面   -->
     <string name="detail_title">动态详情</string>
@@ -127,6 +129,8 @@
     <string name="setting_update_version">版本更新</string>
     <string name="setting_about_us">关于漫吧</string>
     <string name="setting_exit">退出登录</string>
+    <string name="setting_clear_cache_ornot">确定清除缓存吗？</string>
+
     <!-- 个人资料  -->
     <string name="setting_user_info">个人资料</string>
     <string name="setting_user_nickname">昵称</string>
@@ -153,5 +157,6 @@
     <string name="no_more">没有更多数据了</string>
     <string name="cancel">取消</string>
     <string name="ok">确定</string>
+    <string name="prompt">提示！</string>
 
 </resources>

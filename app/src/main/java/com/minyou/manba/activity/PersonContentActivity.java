@@ -127,6 +127,8 @@ public class PersonContentActivity extends DataBindingBaseActivity implements Vi
 
     private void initListener() {
         binding.tvPersonPics.setOnClickListener(this);
+        binding.tvRecentDongtai.setOnClickListener(this);
+        binding.tvShowAll.setOnClickListener(this);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -238,12 +240,14 @@ public class PersonContentActivity extends DataBindingBaseActivity implements Vi
      * 从网络获取用户主页信息
      */
     public void getPersonHomeInfo() {
+        loading();
         HashMap<String,String> params = new HashMap<String,String>();
         params.put("loginUserId",userId);
         params.put("userId",String.valueOf(personId));
         ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_USER_MYHOME, ManBaRequestManager.TYPE_POST_JSON, params, new ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
+                cancelLoading();
                 PersonHomeResultModel personHomeResultModel = new Gson().fromJson(result,PersonHomeResultModel.class);
                 if(personHomeResultModel.isSuccess()){
                     resultBean = personHomeResultModel.getResult();
@@ -254,7 +258,7 @@ public class PersonContentActivity extends DataBindingBaseActivity implements Vi
 
             @Override
             public void onReqFailed(String errorMsg) {
-
+                cancelLoading();
             }
         });
     }
@@ -262,11 +266,17 @@ public class PersonContentActivity extends DataBindingBaseActivity implements Vi
 
     @Override
     public void onClick(View v) {
+        Intent intent = null;
         switch (v.getId()){
             case R.id.tv_person_pics:
                 // 相册
-                Intent intent = new Intent(PersonContentActivity.this,PersonGalleryActivity.class);
+                intent = new Intent(PersonContentActivity.this,PersonGalleryActivity.class);
                 intent.putExtra(Appconstant.User.USER_ID,String.valueOf(personId));
+                startActivity(intent);
+                break;
+            case R.id.tv_show_all:
+            case R.id.tv_recent_dongtai:
+                intent = new Intent(PersonContentActivity.this,MyDongTaiActivity.class);
                 startActivity(intent);
                 break;
         }
