@@ -1,26 +1,23 @@
 package com.minyou.manba.activity;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.bean.ManBaUserInfo;
+import com.minyou.manba.databinding.ActivityLoginBinding;
 import com.minyou.manba.event.EventInfo;
 import com.minyou.manba.fragment.MineFragment;
 import com.minyou.manba.model.LoginActivityModel;
@@ -47,9 +44,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -58,7 +52,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener {
+public class LoginActivity extends DataBindingBaseActivity implements View.OnClickListener {
+
+    private ActivityLoginBinding binding;
 
     private static final String TAG = "LoginActivity";
     private static final String NUMBER = "number";
@@ -69,29 +65,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private static final int SINALOGIN = 1003;
     private static final int PASSWORD_ERROR = 400;
 
-    private Unbinder unbinder;
-
-    @BindView(R.id.cb_display_pwd)
-    CheckBox cb_display_pwd;
-    @BindView(R.id.login_pwd)
-    EditText login_pwd;
-    @BindView(R.id.bt_login)
-    Button bt_login;
-    @BindView(R.id.login_number)
-    EditText login_number;
-    @BindView(R.id.tv_forget_pwd)
-    TextView tv_forget_pwd;
-    private Tencent mTencent;
-    @BindView(R.id.tv_qq)
-    TextView tv_qq;
-    @BindView(R.id.tv_sign_up)
-    TextView tv_sign_up;
-
     public static String mAppid;
     private String inputNumber;
     private String inputPWD;
     public MyIUiListener myIUiListener;
     public ManBaUserInfo mUserInfo;
+    private Tencent mTencent;
 
     private LoginActivityModel model;
 
@@ -109,75 +88,44 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 case PASSWORD_ERROR:
                     // 密码错误
                     Toast.makeText(LoginActivity.this, "您输入的密码有误，请重新输入!", Toast.LENGTH_SHORT).show();
-                    login_pwd.setText("");
+                    binding.loginPwd.setText("");
                     break;
             }
             super.handleMessage(msg);
         }
     };
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        //requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        //setContentView(R.layout.activity_login);
-//        //unbinder = ButterKnife.bind(this);
-//    }
+    @Override
+    public void setContentViewAndBindData() {
+        EventBus.getDefault().register(this);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_login);
+        initListener();
+    }
 
     private void initListener() {
-        bt_login.setOnClickListener(this);
-        tv_sign_up.setOnClickListener(this);
-        cb_display_pwd.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        binding.btLogin.setOnClickListener(this);
+        binding.tvSignUp.setOnClickListener(this);
+        binding.tvForgetPwd.setOnClickListener(this);
+        binding.tvWeixin.setOnClickListener(this);
+        binding.tvQq.setOnClickListener(this);
+        binding.cbDisplayPwd.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (TextUtils.isEmpty(login_pwd.getText())) {
+                if (TextUtils.isEmpty(binding.loginPwd.getText())) {
                     return;
                 }
                 if (isChecked) {
-                    login_pwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    binding.loginPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 } else {
-                    login_pwd.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    binding.loginPwd.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
                 // 将光标移动到最后
-                login_pwd.setSelection(login_pwd.getText().toString().length());
+                binding.loginPwd.setSelection(binding.loginPwd.getText().toString().length());
             }
         });
     }
 
-
-    @OnClick(R.id.tv_forget_pwd)
-    public void forgetPwd() {
-        if (checkLoginNum()) {
-            tv_forget_pwd.setTextColor(Color.BLUE);
-            Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
-            intent.putExtra(NUMBER, inputNumber);
-            startActivity(intent);
-
-        }
-    }
-
-    @OnClick(R.id.tv_sina)
-    public void loginXinLang() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @OnClick(R.id.tv_weixin)
-    public void loginWeiXin() {
-        // TODO Auto-generated method stub
-        IWXAPI mApi = WXAPIFactory.createWXAPI(this, Appconstant.WEIXIN_APP_ID, true);
-        mApi.unregisterApp();
-        mApi.registerApp(Appconstant.WEIXIN_APP_ID);
-        if (null != mApi && mApi.isWXAppInstalled()) {
-            SendAuth.Req req = new SendAuth.Req();
-            req.scope = "snsapi_userinfo";
-            req.state = "wechat_sdk_demo_test_neng";
-            mApi.sendReq(req);
-        } else {
-            Toast.makeText(LoginActivity.this, "未安装微信", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     private void login() {
         loading();
@@ -230,7 +178,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private boolean checkLoginNum() {
-        inputNumber = login_number.getText().toString();
+        inputNumber = binding.loginNumber.getText().toString();
         if (TextUtils.isEmpty(inputNumber)) {
             Toast.makeText(this, "请输入手机号", Toast.LENGTH_SHORT).show();
             return false;
@@ -243,7 +191,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private boolean checkPassWord() {
-        inputPWD = login_pwd.getText().toString();
+        inputPWD = binding.loginPwd.getText().toString();
         if (TextUtils.isEmpty(inputPWD)) {
             Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
             return false;
@@ -258,7 +206,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onStart() {
         super.onStart();
-        tv_forget_pwd.setTextColor(Color.GRAY);
+        binding.tvForgetPwd.setTextColor(Color.GRAY);
     }
 
     @Override
@@ -275,19 +223,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         EventBus.getDefault().unregister(this);
     }
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.activity_login;
-    }
-
-    @Override
-    public void initView(Bundle savedInstanceState) {
-        EventBus.getDefault().register(this);
-
-        model = new LoginActivityModel();
-
-        initListener();
-    }
 
     /**
      * 微信登陆后返回，关闭当前activity
@@ -302,20 +237,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
-
-    @OnClick(R.id.tv_qq)
-    public void loginQQ() {
-        mAppid = Appconstant.QQ_APP_ID;
-        mTencent = Tencent.createInstance(mAppid, LoginActivity.this);
-        myIUiListener = new MyIUiListener();
-        Log.d(TAG, "登陆开始-----------------");
-        loading();
-        mTencent.login(LoginActivity.this, "all", myIUiListener);
-    }
-
     @Override
     public void onClick(View view) {
-
+        Intent intent;
         switch (view.getId()) {
             case R.id.bt_login:
                 if (checkLoginNum() && checkPassWord()) {
@@ -325,13 +249,45 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
                 break;
             case R.id.tv_sign_up:
-                Intent intent = new Intent(this, RegistActivity.class);
+                intent = new Intent(this, RegistActivity.class);
                 startActivity(intent);
-                finish();
+                //finish();
+                break;
+            case R.id.tv_forget_pwd:
+                // 忘记密码
+                if (checkLoginNum()) {
+                    binding.tvForgetPwd.setTextColor(Color.BLUE);
+                    intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
+                    intent.putExtra(NUMBER, inputNumber);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.tv_weixin:
+                IWXAPI mApi = WXAPIFactory.createWXAPI(this, Appconstant.WEIXIN_APP_ID, true);
+                mApi.unregisterApp();
+                mApi.registerApp(Appconstant.WEIXIN_APP_ID);
+                if (null != mApi && mApi.isWXAppInstalled()) {
+                    SendAuth.Req req = new SendAuth.Req();
+                    req.scope = "snsapi_userinfo";
+                    req.state = "wechat_sdk_demo_test_neng";
+                    mApi.sendReq(req);
+                } else {
+                    Toast.makeText(LoginActivity.this, "未安装微信", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.tv_qq:
+                mAppid = Appconstant.QQ_APP_ID;
+                mTencent = Tencent.createInstance(mAppid, LoginActivity.this);
+                myIUiListener = new MyIUiListener();
+                Log.d(TAG, "登陆开始-----------------");
+                loading();
+                mTencent.login(LoginActivity.this, "all", myIUiListener);
                 break;
         }
 
     }
+
+
 
 
     class MyIUiListener implements IUiListener {
@@ -442,4 +398,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        EventInfo eventInfo = new EventInfo();
+        eventInfo.setType(EventInfo.EXIT_APP);
+        EventBus.getDefault().post(eventInfo);
+        super.onBackPressed();
+    }
 }

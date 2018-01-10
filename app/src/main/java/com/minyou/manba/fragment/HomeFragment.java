@@ -12,7 +12,6 @@ import com.minyou.manba.R;
 import com.minyou.manba.adapter.MyViewPagerAdapter;
 import com.minyou.manba.databinding.FragmentHomeBinding;
 import com.minyou.manba.pager.BasePager;
-import com.minyou.manba.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,9 +56,23 @@ public class HomeFragment extends DataBindingBaseFragment implements TabLayout.O
 
 		binding.tabLayou.setOnTabSelectedListener(this);
 		fragments = new ArrayList<DataBindingBaseFragment>();
-		fragments.add(new NewFragment());
-		fragments.add(new NewFragment());
-		fragments.add(new NewFragment());
+		NewFragment newFragment = new NewFragment();
+		Bundle newBundle = new Bundle();
+		newBundle.putString("sourceType","1");
+		newFragment.setArguments(newBundle);
+
+		NewFragment hotFragment = new NewFragment();
+		Bundle hotBundle = new Bundle();
+		hotBundle.putString("sourceType","2");
+		hotFragment.setArguments(hotBundle);
+
+		NewFragment guanZhuFragment = new NewFragment();
+		Bundle gzBundle = new Bundle();
+		gzBundle.putString("sourceType","3");
+		guanZhuFragment.setArguments(gzBundle);
+		fragments.add(newFragment);
+		fragments.add(hotFragment);
+		fragments.add(guanZhuFragment);
 
 		MyViewPagerAdapter adapter = new MyViewPagerAdapter(getFragmentManager(),titles,fragments);
 		binding.pager.setAdapter(adapter);

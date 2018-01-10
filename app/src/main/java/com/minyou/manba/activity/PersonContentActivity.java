@@ -277,6 +277,10 @@ public class PersonContentActivity extends DataBindingBaseActivity implements Vi
             case R.id.tv_show_all:
             case R.id.tv_recent_dongtai:
                 intent = new Intent(PersonContentActivity.this,MyDongTaiActivity.class);
+                if(!userId.equals(String.valueOf(personId))){
+                    // 自己的动态
+                    intent.putExtra("userId",String.valueOf(personId));
+                }
                 startActivity(intent);
                 break;
         }

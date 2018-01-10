@@ -22,8 +22,9 @@
     <dimen name="username_textsize">18sp</dimen>
     <dimen name="large_textsize">26sp</dimen>
 
-    
+    <!--   设置界面   -->
     <dimen name="common_to_side">10dp</dimen>
+    <dimen name="common_edit_height">30dp</dimen>
 
     <!--  顶部导航高度 -->
     <dimen name="common_title_height">40dp</dimen>

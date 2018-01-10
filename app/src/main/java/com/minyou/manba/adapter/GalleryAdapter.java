@@ -46,7 +46,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if(holder instanceof ImageViewHolder){
             LogUtil.d("lch---",list.get(position));
             final ImageViewHolder viewHolder = (ImageViewHolder) holder;
-            Glide.with(context).load(list.get(position)).into(viewHolder.binding.image);
+            Glide.with(context).load(list.get(position)).dontAnimate()
+                    .placeholder(R.drawable.avater_default).into(viewHolder.binding.image);
             viewHolder.binding.image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

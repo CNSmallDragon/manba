@@ -69,6 +69,8 @@ public class NewFragment extends DataBindingBaseFragment {
 
     private int pageSize = 10;
     private int pageNo = 1;
+    private String sourceType = "1";
+    private String userId;
 
     public static Handler handler = new Handler() {
         @Override
@@ -82,6 +84,12 @@ public class NewFragment extends DataBindingBaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_new, container, false);
         EventBus.getDefault().register(this);
+
+        Bundle bundle = getArguments();
+        if(null != bundle){
+            sourceType = bundle.getString("sourceType","1");
+            userId = bundle.getString("userId","");
+        }
         initView();
 
         return binding.getRoot();
@@ -114,8 +122,13 @@ public class NewFragment extends DataBindingBaseFragment {
         HashMap<String, String> params = new HashMap<>();
         params.put("pageSize", String.valueOf(pageSize));
         params.put("pageNo", String.valueOf(pageNo));
-        params.put("sourceType", String.valueOf(1));
-        params.put("userId", SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID));
+        params.put("sourceType", sourceType);
+        if("4".equals(sourceType)){
+            params.put("userId", SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID));
+        }else if("5".equals(sourceType)){
+            params.put("userId", userId);
+        }
+        params.put("currentUserId", SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID));
         ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_ZONE_LIST, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
@@ -141,7 +154,13 @@ public class NewFragment extends DataBindingBaseFragment {
         HashMap<String, String> params = new HashMap<>();
         params.put("pageSize", String.valueOf(pageSize));
         params.put("pageNo", String.valueOf(pageNo));
-        params.put("sourceType", String.valueOf(1));
+        params.put("sourceType", sourceType);
+        if("4".equals(sourceType)){
+            params.put("userId", SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID));
+        }else if("5".equals(sourceType)){
+            params.put("userId", userId);
+        }
+        params.put("currentUserId", SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID));
         ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_ZONE_LIST, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
@@ -227,7 +246,8 @@ public class NewFragment extends DataBindingBaseFragment {
             if(TextUtils.isEmpty(zoneBean.getUserPhotoUrl())){
                 Glide.with(view.getContext()).load(R.drawable.register_home_pre).transform(new GlideCircleTransform(view.getContext())).into(userSex);
             }else{
-                Glide.with(view.getContext()).load(zoneBean.getUserPhotoUrl()).transform(new GlideCircleTransform(view.getContext())).into(userPic);
+                Glide.with(view.getContext()).load(zoneBean.getUserPhotoUrl()).transform(new GlideCircleTransform(view.getContext())).dontAnimate()
+                        .placeholder(R.drawable.avater_default).into(userPic);
             }
             if (zoneBean.getSex() == 1) {
                 Glide.with(view.getContext()).load(R.drawable.home_icon_nan).transform(new GlideCircleTransform(view.getContext())).into(userSex);

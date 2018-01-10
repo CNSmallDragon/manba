@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.minyou.manba.R;
 import com.minyou.manba.bean.ManBaUserInfo;
+import com.minyou.manba.event.EventInfo;
 import com.minyou.manba.fragment.DataBindingBaseFragment;
 import com.minyou.manba.fragment.HomeFragment;
 import com.minyou.manba.fragment.MineFragment;
@@ -24,6 +25,10 @@ import com.minyou.manba.fragment.SociationFragment;
 import com.minyou.manba.fragment.StreetFragment;
 import com.minyou.manba.util.CommonUtil;
 import com.minyou.manba.util.LogUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +62,8 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);
         this.context = getApplicationContext();
+
+        EventBus.getDefault().register(this);
 
         fl_home = (FrameLayout) findViewById(R.id.fl_home);
         rg_main = (RadioGroup) findViewById(R.id.rg_main);
@@ -155,7 +162,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //unbinder.unbind();
+        EventBus.getDefault().unregister(this);
     }
 
     public ManBaUserInfo getManBaUserInfo() {
@@ -186,5 +193,17 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                 break;
         }
 
+    }
+
+
+    /**
+     * 退出应用
+     * @param info
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void exitApp(EventInfo info) {
+        if(null != info && info.getType() == EventInfo.EXIT_APP){
+            finish();
+        }
     }
 }

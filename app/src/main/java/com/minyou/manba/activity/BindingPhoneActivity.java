@@ -1,32 +1,29 @@
 package com.minyou.manba.activity;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
+import com.minyou.manba.databinding.ActivityBindingPhoneBinding;
 import com.minyou.manba.network.api.ManBaApi;
 import com.minyou.manba.network.resultModel.QQResponseModel;
 import com.minyou.manba.network.resultModel.RegistResultModel;
 import com.minyou.manba.network.resultModel.UserLoginModel;
 import com.minyou.manba.network.resultModel.WeiXinResponseModel;
-import com.minyou.manba.ui.ActionTitleView;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
 import java.io.IOException;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -38,19 +35,11 @@ import okhttp3.Response;
 /**
  * Created by luchunhao on 2017/12/14.
  */
-public class BindingPhoneActivity extends BaseActivity {
+public class BindingPhoneActivity extends DataBindingBaseActivity implements View.OnClickListener {
 
     private static final String TAG = "BindingPhoneActivity";
-    @BindView(R.id.atv_title)
-    ActionTitleView atv_title;
-    @BindView(R.id.login_number)
-    EditText loginNumber;
-    @BindView(R.id.et_sms)
-    EditText etSms;
-    @BindView(R.id.tv_send_sms)
-    TextView tvSendSms;
-    @BindView(R.id.tv_regist)
-    TextView tvRegist;
+
+    private ActivityBindingPhoneBinding binding;
 
     // 总倒计时时间
     private static final long MILLIS_IN_FUTURE = 60 * 1000;
@@ -61,67 +50,49 @@ public class BindingPhoneActivity extends BaseActivity {
     private Object object;
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_binding_phone;
-    }
-
-    @Override
-    public void initView(Bundle savedInstanceState) {
-        atv_title.setTitle(getResources().getString(R.string.regist_binding_phone));
+    public void setContentViewAndBindData() {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_binding_phone);
         Intent intent = getIntent();
         if(null != intent){
             object = intent.getParcelableExtra(Appconstant.User.USER_THRID_INFO);
         }
+        initListener();
     }
 
-
-    @OnClick({R.id.tv_send_sms, R.id.tv_regist})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.tv_send_sms:
-                if(checkLoginNum()){
-                    startCountDown();
-                    getSmsCode();
-                }
-                break;
-            case R.id.tv_regist:
-                if(TextUtils.isEmpty(etSms.getText())){
-                    Toast.makeText(this, "请输入验证码", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(checkLoginNum() && !TextUtils.isEmpty(etSms.getText())){
-                    postRegist();
-                }
-                break;
-        }
+    private void initListener() {
+        binding.tvSendSms.setOnClickListener(this);
+        binding.tvRegist.setOnClickListener(this);
     }
+
 
     // 启动倒计时
+    @SuppressLint("StringFormatMatches")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void startCountDown() {
         // 设置按钮为不可点击，并修改显示背景
-        tvSendSms.setEnabled(false);
-        tvSendSms.setBackground(getDrawable(R.drawable.shape_borderline_grey_8));
+        binding.tvSendSms.setEnabled(false);
+        binding.tvSendSms.setBackground(getDrawable(R.drawable.shape_borderline_grey_8));
         // 开始倒计时
         new CountDownTimer(MILLIS_IN_FUTURE, COUNT_DOWN_INTERVAL) {
+
             @Override
             public void onTick(long millisUntilFinished) {
                 // 刷新文字
-                tvSendSms.setText(getResources().getString(R.string.reget_sms_code_countdown, millisUntilFinished / COUNT_DOWN_INTERVAL));
+                binding.tvSendSms.setText(getResources().getString(R.string.reget_sms_code_countdown, millisUntilFinished / COUNT_DOWN_INTERVAL));
             }
 
             @Override
             public void onFinish() {
                 // 重置文字，并恢复按钮为可点击
-                tvSendSms.setText(R.string.regist_getyanzhengma);
-                tvSendSms.setEnabled(true);
-                tvSendSms.setBackground(getDrawable(R.drawable.shape_borderline_bluefull));
+                binding.tvSendSms.setText(R.string.regist_getyanzhengma);
+                binding.tvSendSms.setEnabled(true);
+                binding.tvSendSms.setBackground(getDrawable(R.drawable.shape_borderline_bluefull));
             }
         }.start();
     }
 
     private boolean checkLoginNum() {
-        inputNumber = loginNumber.getText().toString();
+        inputNumber = binding.loginNumber.getText().toString();
         if (TextUtils.isEmpty(inputNumber)) {
             Toast.makeText(this, "请输入手机号", Toast.LENGTH_SHORT).show();
             return false;
@@ -170,7 +141,7 @@ public class BindingPhoneActivity extends BaseActivity {
                     .add("nickName", qqResponseModel.getNickname())
                     .add("sex", qqResponseModel.getGender().equals("男") ? "1" : qqResponseModel.getGender().equals("女") ? "2" : "0")
                     .add("qq", qqResponseModel.getOpenId())
-                    .add("smsCode", etSms.getText().toString().trim())
+                    .add("smsCode", binding.etSms.getText().toString().trim())
 //                    .add("photoUrl", qqResponseModel.getFigureurl_qq_2())
                     .build();
             SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, "2");
@@ -181,7 +152,7 @@ public class BindingPhoneActivity extends BaseActivity {
                     .add("nickName", weiXinResponseModel.getNickname())
                     .add("sex", weiXinResponseModel.getSex()+"")
                     .add("weixin", weiXinResponseModel.getOpenid())
-                    .add("smsCode", etSms.getText().toString().trim())
+                    .add("smsCode", binding.etSms.getText().toString().trim())
 //                    .add("photoUrl", weiXinResponseModel.getHeadimgurl())
                     .build();
             SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, "3");
@@ -260,4 +231,25 @@ public class BindingPhoneActivity extends BaseActivity {
         });
     }
 
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_send_sms:
+                if(checkLoginNum()){
+                    startCountDown();
+                    getSmsCode();
+                }
+                break;
+            case R.id.tv_regist:
+                if(TextUtils.isEmpty(binding.etSms.getText())){
+                    Toast.makeText(this, "请输入验证码", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(checkLoginNum() && !TextUtils.isEmpty(binding.etSms.getText())){
+                    postRegist();
+                }
+                break;
+        }
+    }
 }
