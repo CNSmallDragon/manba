@@ -9,7 +9,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.BR;
@@ -22,6 +25,7 @@ import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
 import com.minyou.manba.network.okhttputils.ReqCallBack;
 import com.minyou.manba.network.resultModel.SociationResultModel;
 import com.minyou.manba.ui.view.DefalutRefreshView;
+import com.minyou.manba.ui.view.GlideCircleTransform;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
 import java.util.ArrayList;
@@ -130,6 +134,12 @@ public class SociationFragment extends DataBindingBaseFragment {
 
     }
 
+    /**
+     * 点击进入公会详情界面
+     *
+     * @param view
+     * @param bean
+     */
     @BindingAdapter({"setOnSociationItemClick"})
     public static void setOnSociationItemClick(final View view, final SociationResultModel.ResultBean.SociationResultBean bean) {
         if (bean != null) {
@@ -137,13 +147,37 @@ public class SociationFragment extends DataBindingBaseFragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(view.getContext(), SociationDetailActivity.class);
-                    intent.putExtra(Appconstant.SOCIATION_NAME, bean.getGuildName());
-                    intent.putExtra(Appconstant.SOCIATION_MEMBER_NUM, "成员数：" + bean.getMemberNum());
-                    intent.putExtra(Appconstant.SOCIATION_HOT_NUM, "活跃度" + bean.getLiveness());
-                    intent.putExtra(Appconstant.SOCIATION_PIC_PATH, bean.getGuildPhoto());
+                    intent.putExtra(Appconstant.SOCIATION_ID, String.valueOf(bean.getGuildId()));
                     view.getContext().startActivity(intent);
                 }
             });
+
+        }
+    }
+
+    /**
+     * 显示公会头像
+     *
+     * @param view
+     * @param bean
+     */
+    @BindingAdapter({"setSociationPic"})
+    public static void setSociationPic(final ImageView view, final SociationResultModel.ResultBean.SociationResultBean bean) {
+        if (bean != null) {
+            Glide.with(view.getContext()).load(bean.getGuildPhoto()).dontAnimate()
+                    .placeholder(R.drawable.avater_default)
+                    .transform(new GlideCircleTransform(view.getContext()))
+                    .into(view);
+
+
+        }
+    }
+
+
+    @BindingAdapter({"joinSociation"})
+    public static void joinSociation(final TextView textView, final SociationResultModel.ResultBean.SociationResultBean bean) {
+        if (bean != null) {
+            // TODO 加入公会
 
         }
     }

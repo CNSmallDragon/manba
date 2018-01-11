@@ -1,135 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="GuildDetailBean"
+            type="com.minyou.manba.network.resultModel.GuildDetailResultModel.GuildDetailBean" />
+
+        <import type="java.lang.String" />
+    </data>
 
     <RelativeLayout
-        android:id="@+id/rl_gonghui"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/sociation_head_height"
-        android:paddingBottom="@dimen/common_to_side">
-
-        <com.minyou.manba.ui.ActionTitleView
-            android:id="@id/atv_title"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"></com.minyou.manba.ui.ActionTitleView>
-
-        <ImageView
-            android:id="@+id/iv_gonghui_pic"
-            android:layout_width="@dimen/gonghui_icon_width"
-            android:layout_height="@dimen/gonghui_icon_width"
-            android:layout_below="@id/atv_title"
-            android:layout_centerHorizontal="true" />
+        android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/tv_gonghui_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/iv_gonghui_pic"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/common_to_side"
-            android:text="漫吧开心公会"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/common_textsize" />
-
-        <LinearLayout
+            android:id="@+id/tv_join"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_gonghui_name"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/common_to_side"
-            android:gravity="center_horizontal">
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/common_to_side"
+            android:layout_marginLeft="@dimen/common_to_side"
+            android:layout_marginRight="@dimen/common_to_side"
+            android:background="@drawable/shape_borderline_bluefull"
+            android:gravity="center"
+            android:text="@string/gonghui_shenqingjiaru"
+            android:textColor="@android:color/white" />
 
-            <TextView
-                android:id="@+id/tv_gonghui_member_num"
-                android:layout_width="wrap_content"
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/guild_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/tv_join">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/common_to_side"
-                android:text="成员数：1200"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/small_textsize" />
+                android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/white" />
+                <RelativeLayout
+                    android:id="@+id/rl_gonghui"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/sociation_head_height"
+                    android:paddingBottom="@dimen/common_to_side">
 
-            <TextView
-                android:id="@+id/tv_gonghui_hot_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/common_to_side"
-                android:text="活跃度：100"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/small_textsize" />
-        </LinearLayout>
+                    <!--  公会头像  -->
+                    <ImageView
+                        android:id="@+id/iv_guild_pic"
+                        android:layout_width="@dimen/gonghui_icon_width"
+                        android:layout_height="@dimen/gonghui_icon_width"
+                        android:layout_centerInParent="true" />
+
+                    <!--  公会名字  -->
+                    <TextView
+                        android:id="@+id/tv_guild_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/iv_guild_pic"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/common_to_side"
+                        android:text="@{GuildDetailBean.guildName}"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/common_textsize" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_guild_name"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/common_to_side"
+                        android:gravity="center_horizontal">
+
+                        <!--  成员数  -->
+                        <TextView
+                            android:id="@+id/tv_gonghui_member_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/common_to_side"
+                            android:text="@{String.format(@string/gonghui_member_num,GuildDetailBean.currentNum,GuildDetailBean.memberNum)}"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/small_textsize" />
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/white" />
+
+                        <!--  活跃度  -->
+                        <TextView
+                            android:id="@+id/tv_gonghui_hot_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/common_to_side"
+                            android:text="@{String.format(@string/guild_liveness,String.valueOf(GuildDetailBean.liveness))}"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/small_textsize" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <!--  公会宣言  -->
+                <TextView
+                    android:id="@+id/tv_gonghui_desc"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/background_light"
+                    android:padding="@dimen/common_to_side"
+                    android:text="@{GuildDetailBean.declaration}" />
+
+                <RadioGroup
+                    android:id="@+id/ll_dongtai_chengyuan"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/common_to_top"
+                    android:background="@android:color/background_light"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_dongtai"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:button="@null"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:padding="@dimen/common_text_side"
+                        android:text="@string/gonghui_dongtai"
+                        android:textColor="@color/bottom_text_color" />
+
+                    <RadioButton
+                        android:id="@+id/rb_member"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:button="@null"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:padding="@dimen/common_text_side"
+                        android:text="@string/gonghui_chengyuan"
+                        android:textColor="@color/bottom_text_color" />
+                </RadioGroup>
+
+                <ImageView
+                    android:id="@+id/iv_line"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:background="@android:color/darker_gray" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/guild_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+        <com.minyou.manba.ui.ActionTitleView
+            android:id="@+id/guild_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"/>
+
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/tv_gonghui_desc"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rl_gonghui"
-        android:background="@android:color/background_light"
-        android:padding="@dimen/common_to_side"
-        android:text="@string/test_more" />
-
-    <RadioGroup
-        android:id="@+id/ll_dongtai_chengyuan"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_gonghui_desc"
-        android:layout_marginTop="@dimen/common_to_top"
-        android:background="@android:color/background_light"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/rb_dongtai"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:padding="@dimen/common_text_side"
-            android:text="@string/gonghui_dongtai"
-            android:textColor="@color/bottom_text_color" />
-
-        <RadioButton
-            android:id="@+id/rb_member"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@null"
-            android:gravity="center"
-            android:padding="@dimen/common_text_side"
-            android:text="@string/gonghui_chengyuan"
-            android:textColor="@color/bottom_text_color" />
-    </RadioGroup>
-
-    <ImageView
-        android:id="@+id/iv_line"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/line_height"
-        android:layout_below="@id/ll_dongtai_chengyuan"
-        android:background="@android:color/darker_gray" />
-
-    <TextView
-        android:id="@+id/tv_join"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/common_to_side"
-        android:layout_marginLeft="@dimen/common_to_side"
-        android:layout_marginRight="@dimen/common_to_side"
-        android:background="@drawable/shape_borderline_bluefull"
-        android:gravity="center"
-        android:text="@string/gonghui_shenqingjiaru"
-        android:textColor="@android:color/white" />
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/tv_join"
-        android:layout_below="@id/iv_line"></android.support.v7.widget.RecyclerView>
-
-</RelativeLayout>
+</layout>

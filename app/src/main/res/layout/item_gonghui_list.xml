@@ -40,7 +40,7 @@
                 android:layout_height="@dimen/gonghui_icon_width"
                 android:layout_marginLeft="@dimen/common_to_side"
                 android:layout_marginTop="@dimen/common_to_top"
-                android:src="@drawable/login_icon_qq" />
+                app:setSociationPic="@{SociationBean}" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -51,6 +51,7 @@
                 android:layout_toRightOf="@+id/iv_gonghui_pic"
                 android:orientation="vertical">
 
+                <!-- 公会名称 -->
                 <TextView
                     android:id="@+id/tv_gonghui_name"
                     android:layout_width="wrap_content"
@@ -59,14 +60,16 @@
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/common_textsize" />
 
+                <!-- 公会成员数 -->
                 <TextView
                     android:id="@+id/tv_gonghui_member_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="成员数：1200"
+                    android:text="@{String.format(@string/gonghui_member_num,SociationBean.currentNum,SociationBean.memberNum)}"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="@dimen/small_textsize" />
 
+                <!-- 公会活跃度 -->
                 <TextView
                     android:id="@+id/tv_gonghui_hot_num"
                     android:layout_width="wrap_content"
@@ -76,6 +79,7 @@
                     android:textSize="@dimen/small_textsize" />
             </LinearLayout>
 
+            <!-- 加入公会 -->
             <TextView
                 android:id="@+id/tv_gonghui_join"
                 android:layout_width="wrap_content"
@@ -89,7 +93,8 @@
                 android:paddingRight="@dimen/regist_padding_to_side"
                 android:paddingTop="@dimen/common_text_side"
                 android:text="@string/gonghui_join"
-                android:textColor="#2894FF" />
+                android:textColor="#2894FF"
+                app:joinSociation="@{SociationBean}"/>
         </RelativeLayout>
 
     </LinearLayout>

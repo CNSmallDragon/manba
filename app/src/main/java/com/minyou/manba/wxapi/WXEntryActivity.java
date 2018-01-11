@@ -27,7 +27,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -172,8 +171,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 //                requestModel.setWeixin(weixinModel.getOpenid());
 //                requestModel.setPicUrl(weixinModel.getHeadimgurl());
                 //  根据第三方账号查询用户是否已经注册
-                HashMap<String,String> params = new HashMap<String, String>();
-                //params.put()
                 OkHttpClient client = new OkHttpClient();
                 RequestBody body = new FormBody.Builder()
                         .add("weiXin", weixinModel.getOpenid())

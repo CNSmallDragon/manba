@@ -106,6 +106,10 @@
 
     <!--  公会界面   -->
     <string name="guild_liveness">活跃度: %s</string>
+    <string name="gonghui_member_num" formatted="false">成员数：%s/%s</string>
+
+    <!--  公会详情   -->
+    <string name="guild_detail_member_num">成员数：%s</string>
 
     <!--  查看图片界面   -->
     <string name="image_sendto_friend">发送给好友</string>

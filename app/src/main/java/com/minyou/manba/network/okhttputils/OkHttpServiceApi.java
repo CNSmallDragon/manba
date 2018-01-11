@@ -60,4 +60,8 @@ public class OkHttpServiceApi {
 
     // 获取用户相册
     public static String HTTP_USER_GALLERY = "api/zone/photoList";
+
+
+    // 获取公会详情
+    public static String HTTP_GUILD_DETAIL = "api/guild/detail";
 }
