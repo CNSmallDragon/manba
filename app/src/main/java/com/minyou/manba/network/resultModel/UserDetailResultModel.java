@@ -60,6 +60,15 @@ public class UserDetailResultModel extends BaseResultModel {
         private List<RolesBean> roles;
         private String birthday;
         private String signName;
+        private String haha;
+
+        public String getHaha() {
+            return haha;
+        }
+
+        public void setHaha(String haha) {
+            this.haha = haha;
+        }
 
         @Bindable
         public String getSignName() {

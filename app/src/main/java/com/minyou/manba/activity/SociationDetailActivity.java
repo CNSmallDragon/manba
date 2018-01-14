@@ -30,11 +30,14 @@ import com.minyou.manba.fragment.NewFragment;
 import com.minyou.manba.network.okhttputils.ManBaRequestManager;
 import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
 import com.minyou.manba.network.okhttputils.ReqCallBack;
+import com.minyou.manba.network.resultModel.BaseResultModel;
 import com.minyou.manba.network.resultModel.GuildDetailResultModel;
+import com.minyou.manba.network.resultModel.UserZanListResultModel;
 import com.minyou.manba.network.resultModel.ZoneListResultModel;
 import com.minyou.manba.ui.view.GlideCircleTransform;
 import com.minyou.manba.util.CommonUtil;
 import com.minyou.manba.util.FastBlurUtil;
+import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
 import java.util.ArrayList;
@@ -46,7 +49,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class SociationDetailActivity extends DataBindingBaseActivity {
+public class SociationDetailActivity extends DataBindingBaseActivity implements View.OnClickListener {
 
     private static final String TAG = "SociationDetailActivity";
 
@@ -56,6 +59,7 @@ public class SociationDetailActivity extends DataBindingBaseActivity {
 
     private FragmentTransaction transaction;
     private NewFragment fragment;
+    private Intent intent;
 
     private String guildId;
     private float person_bg_height;         // 背景图片高度
@@ -64,14 +68,18 @@ public class SociationDetailActivity extends DataBindingBaseActivity {
 
     private LinearLayoutManager manager;
     private MyMvvmAdapter<ZoneListResultModel.ResultBean.ZoneListBean> zoneAdapter;
+    private MyMvvmAdapter<UserZanListResultModel.UserZanListInnerBean> memberAdapter;
     private List<ZoneListResultModel.ResultBean.ZoneListBean> zoneList = new ArrayList<ZoneListResultModel.ResultBean.ZoneListBean>();
+    private List<UserZanListResultModel.UserZanListInnerBean> memberList = new ArrayList<UserZanListResultModel.UserZanListInnerBean>();
     private int pageSize = 20;
     private int pageNo = 1;
+    private int memberPageNo = 1;
+    private String currentUserId = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID);
 
     @Override
     public void setContentViewAndBindData() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sociation_detail);
-        Intent intent = getIntent();
+        intent = getIntent();
         if (null != intent) {
             guildId = intent.getStringExtra(Appconstant.SOCIATION_ID);
         }
@@ -138,32 +146,18 @@ public class SociationDetailActivity extends DataBindingBaseActivity {
             }
         });
 
+        zoneAdapter = new MyMvvmAdapter<>(this, zoneList, R.layout.item_home_new, BR.zoneBean);
+        memberAdapter = new MyMvvmAdapter<>(this,memberList,R.layout.item_upvote_list,BR.UserZanListInnerBean);
+        binding.guildRecyclerView.setLayoutManager(manager);
+        binding.guildRecyclerView.setHasFixedSize(true);
+        binding.guildRecyclerView.setNestedScrollingEnabled(false);
+        binding.guildRecyclerView.setAdapter(zoneAdapter);
+
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     private void showUI() {
         // 设置模糊背景
-//        final Bitmap[] scaledBitmap = {null};
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    scaledBitmap[0] = Glide.with(SociationDetailActivity.this).load(guildDetailBean.getGuildPhoto()).asBitmap().centerCrop().into(500, 500).get();
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Bitmap blurBitmap = FastBlurUtil.toBlur(scaledBitmap[0], 100);
-//                            Drawable drawable = new BitmapDrawable(blurBitmap);
-//                            binding.rlGonghui.setBackground(drawable);
-//                        }
-//                    });
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                } catch (ExecutionException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
-
         Observable.create(new Observable.OnSubscribe<Bitmap>(){
 
             @Override
@@ -208,11 +202,16 @@ public class SociationDetailActivity extends DataBindingBaseActivity {
         // 设置动态默认选中
         binding.llDongtaiChengyuan.check(R.id.rb_dongtai);
 
-        // 如果是从个人中心进入则设置地步按钮为退出公会
-//        if (Appconstant.MINE2GONGHUI.equals(intent.getStringExtra(Appconstant.FROM_WHERE))) {
-//            tv_join.setText(getResources().getString(R.string.gonghui_exit));
-//            tv_join.setBackgroundColor(Color.RED);
-//        }
+        // 加入还是退出公会
+        LogUtil.d(TAG,"showUI====" + guildDetailBean.isGuildMember());
+        if(guildDetailBean.isGuildMember()){    // 是该公会成员
+            binding.tvJoin.setText(getResources().getString(R.string.gonghui_exit));
+            binding.tvJoin.setBackgroundColor(Color.RED);
+        }else{
+            binding.tvJoin.setText(getResources().getString(R.string.gonghui_shenqingjiaru));
+            binding.tvJoin.setBackgroundColor(getResources().getColor(R.color.colorCommon,null));
+        }
+
 
         // 默认加载公会动态
 //        fragment = new NewFragment();
@@ -222,37 +221,35 @@ public class SociationDetailActivity extends DataBindingBaseActivity {
 //        fragment.setArguments(bundle);
 //        transaction.replace(R.id.guild_content,fragment).commit();
 
-        zoneAdapter = new MyMvvmAdapter<>(this, zoneList, R.layout.item_home_new, BR.zoneBean);
-        binding.guildRecyclerView.setLayoutManager(manager);
-        binding.guildRecyclerView.setHasFixedSize(true);
-        binding.guildRecyclerView.setNestedScrollingEnabled(false);
-        binding.guildRecyclerView.setAdapter(zoneAdapter);
-
     }
 
     private void initListener() {
+        binding.tvJoin.setOnClickListener(this);
         binding.llDongtaiChengyuan.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-//                if(checkedId == R.id.rb_dongtai){
-//                    LogUtil.d(TAG,"=================动态");
-//                    if(null != fragment){
-//                        LogUtil.d(TAG,"=================动态show");
-//                        transaction.show(fragment);
-//                    }
-//                }else if(checkedId == R.id.rb_member){
-//                    if(null != fragment){
-//                        transaction.hide(fragment);
-//                    }
-//                    LogUtil.d(TAG,"=================成员");
-//                }
+                if(checkedId == R.id.rb_dongtai){
+                    LogUtil.d(TAG,"=================动态");
+                    binding.guildRecyclerView.setAdapter(zoneAdapter);
+                    zoneAdapter.notifyDataSetChanged();
+                }else if(checkedId == R.id.rb_member){
+                    LogUtil.d(TAG,"=================成员");
+                    binding.guildRecyclerView.setAdapter(memberAdapter);
+                    memberAdapter.notifyDataSetChanged();
+                }
             }
         });
     }
 
+    /**
+     *  获取公会详情
+     * @param guildId
+     */
     private void getGuildDetailInfo(String guildId) {
-        // 获取公会详情
-        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GUILD_DETAIL + "/" + guildId, ManBaRequestManager.TYPE_GET, null, new ReqCallBack<String>() {
+        loading();
+        HashMap<String,String> params = new HashMap<String,String>();
+        params.put("userId",SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID));
+        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GUILD_DETAIL + "/" + guildId, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
                 GuildDetailResultModel guildDetailResultModel = new Gson().fromJson(result, GuildDetailResultModel.class);
@@ -272,8 +269,14 @@ public class SociationDetailActivity extends DataBindingBaseActivity {
         // 获取公会动态
         getZoneListData();
 
+        // 获取成员列表
+        getMemberInfo();
+
     }
 
+    /**
+     * 获取公会动态
+     */
     public void getZoneListData() {
         pageNo = 1;
         HashMap<String, String> params = new HashMap<>();
@@ -285,9 +288,36 @@ public class SociationDetailActivity extends DataBindingBaseActivity {
         ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_ZONE_LIST, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
+                cancelLoading();
                 ZoneListResultModel zoneListResultModel = new Gson().fromJson(result, ZoneListResultModel.class);
                 if(zoneListResultModel.isSuccess()){
                     zoneList.clear();
+                    zoneList.addAll(zoneListResultModel.getResult().getResultList());
+                    zoneAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+                cancelLoading();
+            }
+        });
+
+    }
+
+    public void loadMoreZoneListData() {
+        pageNo ++;
+        HashMap<String, String> params = new HashMap<>();
+        params.put("pageSize", String.valueOf(pageSize));
+        params.put("pageNo", String.valueOf(pageNo));
+        params.put("sourceType", "1");
+        params.put("guildId", guildId);
+        params.put("currentUserId", currentUserId);
+        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_ZONE_LIST, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
+            @Override
+            public void onReqSuccess(String result) {
+                ZoneListResultModel zoneListResultModel = new Gson().fromJson(result, ZoneListResultModel.class);
+                if(zoneListResultModel.isSuccess()){
                     zoneList.addAll(zoneListResultModel.getResult().getResultList());
                     zoneAdapter.notifyDataSetChanged();
                 }
@@ -301,4 +331,73 @@ public class SociationDetailActivity extends DataBindingBaseActivity {
 
     }
 
+    /**
+     * 获取公会成员
+     */
+    public void getMemberInfo() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("pageSize", String.valueOf(pageSize));
+        params.put("pageNo", String.valueOf(memberPageNo));
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_join:
+                LogUtil.d(TAG,"guildDetailBean.isGuildMember()====" + guildDetailBean.isGuildMember());
+                if(guildDetailBean.isGuildMember()){
+                    exitGuild();
+                }else{
+                    joinGuild();
+                }
+                break;
+        }
+    }
+
+    /**
+     * 加入公会
+     */
+    private void joinGuild() {
+        HashMap<String,String> params = new HashMap<String,String>();
+        params.put("userId",currentUserId);
+        params.put("guildId",guildId);
+        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GUILD_JOIN, ManBaRequestManager.TYPE_POST_JSON, params, new ReqCallBack<String>() {
+            @Override
+            public void onReqSuccess(String result) {
+                BaseResultModel baseResultModel = new Gson().fromJson(result,BaseResultModel.class);
+                if(baseResultModel.isSuccess()){
+                    guildDetailBean.setGuildMember(true);
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+                guildDetailBean.setGuildMember(false);
+            }
+        });
+    }
+
+    /**
+     * 退出公会
+     */
+    private void exitGuild() {
+        HashMap<String,String> params = new HashMap<String,String>();
+        params.put("userId",currentUserId);
+        params.put("guildId",guildId);
+        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GUILD_EXIT, ManBaRequestManager.TYPE_POST_JSON, params, new ReqCallBack<String>() {
+            @Override
+            public void onReqSuccess(String result) {
+                BaseResultModel baseResultModel = new Gson().fromJson(result,BaseResultModel.class);
+                if(baseResultModel.isSuccess()){
+                    guildDetailBean.setGuildMember(false);
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+
+            }
+        });
+    }
 }

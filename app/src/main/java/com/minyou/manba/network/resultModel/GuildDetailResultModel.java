@@ -1,5 +1,10 @@
 package com.minyou.manba.network.resultModel;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
+import com.minyou.manba.BR;
+
 /**
  * Created by luchunhao on 2018/1/11.
  */
@@ -22,7 +27,7 @@ public class GuildDetailResultModel extends BaseResultModel {
         this.result = result;
     }
 
-    public static class GuildDetailBean {
+    public static class GuildDetailBean extends BaseObservable {
         /**
          * guildId : 3
          * guildName : 情感&日常
@@ -42,6 +47,7 @@ public class GuildDetailResultModel extends BaseResultModel {
         private String declaration;
         private int createUser;
         private int currentNum;
+        private boolean guildMember;
 
         public int getGuildId() {
             return guildId;
@@ -105,6 +111,16 @@ public class GuildDetailResultModel extends BaseResultModel {
 
         public void setCurrentNum(int currentNum) {
             this.currentNum = currentNum;
+        }
+
+        @Bindable
+        public boolean isGuildMember() {
+            return guildMember;
+        }
+
+        public void setGuildMember(boolean guildMember) {
+            this.guildMember = guildMember;
+            notifyPropertyChanged(BR.guildMember);
         }
     }
 }

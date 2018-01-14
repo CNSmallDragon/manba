@@ -97,20 +97,12 @@ public class MineFragment extends DataBindingBaseFragment implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
+        LogUtil.d(TAG, "onResume===");
         if (UserManager.isLogin()) {
             autoLogin();
         }
     }
 
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        LogUtil.d(TAG, "isVisibleToUser===" + isVisibleToUser);
-        if(null != getActivity()){
-            autoLogin();
-        }
-    }
 
     @Override
     public void onClick(View v) {
@@ -127,7 +119,7 @@ public class MineFragment extends DataBindingBaseFragment implements View.OnClic
             case R.id.mine_gonghui:
                 // 我的公会
                 intent = new Intent(getActivity(), SociationDetailActivity.class);
-                intent.putExtra(Appconstant.FROM_WHERE, Appconstant.MINE2GONGHUI);
+                //intent.putExtra(Appconstant.SOCIATION_ID, String.valueOf(bean.getGuildId()));
                 startActivity(intent);
                 break;
             case R.id.mine_qianbao:

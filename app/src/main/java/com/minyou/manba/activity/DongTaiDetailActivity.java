@@ -225,6 +225,7 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
         binding.tvShoucang.setOnClickListener(this);
         binding.tvComment.setOnClickListener(this);
         binding.tvSend.setOnClickListener(this);
+        binding.includeDongtaiDetail.llZanList.setOnClickListener(this);        // 查看点赞列表
         binding.recyclerComment.addOnScrollListener(new RecyclerView.OnScrollListener() {
             int lastVisibleItem ;
             @Override
@@ -467,6 +468,7 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
     @Override
     public void onClick(View v) {
         HashMap<String, String> params;
+        Intent intent;
         switch (v.getId()) {
             case R.id.tv_zan:
                 if (binding.tvZan.isChecked()) {// 点赞
@@ -556,6 +558,12 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
                         }
                     });
                 }
+                break;
+
+            case R.id.ll_zan_list:
+                intent = new Intent(DongTaiDetailActivity.this,UpVoteListActivity.class);
+                intent.putExtra("info_id",info_id);
+                startActivity(intent);
                 break;
         }
     }

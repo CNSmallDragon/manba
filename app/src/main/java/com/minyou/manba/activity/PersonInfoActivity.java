@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
@@ -141,7 +142,7 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
          params.put("nickName",userDetailBean.getNickName());
          params.put("sex",userDetailBean.getSex()+"");
          params.put("birthday",userDetailBean.getBirthday());
-         params.put("signName",userDetailBean.getSignName());
+         params.put("signName", TextUtils.isEmpty(userDetailBean.getSignName()) ? "" : userDetailBean.getSignName());
 
          ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_POST_USER_UPDATE, ManBaRequestManager.TYPE_POST_JSON, params, new ReqCallBack<String>() {
              @Override
@@ -209,10 +210,15 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
 
     // 设置用户生日
     private void showTimePickerView() {
+        //long birthDay = Long.parseLong(TextUtils.isEmpty(userDetailBean.getBirthday()) ? "0" : userDetailBean.getBirthday());
         Calendar selectedDate = Calendar.getInstance();//系统当前时间
-//        if(selectDate != null){
-//            selectedDate.setTime(new Date(selectedTime));
-//        }
+        Date mDate = new Date(1515146079000l);
+        LogUtil.d("lch---", String.valueOf(mDate.getDay()));
+        if(selectedDate != null && !TextUtils.isEmpty(userDetailBean.getBirthday())){
+            LogUtil.d("lch---", "-----------------");
+            selectedDate.setTime(mDate);
+            LogUtil.d("lch---", "selectedDate===" + selectedDate.get(Calendar.DAY_OF_MONTH));
+        }
         Calendar startDate = Calendar.getInstance();
         Calendar endDate = Calendar.getInstance();
         //正确设置方式 原因：注意事项有说明
@@ -335,9 +341,8 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
             @Override
             public void onReqSuccess(String result) {
                 UserDetailResultModel userDetailResultModel = new Gson().fromJson(result, UserDetailResultModel.class);
-                LogUtil.d(TAG, result);
-                LogUtil.d(TAG, new Gson().toJson(userDetailResultModel));
                 if (userDetailResultModel != null) {
+                    LogUtil.d(TAG, "haha===" + userDetailResultModel.getResult().getHaha());
                     userDetailBean = userDetailResultModel.getResult();
                     binding.setUserInfo(userDetailBean);
                 }

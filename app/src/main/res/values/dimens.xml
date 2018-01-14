@@ -67,6 +67,7 @@
 
     <!--   动态详情   -->
     <dimen name="dongtai_common_left">35dp</dimen>
+    <dimen name="dongtai_upvote_icon">50dp</dimen>
 
     <!--   收藏界面   -->
     <dimen name="shouc_user_pic">30dp</dimen>  <!--  收藏界面用户图片宽高 -->

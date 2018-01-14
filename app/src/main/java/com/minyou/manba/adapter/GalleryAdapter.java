@@ -28,14 +28,14 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private List<String> list;
     private OnItemClickLitener mLitener;
 
-    public GalleryAdapter(Context context,List<String> list){
+    public GalleryAdapter(Context context, List<String> list) {
         this.context = context;
         this.list = list;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ItemGalleryLayoutBinding binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.item_gallery_layout,parent,false);
+        ItemGalleryLayoutBinding binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.item_gallery_layout, parent, false);
         ImageViewHolder viewHolder = new ImageViewHolder(binding.getRoot());
         viewHolder.binding = binding;
         return viewHolder;
@@ -43,11 +43,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        if(holder instanceof ImageViewHolder){
-            LogUtil.d("lch---",list.get(position));
+        if (holder instanceof ImageViewHolder) {
+            LogUtil.d("lch---", list.get(position));
             final ImageViewHolder viewHolder = (ImageViewHolder) holder;
             Glide.with(context).load(list.get(position)).dontAnimate()
-                    .placeholder(R.drawable.avater_default).into(viewHolder.binding.image);
+                    .placeholder(R.drawable.default_h)
+                    .into(viewHolder.binding.image);
             viewHolder.binding.image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -74,7 +75,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return list.size();
     }
 
-    public static class ImageViewHolder extends RecyclerView.ViewHolder{
+    public static class ImageViewHolder extends RecyclerView.ViewHolder {
 
         private ItemGalleryLayoutBinding binding;
 
@@ -83,7 +84,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    public void setOnItemClickListener(OnItemClickLitener mLitener){
+    public void setOnItemClickListener(OnItemClickLitener mLitener) {
         this.mLitener = mLitener;
     }
 }
