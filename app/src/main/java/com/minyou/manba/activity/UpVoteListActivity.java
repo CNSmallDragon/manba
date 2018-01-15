@@ -21,6 +21,7 @@ import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
 import com.minyou.manba.network.okhttputils.ReqCallBack;
 import com.minyou.manba.network.resultModel.UserZanListResultModel;
 import com.minyou.manba.ui.RefreshItemDecoration;
+import com.minyou.manba.ui.view.GlideCircleTransform;
 import com.minyou.manba.util.LogUtil;
 
 import java.util.ArrayList;
@@ -165,7 +166,7 @@ public class UpVoteListActivity extends DataBindingBaseActivity {
     @BindingAdapter({"setUpvoteListUserPic"})
     public static void setUpvoteListUserPic(ImageView view ,UserZanListResultModel.UserZanListInnerBean bean){
         if(null != bean){
-            Glide.with(view.getContext()).load(bean.getPhotoUrl())
+            Glide.with(view.getContext()).load(bean.getPhotoUrl()).transform(new GlideCircleTransform(view.getContext()))
                     .dontAnimate()
                     .placeholder(R.drawable.avater_default)
                     .into(view);

@@ -21,9 +21,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/common_to_side"
-            android:background="@drawable/shape_borderline_bluefull"
             android:gravity="center"
-            android:text="@string/gonghui_shenqingjiaru"
+            android:text="@{GuildDetailBean.guildMember ? @string/gonghui_exit : @string/gonghui_shenqingjiaru}"
+            android:background="@{GuildDetailBean.guildMember ? @drawable/shape_borderline_redfull : @drawable/shape_borderline_bluefull}"
             android:textColor="@android:color/white" />
 
         <android.support.v4.widget.NestedScrollView

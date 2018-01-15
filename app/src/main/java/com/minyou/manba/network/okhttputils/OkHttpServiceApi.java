@@ -64,6 +64,9 @@ public class OkHttpServiceApi {
     // 获取公会详情
     public static String HTTP_GUILD_DETAIL = "api/guild/detail";
 
+    // 获取公会成员
+    public static String HTTP_GUILD_MEMBER = "api/guild/members";
+
     // 加入公会
     public static String HTTP_GUILD_JOIN = "api/guild/add";
 

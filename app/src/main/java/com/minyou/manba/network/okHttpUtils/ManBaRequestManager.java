@@ -8,7 +8,10 @@ import com.bumptech.glide.RequestManager;
 import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.MyApplication;
+import com.minyou.manba.manager.UserManager;
+import com.minyou.manba.util.CommonUtil;
 import com.minyou.manba.util.LogUtil;
+import com.minyou.manba.util.PhoneUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
 import java.io.File;
@@ -43,6 +46,7 @@ public class ManBaRequestManager {
     public static final int TYPE_POST_FORM = 2;//post请求参数为表单
     private OkHttpClient mOkHttpClient;//okHttpClient 实例
     private Handler okHttpHandler;//全局处理子线程和M主线程通信
+
 
     /**
      * 初始化RequestManager
@@ -209,6 +213,18 @@ public class ManBaRequestManager {
      **/
     public <T> Call requestAsyn(String actionUrl, int requestType, HashMap<String, String> paramsMap, ReqCallBack<T> callBack) {
         Call call = null;
+        String version = CommonUtil.getVersionName(MyApplication.getInstance());// 应用版本名
+        String deviceId = PhoneUtil.getDeviceId(MyApplication.getInstance()); // 设备唯一ID
+        String ip = PhoneUtil.getIPAddress(MyApplication.getInstance());// ip地址
+        String mvpPin = UserManager.getUserMvpPin();
+        if(null == paramsMap){
+            paramsMap = new HashMap<String,String>();
+        }
+        paramsMap.put("platform","Android");
+        paramsMap.put("appVersion",version);
+        paramsMap.put("ip",ip);
+        paramsMap.put("deviceId",deviceId);
+        paramsMap.put("mvpPin",mvpPin);
         switch (requestType) {
             case TYPE_GET:
                 call = requestGetByAsyn(actionUrl, paramsMap, callBack);

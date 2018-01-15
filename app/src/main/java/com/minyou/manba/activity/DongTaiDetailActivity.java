@@ -214,12 +214,12 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
     @TargetApi(Build.VERSION_CODES.M)
     private void initListener() {
         // 设置右上角按钮
-        binding.atvTitle.setRightToDo(getResources().getString(R.string.detail_right), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(DongTaiDetailActivity.this, "分享", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        binding.atvTitle.setRightToDo(getResources().getString(R.string.detail_right), new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(DongTaiDetailActivity.this, "分享", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         binding.tvZan.setOnClickListener(this);
         binding.tvShoucang.setOnClickListener(this);

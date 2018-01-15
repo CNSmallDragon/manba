@@ -2,7 +2,9 @@ package com.minyou.manba.manager;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
+import com.minyou.manba.network.resultModel.UserLoginResultModel;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
 /**
@@ -42,5 +44,17 @@ public class UserManager {
 
     public static String getUserId(){
         return SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID);
+    }
+
+    public static UserLoginResultModel getUserInfo(){
+        String userInfo = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_INFO);
+        UserLoginResultModel userLoginResultModel = new Gson().fromJson(userInfo,UserLoginResultModel.class);
+        return userLoginResultModel;
+    }
+
+    public static String getUserMvpPin(){
+        String mvpPin="";
+        mvpPin = getUserInfo().getResult().getMvpPin();
+        return mvpPin;
     }
 }

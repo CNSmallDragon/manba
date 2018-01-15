@@ -32,6 +32,7 @@ import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
 import com.minyou.manba.network.okhttputils.ReqCallBack;
 import com.minyou.manba.network.resultModel.BaseResultModel;
 import com.minyou.manba.network.resultModel.GuildDetailResultModel;
+import com.minyou.manba.network.resultModel.GuildMembersResultModel;
 import com.minyou.manba.network.resultModel.UserZanListResultModel;
 import com.minyou.manba.network.resultModel.ZoneListResultModel;
 import com.minyou.manba.ui.view.GlideCircleTransform;
@@ -204,13 +205,13 @@ public class SociationDetailActivity extends DataBindingBaseActivity implements 
 
         // 加入还是退出公会
         LogUtil.d(TAG,"showUI====" + guildDetailBean.isGuildMember());
-        if(guildDetailBean.isGuildMember()){    // 是该公会成员
-            binding.tvJoin.setText(getResources().getString(R.string.gonghui_exit));
-            binding.tvJoin.setBackgroundColor(Color.RED);
-        }else{
-            binding.tvJoin.setText(getResources().getString(R.string.gonghui_shenqingjiaru));
-            binding.tvJoin.setBackgroundColor(getResources().getColor(R.color.colorCommon,null));
-        }
+//        if(guildDetailBean.isGuildMember()){    // 是该公会成员
+//            binding.tvJoin.setText(getResources().getString(R.string.gonghui_exit));
+//            binding.tvJoin.setBackgroundResource(R.drawable.shape_borderline_redfull);
+//        }else{
+//            binding.tvJoin.setText(getResources().getString(R.string.gonghui_shenqingjiaru));
+//            binding.tvJoin.setBackgroundResource(R.drawable.shape_borderline_bluefull);
+//        }
 
 
         // 默认加载公会动态
@@ -229,11 +230,9 @@ public class SociationDetailActivity extends DataBindingBaseActivity implements 
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 if(checkedId == R.id.rb_dongtai){
-                    LogUtil.d(TAG,"=================动态");
                     binding.guildRecyclerView.setAdapter(zoneAdapter);
                     zoneAdapter.notifyDataSetChanged();
                 }else if(checkedId == R.id.rb_member){
-                    LogUtil.d(TAG,"=================成员");
                     binding.guildRecyclerView.setAdapter(memberAdapter);
                     memberAdapter.notifyDataSetChanged();
                 }
@@ -335,9 +334,29 @@ public class SociationDetailActivity extends DataBindingBaseActivity implements 
      * 获取公会成员
      */
     public void getMemberInfo() {
+        memberPageNo = 1;
         HashMap<String, String> params = new HashMap<>();
         params.put("pageSize", String.valueOf(pageSize));
         params.put("pageNo", String.valueOf(memberPageNo));
+        params.put("guildId", String.valueOf(guildId));
+        params.put("userId", String.valueOf(currentUserId));
+        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GUILD_MEMBER, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
+            @Override
+            public void onReqSuccess(String result) {
+                GuildMembersResultModel guildMembersResultModel = new Gson().fromJson(result,GuildMembersResultModel.class);
+                if(guildMembersResultModel.isSuccess()){
+                    for(GuildMembersResultModel.ResultBean.GuildMemberBean bean : guildMembersResultModel.getResult().getResultList()){
+                        memberList.add(bean.toUserZanListInnerBean());
+                    }
+                    memberAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+
+            }
+        });
 
     }
 

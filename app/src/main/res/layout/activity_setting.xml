@@ -13,7 +13,7 @@
             android:layout_width="fill_parent"
             android:layout_height="@dimen/common_title_height"
             app:titleText="@string/my_shezhi"
-            android:gravity="center_vertical"></com.minyou.manba.ui.ActionTitleView>
+            android:gravity="center_vertical"/>
 
         <LinearLayout
             android:id="@+id/ll_user_setting"

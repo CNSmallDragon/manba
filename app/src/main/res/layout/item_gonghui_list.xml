@@ -87,6 +87,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/common_to_side"
+                android:visibility="gone"
                 android:background="@drawable/shape_borderline_blue"
                 android:paddingBottom="@dimen/common_text_side"
                 android:paddingLeft="@dimen/regist_padding_to_side"

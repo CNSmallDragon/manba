@@ -111,6 +111,14 @@ public class ImageViewerActivity extends Activity {
             }
         });
 
+        binding.ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                overridePendingTransition(0,R.anim.activity_alpha_out);
+            }
+        });
+
     }
 
     public void showPupWindowMenu(View v){

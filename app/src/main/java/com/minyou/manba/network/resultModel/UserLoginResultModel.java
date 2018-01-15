@@ -59,9 +59,6 @@ public class UserLoginResultModel extends BaseResultModel {
         private String nickName;
         private String photoUrl;
         private String password;
-        private Object weibo;
-        private Object weixin;
-        private Object qq;
         private int sex;
         private String token;
         private String refreshToken;
@@ -141,30 +138,6 @@ public class UserLoginResultModel extends BaseResultModel {
 
         public void setPassword(String password) {
             this.password = password;
-        }
-
-        public Object getWeibo() {
-            return weibo;
-        }
-
-        public void setWeibo(Object weibo) {
-            this.weibo = weibo;
-        }
-
-        public Object getWeixin() {
-            return weixin;
-        }
-
-        public void setWeixin(Object weixin) {
-            this.weixin = weixin;
-        }
-
-        public Object getQq() {
-            return qq;
-        }
-
-        public void setQq(Object qq) {
-            this.qq = qq;
         }
 
         public int getSex() {

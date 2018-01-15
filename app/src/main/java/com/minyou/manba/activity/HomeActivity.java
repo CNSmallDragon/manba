@@ -68,7 +68,6 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         fl_home = (FrameLayout) findViewById(R.id.fl_home);
         rg_main = (RadioGroup) findViewById(R.id.rg_main);
         rb_fayan = (ImageView) findViewById(R.id.rb_fayan);
-        rb_fayan = (ImageView) findViewById(R.id.rb_fayan);
 
         rb_fayan.setOnClickListener(this);
 

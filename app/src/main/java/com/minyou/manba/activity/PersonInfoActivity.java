@@ -342,7 +342,6 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
             public void onReqSuccess(String result) {
                 UserDetailResultModel userDetailResultModel = new Gson().fromJson(result, UserDetailResultModel.class);
                 if (userDetailResultModel != null) {
-                    LogUtil.d(TAG, "haha===" + userDetailResultModel.getResult().getHaha());
                     userDetailBean = userDetailResultModel.getResult();
                     binding.setUserInfo(userDetailBean);
                 }

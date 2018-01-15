@@ -24,6 +24,7 @@ import com.minyou.manba.activity.GameCenterActivity;
 import com.minyou.manba.activity.HomeActivity;
 import com.minyou.manba.activity.LoginActivity;
 import com.minyou.manba.activity.MyWalletActivity;
+import com.minyou.manba.activity.PersonContentActivity;
 import com.minyou.manba.activity.PersonInfoActivity;
 import com.minyou.manba.activity.SettingActivity;
 import com.minyou.manba.activity.ShouCangActivity;
@@ -134,6 +135,9 @@ public class MineFragment extends DataBindingBaseFragment implements View.OnClic
                 break;
             case R.id.mine_dongtai:
                 // 我的动态
+                intent = new Intent(getActivity(), PersonContentActivity.class);
+                intent.putExtra(Appconstant.PERSON_CENTER,Integer.parseInt(UserManager.getUserId()));
+                startActivity(intent);
                 break;
             case R.id.mine_xiaoxi:
                 // 消息

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -26,12 +25,14 @@ public class ActionTitleView extends LinearLayout implements OnClickListener {
 	private TextView tv_title_right;
 	private String title;
 	private boolean isShowBorderLine = false;
+	private boolean isShowBackIcon = true;
 
 	public ActionTitleView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.ActionTitle);
 		title = typedArray.getString(R.styleable.ActionTitle_titleText);
 		isShowBorderLine = typedArray.getBoolean(R.styleable.ActionTitle_borderLine,false);
+		isShowBackIcon = typedArray.getBoolean(R.styleable.ActionTitle_backIcon,true);
 		typedArray.recycle();
 		this.context = context;
 		view = (LinearLayout) LinearLayout.inflate(context, R.layout.view_action_title, this);
@@ -50,19 +51,27 @@ public class ActionTitleView extends LinearLayout implements OnClickListener {
 	private void init() {
 		tv_title = (TextView) view.findViewById(R.id.tv_title);
 		viewLine = view.findViewById(R.id.titlebar_line);
+		iv_back = (ImageView) view.findViewById(R.id.iv_back);
+		// 是否显示下划线
 		if(isShowBorderLine){
 			viewLine.setVisibility(View.VISIBLE);
 		}else{
 			viewLine.setVisibility(View.GONE);
 		}
+		// 设置标题
 		if(TextUtils.isEmpty(title)){
 			tv_title.setVisibility(View.GONE);
 		}else{
 			tv_title.setVisibility(View.VISIBLE);
 			tv_title.setText(title);
 		}
-		iv_back = (ImageView) view.findViewById(R.id.iv_back);
-		iv_back.setOnClickListener(this);
+		// 是否显示返回按钮
+		if(isShowBackIcon){
+			iv_back.setOnClickListener(this);
+		}else{
+			iv_back.setVisibility(View.GONE);
+		}
+
 	}
 
 	/**
@@ -112,7 +121,6 @@ public class ActionTitleView extends LinearLayout implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.iv_back:
-			Log.e(TAG, "aaaaaaaaaaaaaa");
 			((Activity) getContext()).finish();
 			break;
 
