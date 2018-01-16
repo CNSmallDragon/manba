@@ -40,13 +40,11 @@ public class Assistant {
      */
     public static String BoxingWithMD5(String json) {
         if (!TextUtils.isEmpty(json)) {
-            if (_RSA) {
-                try {
-                    json = AESCryptoHelper.md5(json, key);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    json = null;
-                }
+            try {
+                json = AESCryptoHelper.md5(json, MD5KEY);
+            } catch (Exception e) {
+                e.printStackTrace();
+                json = null;
             }
         }
         return json;

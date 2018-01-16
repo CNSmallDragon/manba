@@ -192,7 +192,7 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
     private void showEditSignDialog() {
         final OneEditDialog dialog = new OneEditDialog(this);
         dialog.show();
-        dialog.setHintText(getResources().getString(R.string.setting_input_hint));
+        dialog.setHintText(getResources().getString(R.string.setting_sing_hint));
         dialog.setLeftButton(getResources().getString(R.string.cancel), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -210,9 +210,9 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
 
     // 设置用户生日
     private void showTimePickerView() {
-        //long birthDay = Long.parseLong(TextUtils.isEmpty(userDetailBean.getBirthday()) ? "0" : userDetailBean.getBirthday());
+        long birthDay = Long.parseLong(TextUtils.isEmpty(userDetailBean.getBirthday()) ? "0" : userDetailBean.getBirthday());
         Calendar selectedDate = Calendar.getInstance();//系统当前时间
-        Date mDate = new Date(1515146079000l);
+        Date mDate = new Date(birthDay);
         LogUtil.d("lch---", String.valueOf(mDate.getDay()));
         if(selectedDate != null && !TextUtils.isEmpty(userDetailBean.getBirthday())){
             LogUtil.d("lch---", "-----------------");
@@ -254,7 +254,7 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
                 .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
                 .isDialog(true)//是否显示为对话框样式
                 .build();
-        pvTime.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
+        //pvTime.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
         pvTime.show();
     }
 
@@ -358,7 +358,7 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
     public static void setUserPic(ImageView imageView, UserDetailResultModel.UserDetailBean userDetailBean) {
         if (userDetailBean != null) {
             Glide.with(imageView.getContext()).load(userDetailBean.getPhotoUrl())
-                    .transform(new GlideCircleTransform(imageView.getContext())).into(imageView);
+                    .transform(new GlideCircleTransform(imageView.getContext())).error(R.drawable.register_home_pre).into(imageView);
         }
     }
 }

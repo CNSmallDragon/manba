@@ -1,17 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.minyou.manba.ui.ActionTitleView
-        android:id="@+id/atv_forget_pwd"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/forget_password" />
+        <com.minyou.manba.ui.ActionTitleView
+            android:id="@+id/atv_forget_pwd"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            app:titleText="@string/login_reset_pwd"/>
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/login_number"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/common_edit_height"
+            android:layout_marginLeft="@dimen/login_num_side"
+            android:layout_marginRight="@dimen/login_num_side"
+            android:layout_marginTop="@dimen/login_icon_top"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:background="@drawable/et_line_bg_style"
+            android:textCursorDrawable="@drawable/et_cursor_color_drawable"
+            android:textSize="@dimen/common_textsize"
+            android:hint="@string/login_num"
+            android:inputType="phone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/common_to_side"
+            android:layout_marginLeft="@dimen/display_password"
+            android:layout_marginRight="@dimen/regist_padding_to_side"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_sms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:background="@drawable/et_line_bg_style"
+                android:textCursorDrawable="@drawable/et_cursor_color_drawable"
+                android:textSize="@dimen/common_textsize"
+                android:hint="@string/regist_yanzhengma" />
+
+            <TextView
+                android:id="@+id/tv_send_sms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@drawable/shape_borderline_bluefull"
+                android:textColor="@android:color/white"
+                android:text="@string/regist_getyanzhengma"/>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_to_top"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/login_pwd"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/common_edit_height"
+                android:layout_marginLeft="@dimen/login_num_side"
+                android:layout_marginRight="@dimen/login_num_side"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:background="@drawable/et_line_bg_style"
+                android:textCursorDrawable="@drawable/et_cursor_color_drawable"
+                android:textSize="@dimen/common_textsize"
+                android:hint="@string/login_pwd"
+                android:inputType="textPassword" />
+
+            <CheckBox
+                android:id="@+id/cb_display_pwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/display_password"
+                android:clickable="true"
+                android:button="@drawable/login_icon_checked"
+                android:checked="false" />
+
+        </RelativeLayout>
+
+
+        <Button
+            android:id="@+id/bt_reset_pwd"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_borderline_bluefull"
+            android:gravity="center"
+            android:text="@string/reset"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/common_textsize" />
+
+    </LinearLayout>
+</layout>

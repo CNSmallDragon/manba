@@ -142,7 +142,7 @@ public class BindingPhoneActivity extends DataBindingBaseActivity implements Vie
                     .add("sex", qqResponseModel.getGender().equals("男") ? "1" : qqResponseModel.getGender().equals("女") ? "2" : "0")
                     .add("qq", qqResponseModel.getOpenId())
                     .add("smsCode", binding.etSms.getText().toString().trim())
-//                    .add("photoUrl", qqResponseModel.getFigureurl_qq_2())
+                    .add("photoUrl", qqResponseModel.getFigureurl_qq_2())
                     .build();
             SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, "2");
         }else if(object instanceof WeiXinResponseModel){
@@ -153,8 +153,9 @@ public class BindingPhoneActivity extends DataBindingBaseActivity implements Vie
                     .add("sex", weiXinResponseModel.getSex()+"")
                     .add("weixin", weiXinResponseModel.getOpenid())
                     .add("smsCode", binding.etSms.getText().toString().trim())
-//                    .add("photoUrl", weiXinResponseModel.getHeadimgurl())
+                    .add("photoUrl", weiXinResponseModel.getHeadimgurl())
                     .build();
+            LogUtil.d(TAG,"url===" + weiXinResponseModel.getHeadimgurl());
             SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, "3");
         }
 
@@ -222,6 +223,7 @@ public class BindingPhoneActivity extends DataBindingBaseActivity implements Vie
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, userLoginModel.getUserId());
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getToken());
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getRefreshToken());
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_INFO,requestStr);
                     // 注册登录完成后跳转首页
                     Intent intent = new Intent(BindingPhoneActivity.this,HomeActivity.class);
                     startActivity(intent);

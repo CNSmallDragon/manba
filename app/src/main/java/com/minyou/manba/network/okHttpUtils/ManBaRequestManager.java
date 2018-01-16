@@ -6,13 +6,11 @@ import android.os.Handler;
 
 import com.bumptech.glide.RequestManager;
 import com.google.gson.Gson;
-import com.minyou.manba.Appconstant;
 import com.minyou.manba.MyApplication;
 import com.minyou.manba.manager.UserManager;
 import com.minyou.manba.util.CommonUtil;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.PhoneUtil;
-import com.minyou.manba.util.SharedPreferencesUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +37,8 @@ public class ManBaRequestManager {
     private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");//mdiatype 这个需要和服务端保持一致
     private static final MediaType MEDIA_TYPE_MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8");//mdiatype 这个需要和服务端保持一致
     private static final String TAG = RequestManager.class.getSimpleName();
-    private static final String BASE_URL = "http://www.mymanba.cn";//请求接口根地址
+    //private static final String BASE_URL = "http://www.mymanba.cn";//请求接口根地址
+    private static final String BASE_URL = "http://pre.mymanba.cn:8081";//请求接口根地址
     private static volatile ManBaRequestManager mInstance;//单利引用
     public static final int TYPE_GET = 0;//get请求
     public static final int TYPE_POST_JSON = 1;//post请求参数为json
@@ -405,7 +404,7 @@ public class ManBaRequestManager {
     private Request.Builder addHeadersWithToken() {
         Request.Builder builder = new Request.Builder()
                 .addHeader("Accept", "*/*")
-                .addHeader("Authorization", SharedPreferencesUtil.getInstance().getSP(Appconstant.User.TOKEN));
+                .addHeader("Authorization", UserManager.getToken());
         return builder;
     }
 

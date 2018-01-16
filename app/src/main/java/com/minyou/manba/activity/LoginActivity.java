@@ -19,7 +19,6 @@ import com.minyou.manba.R;
 import com.minyou.manba.bean.ManBaUserInfo;
 import com.minyou.manba.databinding.ActivityLoginBinding;
 import com.minyou.manba.event.EventInfo;
-import com.minyou.manba.fragment.MineFragment;
 import com.minyou.manba.model.LoginActivityModel;
 import com.minyou.manba.network.api.ManBaApi;
 import com.minyou.manba.network.resultModel.QQResponseModel;
@@ -78,13 +77,13 @@ public class LoginActivity extends DataBindingBaseActivity implements View.OnCli
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case QQLOGIN:
-                    ManBaUserInfo userInfo = (ManBaUserInfo) msg.obj;
-                    Intent data = new Intent();
-                    data.putExtra("nickname", data.getStringExtra("nickname"));
-                    data.putExtra("figureurl_qq_2", data.getStringExtra("figureurl_qq_2"));
-                    setResult(MineFragment.LOGIN_CODE, data);
-                    break;
+//                case QQLOGIN:
+//                    ManBaUserInfo userInfo = (ManBaUserInfo) msg.obj;
+//                    Intent data = new Intent();
+//                    data.putExtra("nickname", data.getStringExtra("nickname"));
+//                    data.putExtra("figureurl_qq_2", data.getStringExtra("figureurl_qq_2"));
+//                    setResult(MineFragment.LOGIN_CODE, data);
+//                    break;
                 case PASSWORD_ERROR:
                     // 密码错误
                     Toast.makeText(LoginActivity.this, "您输入的密码有误，请重新输入!", Toast.LENGTH_SHORT).show();
@@ -362,6 +361,7 @@ public class LoginActivity extends DataBindingBaseActivity implements View.OnCli
                             if (userLoginModel != null && userLoginModel.getCode().equals("0")) { // 成功
                                 SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, "2");
                                 SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, userLoginModel.getResult().getUserId() + "");
+                                SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_INFO,requestStr);
                                 SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getResult().getToken());
                                 SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getResult().getRefreshToken());
                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);

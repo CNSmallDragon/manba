@@ -117,6 +117,12 @@ public class NewFragment extends DataBindingBaseFragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //getData();
+    }
+
     public void getData() {
         pageNo = 1;
         HashMap<String, String> params = new HashMap<>();
@@ -133,10 +139,15 @@ public class NewFragment extends DataBindingBaseFragment {
             @Override
             public void onReqSuccess(String result) {
                 ZoneListResultModel zoneListResultModel = new Gson().fromJson(result, ZoneListResultModel.class);
-                if(zoneListResultModel.isSuccess()){
+                if(zoneListResultModel.isSuccess() && zoneListResultModel.getResult().getTotalCount() > 0){
+                    binding.pcflRefreshNew.setVisibility(View.VISIBLE);
+                    binding.tvEmptyText.setVisibility(View.GONE);
                     zoneList.clear();
                     zoneList.addAll(zoneListResultModel.getResult().getResultList());
                     myMvvmAdapter.notifyDataSetChanged();
+                }else{
+                    binding.pcflRefreshNew.setVisibility(View.GONE);
+                    binding.tvEmptyText.setVisibility(View.VISIBLE);
                 }
                 binding.pcflRefreshNew.refreshComplete();
             }

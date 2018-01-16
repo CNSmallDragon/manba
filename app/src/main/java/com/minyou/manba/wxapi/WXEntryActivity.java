@@ -197,6 +197,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                             startActivity(intnet);
                         } else if (userLoginModel != null && userLoginModel.getCode().equals("0")) {   //成功
                             SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, "3");
+                            SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_INFO,requestStr);
                             SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, userLoginModel.getResult().getUserId() + "");
                             SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getResult().getToken());
                             SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getResult().getRefreshToken());

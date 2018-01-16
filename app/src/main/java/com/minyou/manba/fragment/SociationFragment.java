@@ -40,7 +40,7 @@ public class SociationFragment extends DataBindingBaseFragment {
     public static final String TAG = "SociationFragment";
     public static final int DETAIL = 0;
 
-    private int pageSize = 20;
+    private int pageSize = 100;
     private int pageNo = 1;
 
     private List<SociationResultModel.ResultBean.SociationResultBean> sociationList;
@@ -50,10 +50,19 @@ public class SociationFragment extends DataBindingBaseFragment {
     private FragmentGonghuiBinding binding;
     private View footView;
 
+    private boolean isPublic = true;
+    private String httpUrl;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_gonghui, container, false);
+
+        Bundle bundle = getArguments();
+        if(null != bundle){
+            isPublic = bundle.getBoolean("isPublic",true);
+        }
+
         initView();
         getData();
         initListener();
@@ -90,8 +99,6 @@ public class SociationFragment extends DataBindingBaseFragment {
 
 
     public void initView() {
-        binding.atvTitle.setTitle(getResources().getString(R.string.home_gonghui));
-        binding.atvTitle.hideBackIcon();
 
         sociationList = new ArrayList<SociationResultModel.ResultBean.SociationResultBean>();
         myMvvmAdapter = new MyMvvmAdapter<>(getActivity(), sociationList, R.layout.item_gonghui_list, BR.SociationBean);
@@ -110,10 +117,16 @@ public class SociationFragment extends DataBindingBaseFragment {
         pageNo = 1;
         sociationList.clear();
         HashMap<String, String> params = new HashMap<String, String>();
+        // TODO 根据isPublic判断是获取所有工会还是只获取当前用户加入的工会
+        if(isPublic){   // 查询所有工会列表
+            httpUrl = OkHttpServiceApi.HTTP_GET_GUILD_LIST;
+        }else{
+            httpUrl = OkHttpServiceApi.HTTP_GET_USER_GUILD_LIST;
+        }
         params.put("userId", SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID));
         params.put("pageSize", String.valueOf(pageSize));
         params.put("pageNo", String.valueOf(pageNo));
-        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_GUILD_LIST, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
+        ManBaRequestManager.getInstance().requestAsyn(httpUrl, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
                 SociationResultModel sociationResultModel = new Gson().fromJson(result, SociationResultModel.class);

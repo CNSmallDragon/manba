@@ -27,46 +27,49 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingRight="@dimen/regist_padding_to_side"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingRight="@dimen/regist_padding_to_side">
 
             <ImageView
                 android:id="@+id/iv_regist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/display_password"
-                android:visibility="gone"
-                android:src="@drawable/register_home_pre" />
+                android:src="@drawable/register_home_pre"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/et_nicheng"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/common_to_side"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/display_password"
                 android:layout_marginRight="@dimen/regist_padding_to_side"
+                android:layout_marginTop="@dimen/common_to_side"
                 android:layout_weight="1"
                 android:hint="@string/regist_nicheng" />
+
             <EditText
                 android:id="@+id/et_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="@dimen/common_to_side"
                 android:layout_marginLeft="@dimen/display_password"
                 android:layout_marginRight="@dimen/regist_padding_to_side"
+                android:layout_marginTop="@dimen/common_to_side"
                 android:layout_weight="1"
-                android:inputType="number"
-                android:hint="@string/regist_phone" />
+                android:hint="@string/regist_phone"
+                android:inputType="number" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_marginTop="@dimen/common_to_side"
                 android:layout_marginLeft="@dimen/display_password"
                 android:layout_marginRight="@dimen/regist_padding_to_side"
+                android:layout_marginTop="@dimen/common_to_side"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
+
                 <EditText
                     android:id="@+id/et_sms"
                     android:layout_width="match_parent"
@@ -75,21 +78,22 @@
 
                     android:layout_weight="1"
                     android:hint="@string/regist_yanzhengma" />
+
                 <TextView
                     android:id="@+id/tv_send_sms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:background="@drawable/shape_borderline_bluefull"
-                    android:textColor="@android:color/white"
-                    android:text="@string/regist_getyanzhengma"/>
+                    android:gravity="center"
+                    android:text="@string/regist_getyanzhengma"
+                    android:textColor="@android:color/white" />
             </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/common_to_top"
                 android:layout_marginRight="@dimen/regist_padding_to_side"
+                android:layout_marginTop="@dimen/common_to_top"
                 android:gravity="center_vertical">
 
                 <EditText
@@ -114,15 +118,15 @@
             </RelativeLayout>
 
             <!--<EditText-->
-                <!--android:id="@+id/et_mima"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_vertical"-->
-                <!--android:layout_marginTop="@dimen/common_to_side"-->
-                <!--android:layout_marginLeft="@dimen/display_password"-->
-                <!--android:layout_marginRight="@dimen/regist_padding_to_side"-->
-                <!--android:layout_weight="1"-->
-                <!--android:hint="@string/regist_mima" />-->
+            <!--android:id="@+id/et_mima"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_marginTop="@dimen/common_to_side"-->
+            <!--android:layout_marginLeft="@dimen/display_password"-->
+            <!--android:layout_marginRight="@dimen/regist_padding_to_side"-->
+            <!--android:layout_weight="1"-->
+            <!--android:hint="@string/regist_mima" />-->
         </LinearLayout>
 
         <RadioGroup

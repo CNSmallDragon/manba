@@ -10,7 +10,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_title_height"
             android:gravity="center_vertical"
-            app:titleText="@string/person_all_dongtai"/>
+            app:titleText="@string/person_all_dongtai"
+            app:backIcon="true"/>
 
         <FrameLayout
             android:id="@+id/frame_content"

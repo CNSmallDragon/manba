@@ -4,11 +4,13 @@
     <!-- 登陆 -->
     <string name="app_name">漫吧</string>
     <string name="login">登陆</string>
+    <string name="reset">重置密码</string>
     <string name="regist">注册</string>
     <string name="regist_now">马上注册 ></string>
     <string name="login_num">请输入手机号</string>
     <string name="login_pwd">请输入6-16位数字密码</string>
     <string name="login_forget_pwd">忘记密码？</string>
+    <string name="login_reset_pwd">重置密码</string>
     <string name="login_thrid">其他登陆方式</string>
     <string name="login_weixin">微信</string>
     <string name="login_qq">QQ</string>
@@ -144,6 +146,7 @@
     <string name="setting_user_notset">未设置</string>
     <string name="setting_user_sign">个性签名</string>
     <string name="setting_input_hint">请输入昵称</string>
+    <string name="setting_sing_hint">请输入签名</string>
     <string name="setting_save">保存</string>
 
     <!--   发布动态   -->
@@ -163,5 +166,6 @@
     <string name="cancel">取消</string>
     <string name="ok">确定</string>
     <string name="prompt">提示！</string>
+    <string name="empty_text">暂无最新动态</string>
 
 </resources>

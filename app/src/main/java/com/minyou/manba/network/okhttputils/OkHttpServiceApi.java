@@ -6,10 +6,20 @@ package com.minyou.manba.network.okhttputils;
 public class OkHttpServiceApi {
 
     // 网络请求链接
-    public static String BASE_URL = "http://www.mymanba.cn/";
+    //public static String BASE_URL = "http://www.mymanba.cn/";
+    public static String BASE_URL = "http://pre.mymanba.cn:8081/";
+
+    // 登陆
+    public static String HTTP_POST_LOGIN = "api/auth/login";
+
+    // 重置密码
+    public static String HTTP_POST_RESET_PWD = "api/user/updatePass";
 
     // 获取工会列表
     public static String HTTP_GET_GUILD_LIST = "api/guild/list";
+
+    // 获取用户所在工会列表
+    public static String HTTP_GET_USER_GUILD_LIST = "api/guild/userGuilds";
 
     // 发布动态
     public static String HTTP_ZONE_PUBLISH = BASE_URL + "api/zone/publish";
@@ -24,6 +34,9 @@ public class OkHttpServiceApi {
 
     // 获取动态列表
     public static String HTTP_GET_ZONE_LIST = "api/zone/list";
+
+    // 获取收藏列表
+    public static String HTTP_GET_ZONE_FAVORITELIST = "api/zone/favoriteList";
 
     // 根据ID查询用户信息
     public static String HTTP_GET_USER_DETAIL = "api/user/detail";

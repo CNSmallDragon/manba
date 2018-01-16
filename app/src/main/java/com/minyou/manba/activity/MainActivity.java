@@ -1,5 +1,6 @@
 package com.minyou.manba.activity;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -20,11 +21,15 @@ import com.minyou.manba.R;
 import com.minyou.manba.databinding.ActivityMainBinding;
 import com.minyou.manba.manager.UserManager;
 import com.minyou.manba.network.api.ManBaApi;
+import com.minyou.manba.network.okhttputils.ManBaRequestManager;
+import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
+import com.minyou.manba.network.okhttputils.ReqCallBack;
 import com.minyou.manba.network.resultModel.UserLoginResultModel;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Random;
 
 import okhttp3.Call;
@@ -145,6 +150,22 @@ public class MainActivity extends DataBindingBaseActivity implements OnClickList
 
 
     private void autoLogin() {
+
+        HashMap<String,String> params = new HashMap<String,String>();
+
+
+        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_POST_LOGIN, ManBaRequestManager.TYPE_POST_JSON, params, new ReqCallBack<String>() {
+            @Override
+            public void onReqSuccess(String result) {
+
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+
+            }
+        });
+
         OkHttpClient client = new OkHttpClient();
         RequestBody body = null;
         lastLoginType = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_LAST_TYPE);
@@ -201,6 +222,9 @@ public class MainActivity extends DataBindingBaseActivity implements OnClickList
                 }else if(userLoginModelResult.getCode().equals("15")){      // 密码错误 400?15
                     Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                     startActivity(intent);
+                }else if(userLoginModelResult.getCode().equals("14")){  // 用户不存在
+                    Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                    startActivity(intent);
                 }
                 finish();
             }
@@ -213,6 +237,7 @@ public class MainActivity extends DataBindingBaseActivity implements OnClickList
     public void startCountDown() {
         // 开始倒计时
         new CountDownTimer(MILLIS_IN_FUTURE, COUNT_DOWN_INTERVAL) {
+            @SuppressLint("StringFormatMatches")
             @Override
             public void onTick(long millisUntilFinished) {
                 // 刷新文字

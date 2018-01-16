@@ -18,5 +18,13 @@
                 android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
         </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 
+        <TextView
+            android:id="@+id/tv_empty_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/empty_text"
+            android:textSize="@dimen/large_textsize"/>
+
     </LinearLayout>
 </layout>

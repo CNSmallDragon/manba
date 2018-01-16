@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+        <variable
+            name="UserInfo"
+            type="com.minyou.manba.network.resultModel.UserDetailResultModel.UserDetailBean"/>
+
+        <import type="java.lang.String"/>
+
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -43,7 +52,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/black"
-                        android:text="123"
+                        android:text="@{UserInfo.nickName}"
                         android:textSize="@dimen/username_textsize" />
 
                     <TextView
@@ -63,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/common_to_side"
-                    android:text="@string/app_name"
+                    android:text="@{UserInfo.signName}"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="@dimen/small_textsize" />
             </LinearLayout>
@@ -104,7 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/home_to_side"
-                    android:text="12"
+                    android:text="@{String.valueOf(UserInfo.fenNum)}"
                     android:textColor="@android:color/darker_gray" />
             </LinearLayout>
 
@@ -132,7 +141,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/home_to_side"
-                    android:text="12"
+                    android:text="@{String.valueOf(UserInfo.followNum)}"
                     android:textColor="@android:color/darker_gray" />
             </LinearLayout>
         </LinearLayout>

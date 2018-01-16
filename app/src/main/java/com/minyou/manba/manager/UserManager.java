@@ -5,12 +5,15 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.network.resultModel.UserLoginResultModel;
+import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
 /**
  * Created by luchunhao on 2017/12/19.
  */
 public class UserManager {
+
+    private static final String TAG = "UserManager";
 
     public static boolean isLogin(){
         String loginType = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_LAST_TYPE);
@@ -48,6 +51,7 @@ public class UserManager {
 
     public static UserLoginResultModel getUserInfo(){
         String userInfo = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_INFO);
+        LogUtil.d(TAG,userInfo);
         UserLoginResultModel userLoginResultModel = new Gson().fromJson(userInfo,UserLoginResultModel.class);
         return userLoginResultModel;
     }
@@ -56,5 +60,10 @@ public class UserManager {
         String mvpPin="";
         mvpPin = getUserInfo().getResult().getMvpPin();
         return mvpPin;
+    }
+
+    public static String getToken(){
+        String token = "Manba " + getUserInfo().getResult().getToken();
+        return token;
     }
 }

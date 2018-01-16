@@ -77,8 +77,8 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="20dp"
-                android:gravity="center"
                 android:background="@drawable/shape_borderline_bluefull"
+                android:gravity="center"
                 android:text="@string/login"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/common_textsize" />

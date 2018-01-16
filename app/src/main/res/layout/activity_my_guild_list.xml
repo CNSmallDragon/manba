@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.minyou.manba.ui.ActionTitleView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_title_height"
+            android:gravity="center_vertical"
+            app:titleText="@string/my_gonghui"
+            app:borderLine="true"
+            app:backIcon="true"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/my_guild_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</layout>

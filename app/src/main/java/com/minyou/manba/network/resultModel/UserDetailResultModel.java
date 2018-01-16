@@ -60,6 +60,24 @@ public class UserDetailResultModel extends BaseResultModel {
         private List<RolesBean> roles;
         private String birthday;
         private String signName;
+        private int fenNum;
+        private int followNum;
+
+        public int getFenNum() {
+            return fenNum;
+        }
+
+        public void setFenNum(int fenNum) {
+            this.fenNum = fenNum;
+        }
+
+        public int getFollowNum() {
+            return followNum;
+        }
+
+        public void setFollowNum(int followNum) {
+            this.followNum = followNum;
+        }
 
         @Bindable
         public String getSignName() {

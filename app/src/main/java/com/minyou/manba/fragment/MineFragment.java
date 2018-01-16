@@ -1,6 +1,5 @@
 package com.minyou.manba.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -22,13 +21,12 @@ import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.activity.GameCenterActivity;
 import com.minyou.manba.activity.HomeActivity;
-import com.minyou.manba.activity.LoginActivity;
+import com.minyou.manba.activity.MyGuildListActivity;
 import com.minyou.manba.activity.MyWalletActivity;
 import com.minyou.manba.activity.PersonContentActivity;
 import com.minyou.manba.activity.PersonInfoActivity;
 import com.minyou.manba.activity.SettingActivity;
 import com.minyou.manba.activity.ShouCangActivity;
-import com.minyou.manba.activity.SociationDetailActivity;
 import com.minyou.manba.databinding.FragmentMineBinding;
 import com.minyou.manba.event.EventInfo;
 import com.minyou.manba.imageloader.GlideImageLoader;
@@ -37,6 +35,7 @@ import com.minyou.manba.network.okhttputils.ManBaRequestManager;
 import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
 import com.minyou.manba.network.okhttputils.ReqCallBack;
 import com.minyou.manba.network.resultModel.QQResponseModel;
+import com.minyou.manba.network.resultModel.UserDetailResultModel;
 import com.minyou.manba.network.resultModel.UserLoginResultModel;
 import com.minyou.manba.network.resultModel.WeiXinResponseModel;
 import com.minyou.manba.ui.view.GlideCircleTransform;
@@ -52,8 +51,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.OnClick;
-
 public class MineFragment extends DataBindingBaseFragment implements View.OnClickListener {
 
     private static final String TAG = "MineFragment";
@@ -62,6 +59,7 @@ public class MineFragment extends DataBindingBaseFragment implements View.OnClic
     public static final String REQUEST = "requestInfo";
 
     private FragmentMineBinding binding;
+    private UserDetailResultModel.UserDetailBean userDetailBean;
 
     private RequestManager glideRequest;
     private ImagePicker imagePicker;
@@ -99,11 +97,32 @@ public class MineFragment extends DataBindingBaseFragment implements View.OnClic
     public void onResume() {
         super.onResume();
         LogUtil.d(TAG, "onResume===");
-        if (UserManager.isLogin()) {
-            autoLogin();
-        }
+//        if (UserManager.isLogin()) {
+//            showUserInfo();
+//        }
+        getUserInfo(UserManager.getUserId());
     }
 
+    public void getUserInfo(String userId) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("userId", userId);
+        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GET_USER_DETAIL + "/" + userId, ManBaRequestManager.TYPE_GET, null, new ReqCallBack<String>() {
+            @Override
+            public void onReqSuccess(String result) {
+                UserDetailResultModel userDetailResultModel = new Gson().fromJson(result, UserDetailResultModel.class);
+                if (userDetailResultModel != null) {
+                    userDetailBean = userDetailResultModel.getResult();
+                    binding.setUserInfo(userDetailBean);
+                    glideRequest.load(userDetailBean.getPhotoUrl()).transform(new GlideCircleTransform(getActivity())).error(R.drawable.register_home_pre).into(binding.ivUserPic);
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+
+            }
+        });
+    }
 
     @Override
     public void onClick(View v) {
@@ -119,7 +138,7 @@ public class MineFragment extends DataBindingBaseFragment implements View.OnClic
                 break;
             case R.id.mine_gonghui:
                 // 我的公会
-                intent = new Intent(getActivity(), SociationDetailActivity.class);
+                intent = new Intent(getActivity(), MyGuildListActivity.class);
                 //intent.putExtra(Appconstant.SOCIATION_ID, String.valueOf(bean.getGuildId()));
                 startActivity(intent);
                 break;
@@ -205,9 +224,6 @@ public class MineFragment extends DataBindingBaseFragment implements View.OnClic
                 glideRequest.load(qqResponseModel.getFigureurl_qq_2()).transform(new GlideCircleTransform(getActivity())).into(binding.ivUserPic);
             }
         }
-//        binding.rlAfterLogin.setVisibility(View.VISIBLE);
-//        binding.llAfterLogin.setVisibility(View.VISIBLE);
-//        binding.rlBeforeLogin.setVisibility(View.GONE);
     }
 
 
@@ -241,76 +257,18 @@ public class MineFragment extends DataBindingBaseFragment implements View.OnClic
         }
     }
 
-    /**
-     * 自动登陆
-     *
-     * @return
-     */
-    private void autoLogin() {
-        String userInfo = "";
-        String lastLoginType = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_LAST_TYPE);
-        LogUtil.d(TAG, "lastLoginType--------------" + lastLoginType);
-        if (!TextUtils.isEmpty(lastLoginType) && lastLoginType.equals("2")) {
-            // qq登陆,
-            String qqInfo = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_QQ_INFO);
-            QQResponseModel qqModel = new Gson().fromJson(qqInfo, QQResponseModel.class);
-            if (null != qqModel) {
-                initUserInfo(qqModel);
-            }
-        } else if (!TextUtils.isEmpty(lastLoginType) && lastLoginType.equals("3")) {
-            // 微信登陆,
-            String wxInfo = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_WX_INFO);
-            if (TextUtils.isEmpty(wxInfo)) {
-                wxInfo = SharedPreferencesUtil.getInstance().getSP(Appconstant.LOGIN_USER_INFO_WEIXIN);
-            }
-            WeiXinResponseModel weixinModel = new Gson().fromJson(wxInfo, WeiXinResponseModel.class);
-            //EventBus.getDefault().post(new MessageEvent(resultStr));
-            if (null != weixinModel) {
-                initUserInfo(weixinModel);
-            }
-        } else if (!TextUtils.isEmpty(lastLoginType) && lastLoginType.equals("1")) {
-            // 用户名密码登陆
-            userInfo = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_INFO);
-            UserLoginResultModel userLoginModelResult = new Gson().fromJson(userInfo, UserLoginResultModel.class);
-            if (null != userLoginModelResult) {
-                initUserInfo(userLoginModelResult.getResult());
-            }
-        }
-    }
-
-    @OnClick(R.id.bt_login)
-    public void login() {
-        Intent intent = new Intent();
-        intent.setClass(getActivity(), LoginActivity.class);
-        startActivityForResult(intent, LOGIN_CODE);
-    }
-
-
-//    @Override
-//    public void onClick(View view) {
-//        Intent intent;
-//        switch (view.getId()) {
-//            case R.id.bt_login:
-//                intent = new Intent();
-//                intent.setClass(getActivity(), LoginActivity.class);
-//                startActivityForResult(intent, LOGIN_CODE);
-//                break;
-//
-//        }
-//    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case LOGIN_CODE:
-                if (resultCode == Activity.RESULT_OK) {
-                    //getUserInfo();
-                    getUserInfo(data);
-                } else {
-                    //Toast.makeText(getActivity(), "登陆失败", Toast.LENGTH_SHORT).show();
-                }
-                break;
+//            case LOGIN_CODE:
+//                if (resultCode == Activity.RESULT_OK) {
+//                    //getUserInfo();
+//                    getUserInfo(data);
+//                } else {
+//                    //Toast.makeText(getActivity(), "登陆失败", Toast.LENGTH_SHORT).show();
+//                }
+//                break;
             case HEAD_PIC:
                 if (resultCode == ImagePicker.RESULT_CODE_ITEMS && data != null) {
                     images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
@@ -358,13 +316,13 @@ public class MineFragment extends DataBindingBaseFragment implements View.OnClic
     }
 
 
-    public void getUserInfo(Intent data) {
-        if (null == data) {
-            return;
-        }
-        UserLoginResultModel.ResultBean userLoginModel = data.getParcelableExtra(Appconstant.LOGIN_USER_INFO);
-        initUserInfo(userLoginModel);
-    }
+//    public void getUserInfo(Intent data) {
+//        if (null == data) {
+//            return;
+//        }
+//        UserLoginResultModel.ResultBean userLoginModel = data.getParcelableExtra(Appconstant.LOGIN_USER_INFO);
+//        initUserInfo(userLoginModel);
+//    }
 
 
 }
