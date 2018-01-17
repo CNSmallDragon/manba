@@ -10,14 +10,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.minyou.manba.R;
 import com.minyou.manba.databinding.ActivityForgetpwdBinding;
-import com.minyou.manba.manager.UserManager;
 import com.minyou.manba.network.api.ManBaApi;
 import com.minyou.manba.network.okhttputils.ManBaRequestManager;
 import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
 import com.minyou.manba.network.okhttputils.ReqCallBack;
-import com.minyou.manba.util.Assistant;
+import com.minyou.manba.network.resultModel.BaseResultModel;
 import com.minyou.manba.util.LogUtil;
 
 import java.io.IOException;
@@ -80,13 +80,21 @@ public class ForgetPasswordActivity extends DataBindingBaseActivity implements V
 
 	private void postReset() {
 		HashMap<String,String> params = new HashMap<String,String>();
-		params.put("newPassword", Assistant.BoxingWithMD5(etMimaStr));
-		params.put("userId", UserManager.getUserId());
+//		params.put("newPassword", Assistant.BoxingWithMD5(etMimaStr));
+		params.put("newPassword", etMimaStr);
+		//params.put("userId", UserManager.getUserId());
+		params.put("phone", binding.loginNumber.getText().toString().trim());
 		params.put("smsCode",binding.etSms.getText().toString().trim());
 		ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_POST_RESET_PWD, ManBaRequestManager.TYPE_POST_JSON, params, new ReqCallBack<String>() {
 			@Override
 			public void onReqSuccess(String result) {
-
+				BaseResultModel baseResultModel = new Gson().fromJson(result,BaseResultModel.class);
+				if(baseResultModel.isSuccess()){
+					Toast.makeText(ForgetPasswordActivity.this, getResources().getString(R.string.login_resetpwd_success), Toast.LENGTH_SHORT).show();
+					finish();
+				}else{
+					Toast.makeText(ForgetPasswordActivity.this, getResources().getString(R.string.system_error), Toast.LENGTH_SHORT).show();
+				}
 			}
 
 			@Override

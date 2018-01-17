@@ -21,7 +21,7 @@
             android:layout_height="@dimen/common_title_height"
             android:background="@android:color/background_light"
             android:gravity="center_vertical"
-            app:titleText="@string/detail_title"></com.minyou.manba.ui.ActionTitleView>
+            app:titleText="@string/detail_title"/>
 
 
 

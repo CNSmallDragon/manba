@@ -321,6 +321,7 @@ public class ManBaRequestManager {
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
                     failedCallBack("访问失败", callBack);
                     LogUtil.e(TAG, e.toString());
                 }
@@ -338,6 +339,7 @@ public class ManBaRequestManager {
             });
             return call;
         } catch (Exception e) {
+            e.printStackTrace();
             LogUtil.e(TAG, e.toString());
         }
         return null;

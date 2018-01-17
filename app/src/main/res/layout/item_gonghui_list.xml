@@ -65,7 +65,7 @@
                     android:id="@+id/tv_gonghui_member_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.format(@string/gonghui_member_num,SociationBean.currentNum,SociationBean.memberNum)}"
+                    android:text="@{String.format(@string/gonghui_member_num,SociationBean.currentNum)}"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="@dimen/small_textsize" />
 

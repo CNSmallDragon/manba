@@ -55,6 +55,8 @@
         <activity android:name="com.minyou.manba.activity.MyDongTaiActivity" />
         <activity android:name="com.minyou.manba.activity.UpVoteListActivity" />
         <activity android:name="com.minyou.manba.activity.MyGuildListActivity" />
+        <activity android:name="com.minyou.manba.activity.FansActivity" />
+        <activity android:name="com.minyou.manba.activity.FollowListActivity" />
 
         <!-- qq官方申请的key的配置 -->
         <activity

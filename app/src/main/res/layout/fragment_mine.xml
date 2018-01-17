@@ -96,6 +96,7 @@
             android:visibility="visible">
 
             <LinearLayout
+                android:id="@+id/ll_fans"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -124,6 +125,7 @@
                 android:background="#66CCFF" />
 
             <LinearLayout
+                android:id="@+id/ll_follow"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -199,12 +201,14 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/me_icon_gonghui"
                 android:drawableRight="@drawable/me_icon_go"
+                android:background="@drawable/common_background_press"
                 android:text="@string/my_gonghui" />
 
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/line_height"
                 android:layout_marginLeft="@dimen/home_to_side"
+                android:visibility="gone"
                 android:background="@android:color/darker_gray" />
 
             <TextView
@@ -212,6 +216,8 @@
                 style="@style/mine_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:background="@drawable/common_background_press"
                 android:drawableLeft="@drawable/me_icon_qianbao"
                 android:drawableRight="@drawable/me_icon_go"
                 android:text="@string/my_qianbao" />
@@ -227,6 +233,7 @@
                 style="@style/mine_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/common_background_press"
                 android:drawableLeft="@drawable/me_icon_shouc"
                 android:drawableRight="@drawable/me_icon_go"
                 android:text="@string/my_shoucang" />
@@ -242,6 +249,7 @@
                 style="@style/mine_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/common_background_press"
                 android:drawableLeft="@drawable/me_icon_dongtai"
                 android:drawableRight="@drawable/me_icon_go"
                 android:paddingBottom="@dimen/common_text_side"
@@ -252,6 +260,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/login_num_side"
+            android:visibility="gone"
             android:background="@android:color/background_light"
             android:orientation="vertical">
 
@@ -260,6 +269,7 @@
                 style="@style/mine_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/common_background_press"
                 android:drawableLeft="@drawable/me_icon_xiaoxi"
                 android:drawableRight="@drawable/me_icon_go"
                 android:text="@string/my_xiaoxi" />
@@ -275,6 +285,7 @@
                 style="@style/mine_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/common_background_press"
                 android:drawableLeft="@drawable/me_icon_haiwan"
                 android:drawableRight="@drawable/me_icon_go"
                 android:paddingBottom="@dimen/common_text_side"
@@ -286,7 +297,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/home_to_topside"
-            android:background="@android:color/background_light"
+            android:background="@drawable/common_background_press"
             android:drawableLeft="@drawable/me_icon_shehiz"
             android:drawableRight="@drawable/me_icon_go"
             android:gravity="center_vertical"

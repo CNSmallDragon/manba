@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="UserListBean"
+            type="com.minyou.manba.network.resultModel.CommonUserListResultModel.ResultBean.UserListBean"/>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/common_to_side"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:setUserListClick="@{UserListBean}">
+
+        <ImageView
+            android:id="@+id/upvote_user_pic"
+            android:layout_width="@dimen/dongtai_upvote_icon"
+            android:layout_height="@dimen/dongtai_upvote_icon"
+            app:setUsetListPic="@{UserListBean}"
+            android:src="@drawable/avater_default"/>
+
+        <TextView
+            android:id="@+id/upvote_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_to_side"
+            android:text="@{UserListBean.nickName}"/>
+
+    </LinearLayout>
+</layout>

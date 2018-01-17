@@ -177,13 +177,13 @@ public class NewFragment extends DataBindingBaseFragment {
             public void onReqSuccess(String result) {
                 ZoneListResultModel zoneListResultModel = new Gson().fromJson(result, ZoneListResultModel.class);
 
-                if (zoneListResultModel.getResult().getResultList().size() > 0) {
+                if (null != zoneListResultModel.getResult().getResultList() && zoneListResultModel.getResult().getResultList().size() > 0) {
                     zoneList.addAll(zoneListResultModel.getResult().getResultList());
                     myMvvmAdapter.notifyDataSetChanged();
                     //结束后停止刷新
                     binding.pcflRefreshNew.refreshComplete();
                 } else {
-                    Toast.makeText(getActivity(), "人家也是有底线的", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.no_more_2), Toast.LENGTH_SHORT).show();
                     binding.pcflRefreshNew.refreshComplete();
                 }
 

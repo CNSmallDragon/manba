@@ -37,6 +37,7 @@ import com.minyou.manba.util.SharedPreferencesUtil;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -210,13 +211,18 @@ public class PersonInfoActivity extends DataBindingBaseActivity implements View.
 
     // 设置用户生日
     private void showTimePickerView() {
-        long birthDay = Long.parseLong(TextUtils.isEmpty(userDetailBean.getBirthday()) ? "0" : userDetailBean.getBirthday());
         Calendar selectedDate = Calendar.getInstance();//系统当前时间
-        Date mDate = new Date(birthDay);
-        LogUtil.d("lch---", String.valueOf(mDate.getDay()));
+
         if(selectedDate != null && !TextUtils.isEmpty(userDetailBean.getBirthday())){
-            LogUtil.d("lch---", "-----------------");
-            selectedDate.setTime(mDate);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date mDate = null;
+            try {
+                mDate = sdf.parse(userDetailBean.getBirthday());
+                selectedDate.setTime(mDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             LogUtil.d("lch---", "selectedDate===" + selectedDate.get(Calendar.DAY_OF_MONTH));
         }
         Calendar startDate = Calendar.getInstance();

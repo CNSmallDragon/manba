@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -92,7 +91,7 @@ public class MainActivity extends DataBindingBaseActivity implements OnClickList
                 picUrl = ads[3];
                 break;
         }
-
+        binding.tvTime.setOnClickListener(this);
         Glide.with(this)
                 .load(picUrl)
                 .override(width,height)
@@ -100,30 +99,6 @@ public class MainActivity extends DataBindingBaseActivity implements OnClickList
 
         startCountDown();
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-
-
-        // 延时3s进入主界面
-//        new Thread(){
-//            @Override
-//            public void run() {
-//                try {
-//                    sleep(WAIT_HOME);
-//
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                super.run();
-//            }
-//        }.start();
-    }
-
-
 
     @Override
     public void onClick(View v) {

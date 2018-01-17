@@ -16,15 +16,13 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Toast;
 
 import com.minyou.manba.R;
-import com.minyou.manba.bean.ManBaUserInfo;
 import com.minyou.manba.event.EventInfo;
 import com.minyou.manba.fragment.DataBindingBaseFragment;
+import com.minyou.manba.fragment.FavoriteFragment;
 import com.minyou.manba.fragment.HomeFragment;
 import com.minyou.manba.fragment.MineFragment;
 import com.minyou.manba.fragment.SociationFragment;
-import com.minyou.manba.fragment.StreetFragment;
 import com.minyou.manba.util.CommonUtil;
-import com.minyou.manba.util.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -53,7 +51,6 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
     private int index;
     private long firstTime = 0;
 
-    private ManBaUserInfo mManBaUserInfo;
     private FragmentManager fm;
 
     @Override
@@ -75,7 +72,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         fragments.clear();
         fragments.add(new HomeFragment());
         fragments.add(new SociationFragment());
-        fragments.add(new StreetFragment());
+        fragments.add(new FavoriteFragment());
         fragments.add(new MineFragment());
         rg_main.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -84,23 +81,18 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                 switch (checkedId) {
                     case R.id.rb_home:
                         index = 0;
-                        LogUtil.d(TAG, "---home");
                         break;
                     case R.id.rb_gonghui:
                         index = 1;
-                        LogUtil.d(TAG, "---gonghui");
                         break;
                     case R.id.rb_fayan:
                         // delete
-                        LogUtil.d(TAG, "---fayan");
                         break;
                     case R.id.rb_jiequ:
                         index = 2;
-                        LogUtil.d(TAG, "---jiequ");
                         break;
                     case R.id.rb_jia:
                         index = 3;
-                        LogUtil.d(TAG, "---jia");
                         break;
                 }
                 Fragment fragment = (Fragment) adapter.instantiateItem(fl_home, index);
@@ -164,14 +156,6 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         EventBus.getDefault().unregister(this);
     }
 
-    public ManBaUserInfo getManBaUserInfo() {
-        return mManBaUserInfo;
-    }
-
-    public void setManBaUserInfo(ManBaUserInfo manBaUserInfo) {
-        this.mManBaUserInfo = manBaUserInfo;
-    }
-
     public RadioGroup getRg_main() {
         return rg_main;
     }
@@ -181,7 +165,6 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         Intent intent;
         switch (view.getId()) {
             case R.id.rb_fayan:
-                Toast.makeText(this, "发言", Toast.LENGTH_SHORT).show();
                 if (CommonUtil.isLogin()) {
                     intent = new Intent(HomeActivity.this, FaTieActivity.class);
                     startActivity(intent);

@@ -4,11 +4,11 @@
      <!--<solid android:color="#de6838"/>-->
 
 
-    <size android:height="1dp" />
+    <size android:height="0.5dp" />
 
     <gradient
         android:angle="0"
-        android:centerColor="#00ff00"
-        android:endColor="#0000ff"
-        android:startColor="#ff0000" />
+        android:centerColor="#aaaaaa"
+        android:endColor="#aaaaaa"
+        android:startColor="#aaaaaa" />
 </shape>

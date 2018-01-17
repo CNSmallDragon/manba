@@ -19,6 +19,8 @@ import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.view.CropImageView;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
+import com.minyou.manba.activity.FansActivity;
+import com.minyou.manba.activity.FollowListActivity;
 import com.minyou.manba.activity.GameCenterActivity;
 import com.minyou.manba.activity.HomeActivity;
 import com.minyou.manba.activity.MyGuildListActivity;
@@ -90,6 +92,8 @@ public class MineFragment extends DataBindingBaseFragment implements View.OnClic
         binding.mineSetting.setOnClickListener(this);
         binding.rlAfterLogin.setOnClickListener(this);
         binding.ivUserPic.setOnClickListener(this);
+        binding.llFans.setOnClickListener(this);
+        binding.llFollow.setOnClickListener(this);
     }
 
 
@@ -128,6 +132,14 @@ public class MineFragment extends DataBindingBaseFragment implements View.OnClic
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
+            case R.id.ll_fans:
+                intent = new Intent(getActivity(), FansActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.ll_follow:
+                intent = new Intent(getActivity(), FollowListActivity.class);
+                startActivity(intent);
+                break;
             case R.id.rl_after_login:   //个人中心
                 intent = new Intent(getActivity(), PersonInfoActivity.class);
                 intent.putExtra("userId",SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID));

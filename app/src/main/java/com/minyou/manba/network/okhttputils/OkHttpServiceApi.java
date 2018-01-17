@@ -59,6 +59,12 @@ public class OkHttpServiceApi {
     // 点赞列表
     public static String HTTP_POST_ZONE_UPVOTELIST = "api/zone/upvoteList";
 
+    // 关注列表
+    public static String HTTP_POST_ZONE_FOLLOWLIST = "api/zone/followList";
+
+    // 粉丝列表
+    public static String HTTP_POST_ZONE_FANSLIST = "api/fenList";
+
     // 查询评论列表（只查询父评论）
     public static String HTTP_GET_ZONE_COMMENTLIST = "api/zone/queryCommentList";
 

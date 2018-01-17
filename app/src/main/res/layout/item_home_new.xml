@@ -148,7 +148,8 @@
                 android:drawablePadding="@dimen/common_text_side"
                 android:gravity="center"
                 android:text="@{String.valueOf(zoneBean.lookNum)}"
-                android:textSize="@dimen/small_textsize" />
+                android:textSize="@dimen/small_textsize"
+                android:textColor="@android:color/darker_gray"/>
 
             <CheckBox
                 android:id="@+id/tv_content_zan"
@@ -162,6 +163,7 @@
                 android:gravity="center"
                 app:setDongTaiZan="@{zoneBean}"
                 android:text="@{String.valueOf(zoneBean.upvoteNum)}"
+                android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/small_textsize" />
 
             <TextView
@@ -173,6 +175,7 @@
                 android:drawablePadding="@dimen/common_text_side"
                 android:gravity="center"
                 android:text="@{String.valueOf(zoneBean.commentNum)}"
+                android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/small_textsize" />
 
 

@@ -12,7 +12,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_title_height"
             android:gravity="center_vertical"
-            app:titleText="@string/detail_upvote_list"/>
+            app:titleText="@string/detail_upvote_list"
+            app:borderLine="true"/>
 
         <View
             android:layout_width="match_parent"

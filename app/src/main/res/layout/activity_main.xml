@@ -22,7 +22,7 @@
             android:layout_marginTop="@dimen/common_to_side"
             android:background="@drawable/shape_borderline_home_grey"
             android:text="123"
-            android:textColor="@color/colorCommon" />
+            android:textColor="@color/white" />
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -15,7 +15,8 @@
     <string name="login_weixin">微信</string>
     <string name="login_qq">QQ</string>
     <string name="login_xinlang">微博</string>
-    
+    <string name="login_resetpwd_success">已成功修改密码，请重新登陆</string>
+
     <!-- 注册 -->
     <string name="forget_password">忘记密码</string>
     <string name="regist_nicheng">输入昵称</string>
@@ -41,8 +42,10 @@
     <string name="home">主页</string>
     <string name="home_jiequ">街区</string>
     <string name="home_xiaoxi">消息</string>
+    <string name="home_favorite">收藏</string>
     <string name="home_fayan">发言</string>
-    <string name="home_gonghui">公会</string>
+    <!--<string name="home_gonghui">公会</string>-->
+    <string name="home_gonghui">专区</string>
     <string name="home_jia">家</string>
 
     <string name="home_xinxian">新鲜</string>
@@ -53,7 +56,7 @@
     <!-- 设置界面 -->
     <string name="my_fensi">粉丝</string>
     <string name="my_guanzhu">关注</string>
-    <string name="my_gonghui">我的公会</string>
+    <string name="my_gonghui">我的专区</string>
     <string name="my_qianbao">我的钱包</string>
     <string name="my_shoucang">我的收藏</string>
     <string name="my_dongtai">我的动态</string>
@@ -61,14 +64,16 @@
     <string name="my_haiwan">嗨玩</string>
     <string name="my_shezhi">设置</string>
     <string name="my_login">欢迎来到漫吧</string>
+    <string name="fans_member_list">粉丝列表</string>
+    <string name="follow_member_list">关注列表</string>
 
-    <!-- 公会 -->
-    <string name="gonghui_hot">热门公会</string>
+    <!-- 专区 -->
+    <string name="gonghui_hot">热门专区</string>
     <string name="gonghui_join">加入</string>
     <string name="gonghui_dongtai">动态</string>
     <string name="gonghui_chengyuan">成员</string>
     <string name="gonghui_shenqingjiaru">申请加入</string>
-    <string name="gonghui_exit">退出公会</string>
+    <string name="gonghui_exit">退出专区</string>
     <string name="gonghui_loadmore">上拉加载更多...</string>
     <string name="gonghui_loading">正在加载...</string>
 
@@ -107,11 +112,11 @@
 
 
 
-    <!--  公会界面   -->
+    <!--  专区界面   -->
     <string name="guild_liveness">活跃度: %s</string>
-    <string name="gonghui_member_num" formatted="false">成员数：%s/%s</string>
+    <string name="gonghui_member_num" formatted="false">成员数：%s</string>
 
-    <!--  公会详情   -->
+    <!--  专区详情   -->
     <string name="guild_detail_member_num">成员数：%s</string>
 
     <!--  查看图片界面   -->
@@ -167,5 +172,7 @@
     <string name="ok">确定</string>
     <string name="prompt">提示！</string>
     <string name="empty_text">暂无最新动态</string>
+    <string name="no_more_2">人家也是有底线的</string>
+    <string name="system_error">系统错误</string>
 
 </resources>

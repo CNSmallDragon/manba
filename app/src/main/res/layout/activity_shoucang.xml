@@ -7,20 +7,25 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.minyou.manba.ui.ActionTitleView
-            android:id="@+id/atv_title"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/common_title_height_wallet"
-            android:background="@android:color/white"
-            android:gravity="center_vertical"
-            app:borderLine="true"
-            app:titleText="@string/my_shoucang" />
+        <!--<com.minyou.manba.ui.ActionTitleView-->
+            <!--android:id="@+id/atv_title"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="@dimen/common_title_height_wallet"-->
+            <!--android:background="@android:color/white"-->
+            <!--android:gravity="center_vertical"-->
+            <!--app:borderLine="true"-->
+            <!--app:titleText="@string/my_shoucang" />-->
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_shoucang"
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/rv_shoucang"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@android:color/white" />-->
+
+        <FrameLayout
+            android:id="@+id/favorite_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white" />
+            android:layout_height="match_parent"></FrameLayout>
 
     </LinearLayout>
 </layout>

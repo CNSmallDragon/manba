@@ -76,7 +76,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/common_to_side"
-                            android:text="@{String.format(@string/gonghui_member_num,GuildDetailBean.currentNum,GuildDetailBean.memberNum)}"
+                            android:text="@{String.format(@string/gonghui_member_num,GuildDetailBean.currentNum)}"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/small_textsize" />
 

@@ -66,9 +66,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:drawableTop="@drawable/select_jiequ_icon"
+            android:drawableTop="@drawable/select_favorite_icon"
             android:gravity="center"
-            android:text="@string/home_xiaoxi"
+            android:text="@string/home_favorite"
             android:textColor="@color/bottom_text_color"
             android:textSize="12sp" />
 
