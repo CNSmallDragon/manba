@@ -63,6 +63,7 @@ public class LoginActivity extends DataBindingBaseActivity implements View.OnCli
     private static final int WXLOGIN = 1002;
     private static final int SINALOGIN = 1003;
     private static final int PASSWORD_ERROR = 400;
+    private static final int USER_ONT_EXIST = 14;
 
     public static String mAppid;
     private String inputNumber;
@@ -87,6 +88,10 @@ public class LoginActivity extends DataBindingBaseActivity implements View.OnCli
                 case PASSWORD_ERROR:
                     // 密码错误
                     Toast.makeText(LoginActivity.this, "您输入的密码有误，请重新输入!", Toast.LENGTH_SHORT).show();
+                    binding.loginPwd.setText("");
+                case USER_ONT_EXIST:
+                    // 密码错误
+                    Toast.makeText(LoginActivity.this, "用户不存在!", Toast.LENGTH_SHORT).show();
                     binding.loginPwd.setText("");
                     break;
             }
@@ -169,7 +174,9 @@ public class LoginActivity extends DataBindingBaseActivity implements View.OnCli
                     message.what = PASSWORD_ERROR;
                     handler.sendMessage(message);
                 } else if (userLoginModel.getCode().equals("14")) {        // 用户不存在
-
+                    Message message = Message.obtain();
+                    message.what = USER_ONT_EXIST;
+                    handler.sendMessage(message);
                 }
                 cancelLoading();
             }

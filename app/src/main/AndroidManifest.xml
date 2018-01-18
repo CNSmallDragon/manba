@@ -93,6 +93,10 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
+
+        <meta-data android:value="5a3a3129f29d9835eb00001b" android:name="UMENG_APPKEY"/>
+        <!--<meta-data android:value="${UMENG_CHANNEL_VALUE}" android:name="UMENG_CHANNEL"/>-->
+
     </application>
 
 </manifest>

@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.activity.DataBindingBaseActivity;
+import com.minyou.manba.activity.PersonContentActivity;
 import com.minyou.manba.adapter.CommentDetailAdapter;
 import com.minyou.manba.databinding.ActivityCommentDetailBinding;
 import com.minyou.manba.network.okhttputils.ManBaRequestManager;
@@ -77,10 +78,13 @@ public class CommentDetailActivity extends DataBindingBaseActivity implements Vi
         binding.bottomLay.setOnClickListener(this);
         // 点赞按钮
         binding.cbCommentDetailZan.setOnClickListener(this);
+        // 点击头像
+        binding.commentDetailHeadImage.setOnClickListener(this);
 
         binding.commentScrollview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                LogUtil.d(TAG,"onScrollChangeonScrollChange==============");
                 replyUserId = 0;
                 binding.etCommentText.setHint(getResources().getString(R.string.detail_send_hint));
                 binding.llComment.setVisibility(View.GONE);
@@ -113,6 +117,7 @@ public class CommentDetailActivity extends DataBindingBaseActivity implements Vi
                 }
             }
         });
+
 
         binding.recyclerCommentDetail.addOnScrollListener(new RecyclerView.OnScrollListener() {
             int lastVisibleItem ;
@@ -173,7 +178,6 @@ public class CommentDetailActivity extends DataBindingBaseActivity implements Vi
             Glide.with(this).load(commentItem.getPhotoUrl()).transform(new GlideCircleTransform(this)).into(binding.commentDetailHeadImage);
         }
         // 设置title
-        binding.actCommentTitle.setTitle(String.format(getResources().getString(R.string.comment_detail_num),commentItem.getLevelNum()+""));
         binding.actCommentTitle.setRightToDo(getResources().getString(R.string.comment_pub), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -259,6 +263,12 @@ public class CommentDetailActivity extends DataBindingBaseActivity implements Vi
                 params.put("commentId",commentItem.getCommentId()+"");
                 ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_ZONE_COMMENTUPVOTE, ManBaRequestManager.TYPE_POST_JSON, params, null);
                 break;
+            case R.id.comment_detail_head_image:
+                // 点击头像
+                Intent intent = new Intent(CommentDetailActivity.this, PersonContentActivity.class);
+                intent.putExtra(Appconstant.PERSON_CENTER,commentItem.getCommentUserId());
+                startActivity(intent);
+                break;
         }
     }
 
@@ -266,12 +276,12 @@ public class CommentDetailActivity extends DataBindingBaseActivity implements Vi
      * 发布回复
      */
     private void sendCommentInfo() {
-        loading();
         HashMap<String, String> params;
         if (TextUtils.isEmpty(binding.etCommentText.getText().toString())) {
             Toast.makeText(this, "请输入评论内容", Toast.LENGTH_SHORT).show();
             return;
         } else {
+            loading();
             params = new HashMap<String, String>();
             params.put("commentParentId", String.valueOf(commentItem.getCommentId()));      // 父评论id
             params.put("userId", SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID));

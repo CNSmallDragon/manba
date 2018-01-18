@@ -30,6 +30,7 @@
             android:id="@+id/guild_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@android:color/background_light"
             android:layout_above="@id/tv_join">
 
             <LinearLayout
@@ -97,20 +98,11 @@
                     </LinearLayout>
                 </RelativeLayout>
 
-                <!--  公会宣言  -->
-                <TextView
-                    android:id="@+id/tv_gonghui_desc"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/background_light"
-                    android:padding="@dimen/common_to_side"
-                    android:text="@{GuildDetailBean.declaration}" />
-
                 <RadioGroup
                     android:id="@+id/ll_dongtai_chengyuan"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/common_to_top"
+                    android:padding="@dimen/common_to_side"
                     android:background="@android:color/background_light"
                     android:orientation="horizontal">
 
@@ -122,9 +114,13 @@
                         android:button="@null"
                         android:clickable="true"
                         android:gravity="center"
-                        android:padding="@dimen/common_text_side"
                         android:text="@string/gonghui_dongtai"
                         android:textColor="@color/bottom_text_color" />
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/black"/>
 
                     <RadioButton
                         android:id="@+id/rb_member"
@@ -134,16 +130,30 @@
                         android:button="@null"
                         android:clickable="true"
                         android:gravity="center"
-                        android:padding="@dimen/common_text_side"
                         android:text="@string/gonghui_chengyuan"
                         android:textColor="@color/bottom_text_color" />
                 </RadioGroup>
 
-                <ImageView
-                    android:id="@+id/iv_line"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/common_to_side"
+                    android:background="@color/common_line_color"/>
+
+                <!--  公会宣言  -->
+                <TextView
+                    android:id="@+id/tv_gonghui_desc"
                     android:layout_width="fill_parent"
-                    android:layout_height="@dimen/line_height"
-                    android:background="@android:color/darker_gray" />
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/background_light"
+                    android:padding="@dimen/common_to_side"
+                    android:gravity="center"
+                    android:text="@{GuildDetailBean.declaration}" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/common_to_side"
+                    android:background="@color/common_line_color"/>
+
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/guild_recycler_view"

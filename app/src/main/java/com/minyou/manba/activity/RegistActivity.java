@@ -1,40 +1,31 @@
 package com.minyou.manba.activity;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
+import com.minyou.manba.databinding.ActivityRegistBinding;
 import com.minyou.manba.network.api.ManBaApi;
 import com.minyou.manba.network.resultModel.RegistResultModel;
 import com.minyou.manba.network.resultModel.UserLoginModel;
-import com.minyou.manba.ui.ActionTitleView;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
 import java.io.IOException;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -43,43 +34,11 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class RegistActivity extends Activity {
+public class RegistActivity extends DataBindingBaseActivity implements View.OnClickListener {
 
     private static final String TAG = "RegistActivity";
-    @BindView(R.id.atv_title)
-    ActionTitleView atvTitle;
-    @BindView(R.id.iv_regist)
-    ImageView ivRegist;
-    @BindView(R.id.et_nicheng)
-    EditText etNicheng;
-    @BindView(R.id.et_sms)
-    EditText etSms;
-    @BindView(R.id.tv_send_sms)
-    TextView tvSendSms;
-    @BindView(R.id.et_mima)
-    EditText etMima;
-    @BindView(R.id.rb_sex_man)
-    RadioButton rbSexMan;
-    @BindView(R.id.rb_sex_women)
-    RadioButton rbSexWomen;
-    @BindView(R.id.cb_dongman)
-    CheckBox cbDongman;
-    @BindView(R.id.cb_manhua)
-    CheckBox cbManhua;
-    @BindView(R.id.cb_youxi)
-    CheckBox cbYouxi;
-    @BindView(R.id.cb_xiaoshuo)
-    CheckBox cbXiaoshuo;
-    @BindView(R.id.cb_cosplay)
-    CheckBox cbCosplay;
-    @BindView(R.id.cb_tongren)
-    CheckBox cbTongren;
-    @BindView(R.id.tv_regist)
-    TextView tvRegist;
-    @BindView(R.id.et_phone)
-    EditText etPhone;
-    @BindView(R.id.cb_display_pwd)
-    CheckBox cb_display_pwd;
+
+    private ActivityRegistBinding binding;
 
     // 总倒计时时间
     private static final long MILLIS_IN_FUTURE = 60 * 1000;
@@ -103,14 +62,9 @@ public class RegistActivity extends Activity {
             switch (msg.what){
                 case  REGIST_ERROR:
                     Toast.makeText(RegistActivity.this, (String)msg.obj, Toast.LENGTH_SHORT).show();
-
                     break;
                 case REGIST_SUCCESS:
                     // 注册成功
-//                    EventInfo info = new EventInfo();
-//                    info.setType(EventInfo.REGIST_RETURN);
-//                    info.setData(msg.obj);
-//                    EventBus.getDefault().post(info);
                     // 将用户信息存入本地
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_PHONE,inputNumber);
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_PWD,etMimaStr);
@@ -151,6 +105,7 @@ public class RegistActivity extends Activity {
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, userLoginModel.getUserId());
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getToken());
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getRefreshToken());
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_INFO,requestStr);
                     // 注册登录完成后跳转首页
                     Intent intent = new Intent(RegistActivity.this,HomeActivity.class);
                     startActivity(intent);
@@ -162,32 +117,33 @@ public class RegistActivity extends Activity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_regist);
-        ButterKnife.bind(this);
+    public void setContentViewAndBindData() {
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_regist);
 
-        initView();
-
+        initListener();
     }
 
-    private void initView() {
-        atvTitle.setTitle(getResources().getString(R.string.regist_welcome));
-        cb_display_pwd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+
+    private void initListener() {
+
+        binding.tvSendSms.setOnClickListener(this);
+        binding.tvRegist.setOnClickListener(this);
+
+        binding.cbDisplayPwd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (TextUtils.isEmpty(etMima.getText())) {
+                if (TextUtils.isEmpty(binding.etMima.getText())) {
                     return;
                 }
                 if (isChecked) {
-                    etMima.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    binding.etMima.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 } else {
-                    etMima.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    binding.etMima.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
                 // 将光标移动到最后
-                etMima.setSelection(etMima.getText().toString().length());
+                binding.etMima.setSelection(binding.etMima.getText().toString().length());
             }
         });
     }
@@ -197,29 +153,30 @@ public class RegistActivity extends Activity {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void startCountDown() {
         // 设置按钮为不可点击，并修改显示背景
-        tvSendSms.setEnabled(false);
-        tvSendSms.setBackground(getDrawable(R.drawable.shape_borderline_grey_8));
+        binding.tvSendSms.setEnabled(false);
+        binding.tvSendSms.setBackground(getDrawable(R.drawable.shape_borderline_grey_8));
         // 开始倒计时
         new CountDownTimer(MILLIS_IN_FUTURE, COUNT_DOWN_INTERVAL) {
+            @SuppressLint("StringFormatMatches")
             @Override
             public void onTick(long millisUntilFinished) {
                 // 刷新文字
-                tvSendSms.setText(getResources().getString(R.string.reget_sms_code_countdown, millisUntilFinished / COUNT_DOWN_INTERVAL));
+                binding.tvSendSms.setText(getResources().getString(R.string.reget_sms_code_countdown, millisUntilFinished / COUNT_DOWN_INTERVAL));
             }
 
             @Override
             public void onFinish() {
                 // 重置文字，并恢复按钮为可点击
-                tvSendSms.setText(R.string.regist_getyanzhengma);
-                tvSendSms.setEnabled(true);
-                tvSendSms.setBackground(getDrawable(R.drawable.shape_borderline_bluefull));
+                binding.tvSendSms.setText(R.string.regist_getyanzhengma);
+                binding.tvSendSms.setEnabled(true);
+                binding.tvSendSms.setBackground(getDrawable(R.drawable.shape_borderline_bluefull));
             }
         }.start();
     }
 
-    @OnClick({R.id.tv_send_sms, R.id.tv_regist})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.tv_send_sms:
                 if(checkLoginNum()){
                     startCountDown();
@@ -233,6 +190,7 @@ public class RegistActivity extends Activity {
                 break;
         }
     }
+
 
     private void postRegist() {
         OkHttpClient client = new OkHttpClient();
@@ -285,7 +243,7 @@ public class RegistActivity extends Activity {
     }
 
     private boolean checkLoginNum() {
-        inputNumber = etPhone.getText().toString();
+        inputNumber = binding.etPhone.getText().toString();
         if (TextUtils.isEmpty(inputNumber)) {
             Toast.makeText(this, "请输入手机号", Toast.LENGTH_SHORT).show();
             return false;
@@ -298,19 +256,19 @@ public class RegistActivity extends Activity {
     }
 
     private boolean checkRegist() {
-        etNichengStr = etNicheng.getText().toString().trim();
+        etNichengStr = binding.etNicheng.getText().toString().trim();
         if(TextUtils.isEmpty(etNichengStr)){
             Toast.makeText(this, "请输入昵称", Toast.LENGTH_SHORT).show();
             return false;
         }
         checkLoginNum();
-        etSmsStr = etSms.getText().toString().trim();
+        etSmsStr = binding.etSms.getText().toString().trim();
         if(TextUtils.isEmpty(etSmsStr)){
             Toast.makeText(this, "请输入验证码", Toast.LENGTH_SHORT).show();
             return false;
         }
-        etMimaStr = etMima.getText().toString().trim();
-        etMimaStr = etMima.getText().toString();
+        etMimaStr = binding.etMima.getText().toString().trim();
+        etMimaStr = binding.etMima.getText().toString();
         if (TextUtils.isEmpty(etMimaStr)) {
             Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
             return false;
@@ -321,7 +279,7 @@ public class RegistActivity extends Activity {
         }
 
         // 校验性别
-        sex = rbSexMan.isChecked()?1:rbSexWomen.isChecked()?2:0;
+        sex = binding.rbSexMan.isChecked()?1:binding.rbSexWomen.isChecked()?2:0;
         if(sex == 0){
             Toast.makeText(this, "请选择性别", Toast.LENGTH_SHORT).show();
             return false;
@@ -355,6 +313,5 @@ public class RegistActivity extends Activity {
             }
         });
     }
-
 
 }

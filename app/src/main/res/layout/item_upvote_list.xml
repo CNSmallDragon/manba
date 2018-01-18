@@ -16,6 +16,7 @@
         android:padding="@dimen/common_to_side"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:background="@android:color/background_light"
         app:setUpvoteListClick="@{UserZanListInnerBean}">
 
         <ImageView

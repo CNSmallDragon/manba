@@ -23,9 +23,6 @@
             android:gravity="center_vertical"
             app:titleText="@string/detail_title"/>
 
-
-
-        <!--<com.minyou.manba.ui.view.HeadZoomScrollView-->
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/scrollview_detail"
             android:layout_width="match_parent"
@@ -48,7 +45,7 @@
                     android:id="@+id/recycler_comment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/background_light"></android.support.v7.widget.RecyclerView>
+                    android:background="@android:color/background_light"/>
 
                 <TextView
                     android:id="@+id/tv_empty"
@@ -107,7 +104,7 @@
         <LinearLayout
             android:id="@+id/ll_comment"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:background="@android:color/background_light"
             android:orientation="horizontal"
@@ -120,10 +117,13 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/common_to_side"
                 android:layout_weight="1"
+                android:background="@drawable/et_line_bg_style"
+                android:textCursorDrawable="@drawable/et_cursor_color_drawable"
+                android:paddingBottom="@dimen/common_text_side"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:gravity="bottom"
-                android:textSize="@dimen/large_textsize"
+                android:textSize="@dimen/common_textsize"
                 android:hint="@string/detail_send_hint" />
 
             <TextView
@@ -132,7 +132,12 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_marginLeft="@dimen/common_to_side"
+                android:layout_marginRight="@dimen/common_to_side"
                 android:background="@drawable/select_common_bg"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:gravity="center"
                 android:text="@string/detail_send"
                 android:textColor="@android:color/background_light" />

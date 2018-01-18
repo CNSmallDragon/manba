@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.minyou.manba.R;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * Created by luchunhao on 2017/12/27.
@@ -43,5 +44,16 @@ public abstract class DataBindingBaseFragment extends Fragment {
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(getClass().getName());
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(getActivity().getLocalClassName());
     }
 }

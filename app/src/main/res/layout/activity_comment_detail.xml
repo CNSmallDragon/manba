@@ -27,13 +27,13 @@
             android:layout_height="@dimen/common_title_height"
             android:gravity="center_vertical"
             app:borderLine="true"
-            app:titleText="@string/comment_detail_num"></com.minyou.manba.ui.ActionTitleView>
+            app:titleText="@string/comment_detail_title"/>
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/comment_scrollview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="40dp"
             android:layout_below="@id/act_comment_title">
 
             <RelativeLayout
@@ -128,11 +128,10 @@
                     android:orientation="vertical"
                     android:padding="10dp">
 
-
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recycler_comment_detail"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                        android:layout_height="wrap_content"/>
 
                 </FrameLayout>
 
@@ -142,18 +141,18 @@
         <LinearLayout
             android:id="@+id/ll_comment"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_alignParentBottom="true"
-            android:visibility="gone"
+            android:visibility="visible"
             android:background="@android:color/background_light"
             android:orientation="horizontal">
-
 
             <EditText
                 android:id="@+id/et_comment_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/common_to_side"
+                android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/et_line_bg_style"
                 android:textCursorDrawable="@drawable/et_cursor_color_drawable"
@@ -161,7 +160,7 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:gravity="bottom"
-                android:textSize="@dimen/large_textsize"
+                android:textSize="@dimen/common_textsize"
                 android:hint="@string/detail_send_hint" />
 
             <TextView
@@ -172,6 +171,10 @@
                 android:layout_marginLeft="@dimen/common_to_side"
                 android:layout_marginRight="@dimen/common_to_side"
                 android:background="@drawable/select_common_bg"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:gravity="center"
                 android:text="@string/detail_send"
                 android:textColor="@android:color/background_light" />

@@ -81,6 +81,10 @@ public class ActionTitleView extends LinearLayout implements OnClickListener {
 		iv_back.setVisibility(View.GONE);
 	}
 
+	public void showBackIcon(){
+		iv_back.setVisibility(View.VISIBLE);
+	}
+
 	// 设置标题
 	public void setTitle(String title) {
 

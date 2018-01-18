@@ -1,75 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.minyou.manba.ui.ActionTitleView
-        android:id="@+id/act_title"
+    <LinearLayout
+        android:id="@+id/activity_main"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/common_title_height"></com.minyou.manba.ui.ActionTitleView>
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/et_dongtai_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:layout_marginLeft="5dp"
-        android:hint="@string/fabu_title_hint"
-        android:maxLines="1"
-        android:visibility="gone"
-        android:textColor="#000000" />
+        <com.minyou.manba.ui.ActionTitleView
+            android:id="@+id/act_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_title_height"
+            app:titleText="@string/fabu_dongtai"
+            app:borderLine="true"
+            app:backIcon="true"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.3dp"
-        android:visibility="gone"
-        android:background="@android:color/darker_gray"/>
+        <EditText
+            android:id="@+id/et_dongtai_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:background="@null"
+            android:hint="@string/fabu_title_hint"
+            android:maxLines="1"
+            android:textColor="#000000"
+            android:visibility="gone" />
 
-    <EditText
-        android:id="@+id/et_dongtai_content"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginLeft="5dp"
-        android:hint="@string/fabu_content_hint"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:maxLines="3"
-        android:textColor="#000000" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:background="@android:color/darker_gray"
+            android:visibility="gone" />
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:choiceMode="singleChoice"
-        android:divider="@null"
-        android:fadingEdge="none"
-        android:listSelector="@android:color/transparent"
-        android:scrollbarStyle="outsideOverlay"
-        app:layoutManager="android.support.v7.widget.GridLayoutManager"
-        app:spanCount="4"
-        tools:listitem="@layout/list_item_image"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/gainsboro"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/common_to_side"
-        android:text="@string/fabu_gonghui"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview_choose_gonghui"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+        <EditText
+            android:id="@+id/et_dongtai_content"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginLeft="5dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/fabu_content_hint"
+            android:maxLines="3"
+            android:textColor="#000000" />
 
 
-</LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:choiceMode="singleChoice"
+            android:divider="@null"
+            android:fadingEdge="none"
+            android:listSelector="@android:color/transparent"
+            android:scrollbarStyle="outsideOverlay"
+            app:layoutManager="android.support.v7.widget.GridLayoutManager"
+            app:spanCount="4"
+            tools:listitem="@layout/list_item_image" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/common_line_color" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/common_to_side"
+            android:text="@string/fabu_gonghui" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview_choose_gonghui"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+
+    </LinearLayout>
+</layout>

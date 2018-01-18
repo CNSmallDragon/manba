@@ -1,318 +1,330 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
-
-        <com.minyou.manba.ui.ActionTitleView
-            android:id="@+id/atv_title"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
-        </com.minyou.manba.ui.ActionTitleView>
-
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:gravity="center"-->
-            <!--android:padding="@dimen/common_to_side"-->
-            <!--android:text="@string/regist_welcome"-->
-            <!--android:textColor="@color/colorCommon"-->
-            <!--android:textSize="@dimen/large_textsize"/>-->
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingRight="@dimen/regist_padding_to_side">
+            android:layout_height="match_parent"
+            android:background="@android:color/background_light"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/iv_regist"
-                android:layout_width="wrap_content"
+            <com.minyou.manba.ui.ActionTitleView
+                android:id="@+id/atv_title"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/display_password"
-                android:src="@drawable/register_home_pre"
-                android:visibility="gone" />
+                app:titleText="@string/regist"
+                app:borderLine="true"
+                app:backIcon="true"/>
 
-            <EditText
-                android:id="@+id/et_nicheng"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/display_password"
-                android:layout_marginRight="@dimen/regist_padding_to_side"
-                android:layout_marginTop="@dimen/common_to_side"
-                android:layout_weight="1"
-                android:hint="@string/regist_nicheng" />
-
-            <EditText
-                android:id="@+id/et_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/display_password"
-                android:layout_marginRight="@dimen/regist_padding_to_side"
-                android:layout_marginTop="@dimen/common_to_side"
-                android:layout_weight="1"
-                android:hint="@string/regist_phone"
-                android:inputType="number" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/display_password"
-                android:layout_marginRight="@dimen/regist_padding_to_side"
-                android:layout_marginTop="@dimen/common_to_side"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:paddingRight="@dimen/regist_padding_to_side">
+
+                <ImageView
+                    android:id="@+id/iv_regist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/display_password"
+                    android:src="@drawable/register_home_pre"
+                    android:visibility="gone" />
 
                 <EditText
-                    android:id="@+id/et_sms"
+                    android:id="@+id/et_nicheng"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-
+                    android:layout_marginLeft="@dimen/display_password"
+                    android:layout_marginRight="@dimen/common_to_side"
+                    android:layout_marginTop="@dimen/regist_padding_to_side"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:background="@drawable/et_line_bg_style"
+                    android:textCursorDrawable="@drawable/et_cursor_color_drawable"
                     android:layout_weight="1"
-                    android:hint="@string/regist_yanzhengma" />
+                    android:hint="@string/regist_nicheng" />
+
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/display_password"
+                    android:layout_marginRight="@dimen/common_to_side"
+                    android:layout_marginTop="@dimen/regist_padding_to_side"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:background="@drawable/et_line_bg_style"
+                    android:textCursorDrawable="@drawable/et_cursor_color_drawable"
+                    android:layout_weight="1"
+                    android:hint="@string/regist_phone"
+                    android:inputType="number" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/display_password"
+                    android:layout_marginRight="@dimen/common_to_side"
+                    android:layout_marginTop="@dimen/regist_padding_to_side"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/et_sms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:background="@drawable/et_line_bg_style"
+                        android:textCursorDrawable="@drawable/et_cursor_color_drawable"
+                        android:layout_weight="1"
+                        android:hint="@string/regist_yanzhengma" />
+
+                    <TextView
+                        android:id="@+id/tv_send_sms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_borderline_bluefull"
+                        android:gravity="center"
+                        android:text="@string/regist_getyanzhengma"
+                        android:textColor="@android:color/white" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/common_to_side"
+                    android:layout_marginTop="@dimen/regist_padding_to_side"
+                    android:gravity="center_vertical">
+
+                    <EditText
+                        android:id="@+id/et_mima"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/login_num_side"
+                        android:layout_marginRight="@dimen/login_num_side"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:background="@drawable/et_line_bg_style"
+                        android:textCursorDrawable="@drawable/et_cursor_color_drawable"
+                        android:hint="@string/regist_mima"
+                        android:inputType="textPassword" />
+
+                    <CheckBox
+                        android:id="@+id/cb_display_pwd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:button="@drawable/login_icon_checked"
+                        android:clickable="true"
+                        android:checked="false" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/common_to_top"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_sex_man"
+                    android:layout_width="@dimen/regist_sex_weight"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/select_side_line"
+                    android:button="@null"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/select_regist_man"
+                    android:drawablePadding="@dimen/regist_text_to_pic"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/regist_padding_to_side"
+                    android:paddingRight="@dimen/regist_padding_to_side"
+                    android:text="@string/regist_man"
+                    android:textColor="@color/bottom_text_color" />
+
+                <RadioButton
+                    android:id="@+id/rb_sex_women"
+                    android:layout_width="@dimen/regist_sex_weight"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/select_regist_sex_woman"
+                    android:button="@null"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/select_regist_woman"
+                    android:drawablePadding="@dimen/common_to_side"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/regist_padding_to_side"
+                    android:paddingRight="@dimen/regist_padding_to_side"
+                    android:text="@string/regist_woman"
+                    android:textColor="@color/bottom_text_color_women" />
+
+            </RadioGroup>
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/display_password"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="#2894FF" />
 
                 <TextView
-                    android:id="@+id/tv_send_sms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_borderline_bluefull"
-                    android:gravity="center"
-                    android:text="@string/regist_getyanzhengma"
-                    android:textColor="@android:color/white" />
+                    android:layout_marginLeft="@dimen/common_text_side"
+                    android:text="@string/regist_lingyu" />
             </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/regist_padding_to_side"
-                android:layout_marginTop="@dimen/common_to_top"
-                android:gravity="center_vertical">
-
-                <EditText
-                    android:id="@+id/et_mima"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/login_num_side"
-                    android:layout_marginRight="@dimen/login_num_side"
-                    android:hint="@string/regist_mima"
-                    android:inputType="textPassword" />
+                android:layout_marginTop="@dimen/login_num_side">
 
                 <CheckBox
-                    android:id="@+id/cb_display_pwd"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/cb_dongman"
+                    android:layout_width="@dimen/regist_lingyu_weight"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/display_password"
+                    android:background="@drawable/select_side_line"
+                    android:button="@null"
+                    android:clickable="true"
+                    android:drawablePadding="@dimen/regist_text_to_pic"
+                    android:drawableStart="@drawable/select_regist_dongman"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/regist_padding_to_side"
+                    android:paddingRight="@dimen/regist_padding_to_side"
+                    android:text="@string/regist_dongman"
+                    android:textColor="@color/bottom_text_color" />
+
+                <CheckBox
+                    android:id="@+id/cb_manhua"
+                    android:layout_width="@dimen/regist_lingyu_weight"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/display_password"
+                    android:background="@drawable/select_side_line"
+                    android:button="@null"
+                    android:checked="true"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/select_regist_manhua"
+                    android:drawablePadding="@dimen/regist_text_to_pic"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/regist_padding_to_side"
+                    android:paddingRight="@dimen/regist_padding_to_side"
+                    android:text="@string/regist_manhua"
+                    android:textColor="@color/bottom_text_color"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignStart="@+id/cb_xiaoshuo" />
+
+                <CheckBox
+                    android:id="@+id/cb_youxi"
+                    android:layout_width="@dimen/regist_lingyu_weight"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/cb_dongman"
+                    android:layout_marginLeft="@dimen/display_password"
+                    android:layout_marginTop="@dimen/login_num_side"
+                    android:background="@drawable/select_side_line"
+                    android:button="@null"
+                    android:clickable="true"
+                    android:drawablePadding="@dimen/regist_text_to_pic"
+                    android:drawableStart="@drawable/select_regist_youxi"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/regist_padding_to_side"
+                    android:paddingRight="@dimen/regist_padding_to_side"
+                    android:text="@string/regist_youxi"
+                    android:textColor="@color/bottom_text_color" />
+
+                <CheckBox
+                    android:id="@+id/cb_xiaoshuo"
+                    android:layout_width="@dimen/regist_lingyu_weight"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    android:button="@drawable/login_icon_checked"
-                    android:checked="false" />
+                    android:layout_below="@id/cb_manhua"
+                    android:layout_marginRight="@dimen/display_password"
+                    android:layout_marginTop="@dimen/login_num_side"
+                    android:background="@drawable/select_side_line"
+                    android:button="@null"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/select_regist_xiaoshuo"
+                    android:drawablePadding="@dimen/regist_text_to_pic"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/regist_padding_to_side"
+                    android:paddingRight="@dimen/regist_padding_to_side"
+                    android:text="@string/regist_xiaoshuo"
+                    android:textColor="@color/bottom_text_color" />
 
+                <CheckBox
+                    android:id="@+id/cb_cosplay"
+                    android:layout_width="@dimen/regist_lingyu_weight"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/cb_youxi"
+                    android:layout_marginLeft="@dimen/display_password"
+                    android:layout_marginTop="@dimen/login_num_side"
+                    android:background="@drawable/select_side_line"
+                    android:button="@null"
+                    android:clickable="true"
+                    android:drawablePadding="@dimen/regist_text_to_pic"
+                    android:drawableStart="@drawable/select_regist_cosplay"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/regist_padding_to_side"
+                    android:paddingRight="@dimen/regist_padding_to_side"
+                    android:text="@string/regist_cosplay"
+                    android:textColor="@color/bottom_text_color" />
+
+                <CheckBox
+                    android:id="@+id/cb_tongren"
+                    android:layout_width="@dimen/regist_lingyu_weight"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/cb_xiaoshuo"
+                    android:layout_marginRight="@dimen/display_password"
+                    android:layout_marginTop="@dimen/login_num_side"
+                    android:background="@drawable/select_side_line"
+                    android:button="@null"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/select_regist_tongren"
+                    android:drawablePadding="@dimen/regist_text_to_pic"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/regist_padding_to_side"
+                    android:paddingRight="@dimen/regist_padding_to_side"
+                    android:text="@string/regist_tongren"
+                    android:textColor="@color/bottom_text_color" />
             </RelativeLayout>
 
-            <!--<EditText-->
-            <!--android:id="@+id/et_mima"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:layout_marginTop="@dimen/common_to_side"-->
-            <!--android:layout_marginLeft="@dimen/display_password"-->
-            <!--android:layout_marginRight="@dimen/regist_padding_to_side"-->
-            <!--android:layout_weight="1"-->
-            <!--android:hint="@string/regist_mima" />-->
+
         </LinearLayout>
 
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_margin="@dimen/common_to_top"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/rb_sex_man"
-                android:layout_width="@dimen/regist_sex_weight"
-                android:layout_height="wrap_content"
-                android:button="@null"
-                android:drawableLeft="@drawable/select_regist_man"
-                android:background="@drawable/select_side_line"
-                android:paddingLeft="@dimen/regist_padding_to_side"
-                android:paddingRight="@dimen/regist_padding_to_side"
-                android:drawablePadding="@dimen/regist_text_to_pic"
-                android:gravity="center"
-                android:text="@string/regist_man"
-                android:textColor="@color/bottom_text_color"/>
-
-            <RadioButton
-                android:id="@+id/rb_sex_women"
-                android:layout_width="@dimen/regist_sex_weight"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:button="@null"
-                android:drawablePadding="@dimen/common_to_side"
-                android:drawableLeft="@drawable/select_regist_woman"
-                android:background="@drawable/select_regist_sex_woman"
-                android:paddingLeft="@dimen/regist_padding_to_side"
-                android:paddingRight="@dimen/regist_padding_to_side"
-                android:gravity="center"
-                android:text="@string/regist_woman"
-                android:textColor="@color/bottom_text_color_women"/>
-
-        </RadioGroup>
-
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_regist"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/login_num_side"
             android:layout_marginLeft="@dimen/display_password"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal" >
+            android:layout_marginRight="@dimen/display_password"
+            android:background="@drawable/shape_borderline_bluefull"
+            android:gravity="center"
+            android:text="@string/regist_finish"
+            android:textColor="@android:color/white" />
 
-            <ImageView
-                android:layout_width="2dp"
-                android:layout_height="match_parent"
-                android:background="#2894FF" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/common_text_side"
-                android:text="@string/regist_lingyu" />
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/login_num_side" >
-
-            <CheckBox
-                android:id="@+id/cb_dongman"
-                android:layout_width="@dimen/regist_lingyu_weight"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="@dimen/display_password"
-                android:background="@drawable/select_side_line"
-                android:button="@null"
-                android:paddingLeft="@dimen/regist_padding_to_side"
-                android:paddingRight="@dimen/regist_padding_to_side"
-                android:drawableStart="@drawable/select_regist_dongman"
-                android:drawablePadding="@dimen/regist_text_to_pic"
-                android:gravity="center"
-                android:textColor="@color/bottom_text_color"
-                android:text="@string/regist_dongman" />
-
-            <CheckBox
-                android:id="@+id/cb_manhua"
-                android:layout_width="@dimen/regist_lingyu_weight"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/display_password"
-                android:background="@drawable/select_side_line"
-                android:button="@null"
-                android:paddingLeft="@dimen/regist_padding_to_side"
-                android:paddingRight="@dimen/regist_padding_to_side"
-                android:drawablePadding="@dimen/regist_text_to_pic"
-                android:drawableLeft="@drawable/select_regist_manhua"
-                android:gravity="center"
-                android:checked="true"
-                android:textColor="@color/bottom_text_color"
-                android:text="@string/regist_manhua" />
-            
-            <CheckBox
-                android:id="@+id/cb_youxi"
-                android:layout_width="@dimen/regist_lingyu_weight"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@id/cb_dongman"
-                android:layout_marginLeft="@dimen/display_password"
-                android:layout_marginTop="@dimen/login_num_side"
-                android:background="@drawable/select_side_line"
-                android:button="@null"
-                android:paddingLeft="@dimen/regist_padding_to_side"
-                android:paddingRight="@dimen/regist_padding_to_side"
-                android:drawableStart="@drawable/select_regist_youxi"
-                android:drawablePadding="@dimen/regist_text_to_pic"
-                android:gravity="center"
-                android:textColor="@color/bottom_text_color"
-                android:text="@string/regist_youxi" />
-
-            <CheckBox
-                android:id="@+id/cb_xiaoshuo"
-                android:layout_width="@dimen/regist_lingyu_weight"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/cb_manhua"
-                android:layout_marginRight="@dimen/display_password"
-                android:layout_marginTop="@dimen/login_num_side"
-                android:background="@drawable/select_side_line"
-                android:button="@null"
-                android:paddingLeft="@dimen/regist_padding_to_side"
-                android:paddingRight="@dimen/regist_padding_to_side"
-                android:drawablePadding="@dimen/regist_text_to_pic"
-                android:drawableLeft="@drawable/select_regist_xiaoshuo"
-                android:gravity="center"
-                android:textColor="@color/bottom_text_color"
-                android:text="@string/regist_xiaoshuo" />
-            
-            <CheckBox
-                android:id="@+id/cb_cosplay"
-                android:layout_width="@dimen/regist_lingyu_weight"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@id/cb_youxi"
-                android:layout_marginLeft="@dimen/display_password"
-                android:layout_marginTop="@dimen/login_num_side"
-                android:background="@drawable/select_side_line"
-                android:button="@null"
-                android:paddingLeft="@dimen/regist_padding_to_side"
-                android:paddingRight="@dimen/regist_padding_to_side"
-                android:drawableStart="@drawable/select_regist_cosplay"
-                android:drawablePadding="@dimen/regist_text_to_pic"
-                android:gravity="center"
-                android:textColor="@color/bottom_text_color"
-                android:text="@string/regist_cosplay" />
-
-            <CheckBox
-                android:id="@+id/cb_tongren"
-                android:layout_width="@dimen/regist_lingyu_weight"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/cb_xiaoshuo"
-                android:layout_marginRight="@dimen/display_password"
-                android:layout_marginTop="@dimen/login_num_side"
-                android:background="@drawable/select_side_line"
-                android:button="@null"
-                android:paddingLeft="@dimen/regist_padding_to_side"
-                android:paddingRight="@dimen/regist_padding_to_side"
-                android:drawablePadding="@dimen/regist_text_to_pic"
-                android:drawableLeft="@drawable/select_regist_tongren"
-                android:gravity="center"
-                android:textColor="@color/bottom_text_color"
-                android:text="@string/regist_tongren" />
-        </RelativeLayout>
-
-       
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_regist"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/login_num_side"
-        android:layout_marginLeft="@dimen/display_password"
-        android:layout_marginRight="@dimen/display_password"
-        android:background="@drawable/shape_borderline_bluefull"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:text="@string/regist_finish" />
-
-</RelativeLayout>
+    </RelativeLayout>
+</layout>

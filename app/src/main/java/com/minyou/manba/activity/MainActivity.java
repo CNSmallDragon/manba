@@ -1,12 +1,16 @@
 package com.minyou.manba.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -58,6 +62,7 @@ public class MainActivity extends DataBindingBaseActivity implements OnClickList
     private static final long COUNT_DOWN_INTERVAL = 1000;
 
     private static final long WAIT_HOME = 3000;
+    private CountDownTimer countDownTimer;
 
     private String picUrl;
     private String lastLoginType;
@@ -96,14 +101,63 @@ public class MainActivity extends DataBindingBaseActivity implements OnClickList
                 .load(picUrl)
                 .override(width,height)
                 .into(binding.ivWelcome);
-
+        // 获取所需权限
+        getPermission();
         startCountDown();
+    }
+
+    private void  getPermission(){
+        /**
+         * 第 1 步: 检查是否有相应的权限
+         */
+        boolean isAllGranted = checkPermissionAllGranted(
+                new String[] {
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.ACCESS_NETWORK_STATE,
+                        Manifest.permission.ACCESS_WIFI_STATE
+                }
+        );
+
+        if(isAllGranted){
+            return;
+        }
+
+        /**
+         * 第 2 步: 请求权限
+         */
+        // 一次请求多个权限, 如果其他有权限是已经授予的将会自动忽略掉
+        ActivityCompat.requestPermissions(
+                this,
+                new String[] {
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.ACCESS_NETWORK_STATE,
+                        Manifest.permission.ACCESS_WIFI_STATE
+                },
+                0
+        );
+    }
+
+    private boolean checkPermissionAllGranted(String[] permissions) {
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                // 只要有一个权限没有被授予, 则直接返回 false
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.tv_time:
+                if(null != countDownTimer){
+                    countDownTimer.cancel();
+                }
                 goHome();
                 break;
         }
@@ -211,7 +265,7 @@ public class MainActivity extends DataBindingBaseActivity implements OnClickList
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void startCountDown() {
         // 开始倒计时
-        new CountDownTimer(MILLIS_IN_FUTURE, COUNT_DOWN_INTERVAL) {
+        countDownTimer = new CountDownTimer(MILLIS_IN_FUTURE, COUNT_DOWN_INTERVAL) {
             @SuppressLint("StringFormatMatches")
             @Override
             public void onTick(long millisUntilFinished) {

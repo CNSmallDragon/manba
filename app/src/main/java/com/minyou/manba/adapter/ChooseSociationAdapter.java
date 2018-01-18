@@ -2,7 +2,6 @@ package com.minyou.manba.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.minyou.manba.R;
 import com.minyou.manba.network.resultModel.SociationResultModel;
+import com.minyou.manba.ui.view.GlideCircleTransform;
 
 import java.util.List;
 
@@ -62,9 +62,7 @@ public class ChooseSociationAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         if(holder instanceof ChooseSociationHolder){
             final ChooseSociationHolder mHolder1 = (ChooseSociationHolder) holder;
 
-            if(!TextUtils.isEmpty(list.get(position).getGuildPhoto())){
-                glideRequest.load(list.get(position).getGuildPhoto()).into(mHolder1.iv_gonghui_pic);
-            }
+            glideRequest.load(list.get(position).getGuildPhoto()).transform(new GlideCircleTransform(context)).error(R.drawable.login_icon_qq).into(mHolder1.iv_gonghui_pic);
             mHolder1.tv_gonghui_name.setText(list.get(position).getGuildName());
 
             mHolder1.cb_check.setChecked(list.get(position).isChecked());

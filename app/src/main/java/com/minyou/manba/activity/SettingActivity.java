@@ -5,10 +5,12 @@ import android.databinding.DataBindingUtil;
 import android.view.View;
 
 import com.minyou.manba.Appconstant;
+import com.minyou.manba.MyApplication;
 import com.minyou.manba.R;
 import com.minyou.manba.databinding.ActivitySettingBinding;
 import com.minyou.manba.manager.DataCleanManager;
 import com.minyou.manba.ui.dialog.PointInfoDialog;
+import com.minyou.manba.util.CommonUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
 /**
@@ -28,6 +30,9 @@ public class SettingActivity extends DataBindingBaseActivity implements View.OnC
     private void initView() {
         // 显示缓存
         binding.tvCacheSize.setText(DataCleanManager.getTotalCacheSize(this));
+        // 显示版本号
+        String version = CommonUtil.getVersionName(MyApplication.getInstance());
+        binding.settingVersion.setText(String.format(getResources().getString(R.string.setting_app_version),version));
     }
 
     private void initListener() {

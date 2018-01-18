@@ -1,16 +1,11 @@
 package com.minyou.manba.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.lzy.imagepicker.ImagePicker;
@@ -21,12 +16,12 @@ import com.minyou.manba.Appconstant;
 import com.minyou.manba.R;
 import com.minyou.manba.adapter.ChooseSociationAdapter;
 import com.minyou.manba.adapter.ImagePickerAdapter;
-import com.minyou.manba.ui.dialog.SelectDialog;
+import com.minyou.manba.databinding.ActivityFabudongtaiBinding;
 import com.minyou.manba.network.okhttputils.ManBaRequestManager;
 import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
 import com.minyou.manba.network.okhttputils.ReqCallBack;
 import com.minyou.manba.network.resultModel.SociationResultModel;
-import com.minyou.manba.ui.ActionTitleView;
+import com.minyou.manba.ui.dialog.SelectDialog;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
@@ -35,29 +30,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * Created by luchunhao on 2017/12/19.
  */
-public class FaTieActivity extends AppCompatActivity implements ImagePickerAdapter.OnRecyclerViewItemClickListener {
+public class FaTieActivity extends DataBindingBaseActivity implements ImagePickerAdapter.OnRecyclerViewItemClickListener {
+
+    private ActivityFabudongtaiBinding binding;
+
     public static final int IMAGE_ITEM_ADD = -1;
     public static final int REQUEST_CODE_SELECT = 100;
     public static final int REQUEST_CODE_PREVIEW = 101;
     private static final String TAG = "FaTieActivity";
-    @BindView(R.id.act_title)
-    ActionTitleView actTitle;
-    @BindView(R.id.et_dongtai_title)
-    EditText etDongtaiTitle;
-    @BindView(R.id.et_dongtai_content)
-    EditText etDongtaiContent;
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
-    @BindView(R.id.activity_main)
-    LinearLayout activityMain;
-    @BindView(R.id.recyclerview_choose_gonghui)
-    RecyclerView recyclerviewChooseGonghui;
+
 
     private ImagePickerAdapter adapter;
     private ArrayList<ImageItem> selImageList; //当前选择的所有图片
@@ -67,14 +51,10 @@ public class FaTieActivity extends AppCompatActivity implements ImagePickerAdapt
     private List<SociationResultModel.ResultBean.SociationResultBean> list = new ArrayList<SociationResultModel.ResultBean.SociationResultBean>();
     private String contentStr;
     private int checkedId;
-    private ProgressDialog progressDialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fabudongtai);
-        ButterKnife.bind(this);
-
+    public void setContentViewAndBindData() {
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_fabudongtai);
         initWidget();
         initData();
     }
@@ -98,57 +78,17 @@ public class FaTieActivity extends AppCompatActivity implements ImagePickerAdapt
         });
     }
 
-//    private void initData2(){
-//        ShopCarRequestModel requestModel = new ShopCarRequestModel();
-//        requestModel.setCultureID(CultureID);
-//        requestModel.setCurrencyName(CurrencyName);
-//        subscription = RxHttpUtils.createHttpRequest(RetrofitServiceGenerator.createService(TbDressDataApiService.class, new AESGsonResponseBodyConverter.JsonBridge() {
-//            @Override
-//            public void onJson(String json) {
-//                LogUtil.d("json", json);
-//            }
-//        })
-//                .http_getCarBaglist(RequestBodyUtils.getRequestBody(requestModel)))
-//                .subscribe(new CallBackSubscriber<BaseResultModel>(listener) {
-//                               @Override
-//                               public void _onStart() {
-//
-//                               }
-//
-//                               @Override
-//                               public void _onNext(BaseResultModel baseResultModel) {
-//                               }
-//
-//                               @Override
-//                               public void _onError(String msg) {
-//
-//                               }
-//
-//                               @Override
-//                               public void _onCompleted() {
-//
-//                               }
-//                           }
-//                );
-//    }
-
-
     private void initWidget() {
         // 初始化头部信息
-        actTitle.setTitle(getResources().getString(R.string.fabu_dongtai));
-        actTitle.setRightToDo(getResources().getString(R.string.fabu_publish), new View.OnClickListener() {
+        binding.actTitle.setRightToDo(getResources().getString(R.string.fabu_publish), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // 发布帖子
-                for (ImageItem item : selImageList) {
-                    LogUtil.d(TAG, "添加图片返回---" + new Gson().toJson(item));
-                    LogUtil.d(TAG, "添加图片返回URL---" + item.path);
-                }
                 if(null != chooseSociationAdapter){
                     checkedId = chooseSociationAdapter.getCheckedId();
                 }
                 LogUtil.d(TAG, "选中的公会id---" + checkedId);
-                contentStr = etDongtaiContent.getText().toString().trim();
+                contentStr = binding.etDongtaiContent.getText().toString().trim();
                 LogUtil.d(TAG, "发布内容---" + contentStr);
                 http_postSendTieZi(contentStr,checkedId,selImageList);
             }
@@ -158,9 +98,9 @@ public class FaTieActivity extends AppCompatActivity implements ImagePickerAdapt
         adapter = new ImagePickerAdapter(this, selImageList, maxImgCount);
         adapter.setOnItemClickListener(this);
 
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
+        binding.recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setAdapter(adapter);
 
         LinearLayoutManager manager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false){
             @Override
@@ -168,9 +108,9 @@ public class FaTieActivity extends AppCompatActivity implements ImagePickerAdapt
                 return false;
             }
         };
-        chooseSociationAdapter = new ChooseSociationAdapter(this,list,recyclerviewChooseGonghui);
-        recyclerviewChooseGonghui.setLayoutManager(manager);
-        recyclerviewChooseGonghui.setAdapter(chooseSociationAdapter);
+        chooseSociationAdapter = new ChooseSociationAdapter(this,list,binding.recyclerviewChooseGonghui);
+        binding.recyclerviewChooseGonghui.setLayoutManager(manager);
+        binding.recyclerviewChooseGonghui.setAdapter(chooseSociationAdapter);
 
 
     }
@@ -305,20 +245,4 @@ public class FaTieActivity extends AppCompatActivity implements ImagePickerAdapt
     }
 
 
-    protected void loading() {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        }
-        progressDialog.setMessage(getString(R.string.loading_up));
-        progressDialog.setCancelable(true);
-        progressDialog.show();
-    }
-
-    public void cancelLoading() {
-        if (progressDialog != null)
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-    }
 }

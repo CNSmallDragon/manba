@@ -1,6 +1,7 @@
 package com.minyou.manba.activity;
 
 import android.databinding.DataBindingUtil;
+import android.os.Bundle;
 
 import com.minyou.manba.R;
 import com.minyou.manba.databinding.ActivityShoucangBinding;
@@ -19,7 +20,10 @@ public class ShouCangActivity extends DataBindingBaseActivity {
     public void setContentViewAndBindData() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_shoucang);
         fragment = new FavoriteFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("showBackIcon",true);
         //binding.favoriteContent
+        fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.favorite_content,fragment).commit();
     }
 

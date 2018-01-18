@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -41,11 +40,16 @@ public class FavoriteFragment extends DataBindingBaseFragment {
 	private int pageSize = 10;
 	private int pageNo = 1;
 
+	private boolean isShowBackIcon = false;
+
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_street, container, false);
-
+		Bundle bundle = getArguments();
+		if(null != bundle){
+			isShowBackIcon = bundle.getBoolean("showBackIcon");
+		}
 		return binding.getRoot();
 	}
 
@@ -56,6 +60,9 @@ public class FavoriteFragment extends DataBindingBaseFragment {
 	}
 
 	private void initView() {
+		if(isShowBackIcon){
+			binding.streetTitle.showBackIcon();
+		}
 		zoneList = new ArrayList<ZoneListResultModel.ResultBean.ZoneListBean>();
 		getData();
 
@@ -176,6 +183,9 @@ public class FavoriteFragment extends DataBindingBaseFragment {
 			}
 		});
 
+	}
 
+	public void showBackIcon(){
+		binding.streetTitle.showBackIcon();
 	}
 }
