@@ -107,7 +107,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/login_num_side"
             android:ellipsize="end"
-            android:maxLines="2"
             android:text="@string/test_more" />
 
         <com.minyou.manba.ui.view.MultiImageView

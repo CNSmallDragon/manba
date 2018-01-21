@@ -4,8 +4,8 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -226,28 +226,13 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
         binding.tvComment.setOnClickListener(this);
         binding.tvSend.setOnClickListener(this);
         binding.includeDongtaiDetail.llZanList.setOnClickListener(this);        // 查看点赞列表
-        binding.recyclerComment.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            int lastVisibleItem ;
+        binding.scrollviewDetail.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                binding.llComment.setVisibility(View.GONE);
-                binding.rlMenu.setVisibility(View.VISIBLE);
-                CommonUtil.closeKeybord(binding.etCommentText, binding.etCommentText.getContext());
-                //判断RecyclerView的状态 是空闲时，同时，是最后一个可见的ITEM时才加载
-                if(newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem +1 == mAdapter.getItemCount()){
-                    // TODO
-                    LogUtil.d(TAG,"loadmore-------------------");
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                    LogUtil.i(TAG, "到底了，开始加载更多...");
                     loadMoreComment();
-                    mAdapter.notifyDataSetChanged();
                 }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                lastVisibleItem = manager.findLastVisibleItemPosition();
             }
         });
 
@@ -328,7 +313,7 @@ public class DongTaiDetailActivity extends DataBindingBaseActivity implements Vi
             @Override
             public void onReqSuccess(String result) {
                 CommentListResultModel commentListResultModel = new Gson().fromJson(result, CommentListResultModel.class);
-                if (commentListResultModel.isSuccess() && commentListResultModel.getResult().getResultList().size() > 0) {
+                if (commentListResultModel.isSuccess() && null != commentListResultModel.getResult().getResultList()) {
                     commentItemBeanList.addAll(commentListResultModel.getResult().getResultList());
                     mAdapter.notifyDataSetChanged();
                 }

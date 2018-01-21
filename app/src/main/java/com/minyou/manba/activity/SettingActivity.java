@@ -40,6 +40,7 @@ public class SettingActivity extends DataBindingBaseActivity implements View.OnC
         binding.btExitLogin.setOnClickListener(this);
         binding.llHuancunSetting.setOnClickListener(this);
         binding.llQaSetting.setOnClickListener(this);
+        binding.llIdeaFankui.setOnClickListener(this);
     }
 
     @Override
@@ -93,6 +94,9 @@ public class SettingActivity extends DataBindingBaseActivity implements View.OnC
             case R.id.ll_qa_setting:
                 break;
             case R.id.ll_idea_fankui:
+                // 意见反馈
+                intent = new Intent(SettingActivity.this,FeedbackActivity.class);
+                startActivity(intent);
                 break;
             case R.id.ll_update_version:
                 break;

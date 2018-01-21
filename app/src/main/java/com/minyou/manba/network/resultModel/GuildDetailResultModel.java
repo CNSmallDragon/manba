@@ -48,6 +48,15 @@ public class GuildDetailResultModel extends BaseResultModel {
         private int createUser;
         private int currentNum;
         private boolean guildMember;
+        private int zoneNum;
+
+        public int getZoneNum() {
+            return zoneNum;
+        }
+
+        public void setZoneNum(int zoneNum) {
+            this.zoneNum = zoneNum;
+        }
 
         public int getGuildId() {
             return guildId;

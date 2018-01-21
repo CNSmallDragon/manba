@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.minyou.manba.R;
@@ -18,6 +20,7 @@ public class ActionTitleView extends LinearLayout implements OnClickListener {
 
 	private static final String TAG = "ActionTitleView";
 	private LinearLayout view;
+	private RelativeLayout rootView;
 	private ImageView iv_back;
 	private View viewLine;
 	private Context context;
@@ -49,6 +52,7 @@ public class ActionTitleView extends LinearLayout implements OnClickListener {
 	}
 
 	private void init() {
+		rootView = (RelativeLayout) view.findViewById(R.id.act_title_bg);
 		tv_title = (TextView) view.findViewById(R.id.tv_title);
 		viewLine = view.findViewById(R.id.titlebar_line);
 		iv_back = (ImageView) view.findViewById(R.id.iv_back);
@@ -72,6 +76,14 @@ public class ActionTitleView extends LinearLayout implements OnClickListener {
 			iv_back.setVisibility(View.GONE);
 		}
 
+	}
+
+	@Override
+	public void setBackground(Drawable background) {
+		if(null != rootView){
+			rootView.setBackground(background);
+		}
+		super.setBackground(background);
 	}
 
 	/**

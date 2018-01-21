@@ -93,7 +93,7 @@ public class PersonContentActivity extends DataBindingBaseActivity implements Vi
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, statusBarHeight);
         params.gravity = Gravity.TOP;
         statusBarView.setLayoutParams(params);
-
+        binding.atvTitle.setBackground(null);
         initListener();
 
         binding.personScrollView.setOnScrollListener(new HeadZoomScrollView.OnScrollListener() {
@@ -129,6 +129,10 @@ public class PersonContentActivity extends DataBindingBaseActivity implements Vi
         binding.tvPersonPics.setOnClickListener(this);
         binding.tvRecentDongtai.setOnClickListener(this);
         binding.tvShowAll.setOnClickListener(this);
+        binding.tvFensi.setOnClickListener(this);
+        binding.tvFensiCount.setOnClickListener(this);
+        binding.tvGuanzhu.setOnClickListener(this);
+        binding.tvGuanzhuCount.setOnClickListener(this);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -228,10 +232,12 @@ public class PersonContentActivity extends DataBindingBaseActivity implements Vi
 
         // LinearLayout加载最近动态
         binding.llRecentDongtai.removeAllViews();
-        for(ZoneListResultModel.ResultBean.ZoneListBean bean : resultBean.getZoneList()){
-            ItemHomeNewBinding itemBinding = DataBindingUtil.inflate(LayoutInflater.from(this),R.layout.item_home_new,binding.llRecentDongtai,false);
-            itemBinding.setZoneBean(bean);
-            binding.llRecentDongtai.addView(itemBinding.getRoot());
+        if(null != resultBean.getZoneList()){
+            for(ZoneListResultModel.ResultBean.ZoneListBean bean : resultBean.getZoneList()){
+                ItemHomeNewBinding itemBinding = DataBindingUtil.inflate(LayoutInflater.from(this),R.layout.item_home_new,binding.llRecentDongtai,false);
+                itemBinding.setZoneBean(bean);
+                binding.llRecentDongtai.addView(itemBinding.getRoot());
+            }
         }
 
     }
@@ -281,6 +287,18 @@ public class PersonContentActivity extends DataBindingBaseActivity implements Vi
                     // 自己的动态
                     intent.putExtra("userId",String.valueOf(personId));
                 }
+                startActivity(intent);
+                break;
+            case R.id.tv_fensi:
+            case R.id.tv_fensi_count:
+                intent = new Intent(PersonContentActivity.this, FansActivity.class);
+                intent.putExtra("personId",String.valueOf(personId));
+                startActivity(intent);
+                break;
+            case R.id.tv_guanzhu:
+            case R.id.tv_guanzhu_count:
+                intent = new Intent(PersonContentActivity.this, FollowListActivity.class);
+                intent.putExtra("personId",String.valueOf(personId));
                 startActivity(intent);
                 break;
         }

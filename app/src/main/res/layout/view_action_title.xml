@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/act_title_bg"
     android:layout_width="fill_parent"
     android:layout_height="@dimen/common_title_height"
+    android:background="@android:color/background_light"
     android:gravity="center_vertical" >
 
     <ImageView
@@ -35,7 +37,7 @@
     <View
         android:id="@+id/titlebar_line"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/line_height"
         android:layout_alignParentBottom="true"
         android:visibility="visible"
         android:background="@android:color/darker_gray"/>

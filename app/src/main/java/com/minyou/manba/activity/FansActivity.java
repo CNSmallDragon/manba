@@ -5,6 +5,7 @@ import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,11 +44,17 @@ public class FansActivity extends DataBindingBaseActivity {
 
     private int pageSize = 30;
     private int pageNo = 1;
+    private String userId = UserManager.getUserId();
 
     @Override
     public void setContentViewAndBindData() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_fans_list);
-
+        if(null != getIntent()){
+            userId = getIntent().getStringExtra("personId");
+            if(TextUtils.isEmpty(userId)){
+                userId = UserManager.getUserId();
+            }
+        }
         initView();
         getData();
     }
@@ -87,7 +94,7 @@ public class FansActivity extends DataBindingBaseActivity {
         HashMap<String,String> params = new HashMap<>();
         params.put("pageSize",String.valueOf(pageSize));
         params.put("pageNo",String.valueOf(pageNo));
-        params.put("userId", UserManager.getUserId());
+        params.put("userId", userId);
         ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_POST_ZONE_FANSLIST, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {
@@ -112,7 +119,7 @@ public class FansActivity extends DataBindingBaseActivity {
         HashMap<String,String> params = new HashMap<>();
         params.put("pageSize",String.valueOf(pageSize));
         params.put("pageNo",String.valueOf(pageNo));
-        params.put("userId", UserManager.getUserId());
+        params.put("userId", userId);
         ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_POST_ZONE_FANSLIST, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
             @Override
             public void onReqSuccess(String result) {

@@ -21,6 +21,10 @@ import com.minyou.manba.databinding.ActivityLoginBinding;
 import com.minyou.manba.event.EventInfo;
 import com.minyou.manba.model.LoginActivityModel;
 import com.minyou.manba.network.api.ManBaApi;
+import com.minyou.manba.network.okhttputils.ManBaRequestManager;
+import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
+import com.minyou.manba.network.okhttputils.ReqCallBack;
+import com.minyou.manba.network.resultModel.BaseResultModel;
 import com.minyou.manba.network.resultModel.QQResponseModel;
 import com.minyou.manba.network.resultModel.UserLoginResultModel;
 import com.minyou.manba.util.LogUtil;
@@ -42,6 +46,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -102,7 +107,7 @@ public class LoginActivity extends DataBindingBaseActivity implements View.OnCli
     @Override
     public void setContentViewAndBindData() {
         EventBus.getDefault().register(this);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_login);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         initListener();
     }
 
@@ -162,7 +167,7 @@ public class LoginActivity extends DataBindingBaseActivity implements View.OnCli
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, "1");
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_PHONE, inputNumber);
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_PWD, inputPWD);
-                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_INFO,requestStr);
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_INFO, requestStr);
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, userLoginModel.getResult().getUserId() + "");
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getResult().getToken());
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getResult().getRefreshToken());
@@ -199,11 +204,11 @@ public class LoginActivity extends DataBindingBaseActivity implements View.OnCli
     private boolean checkPassWord() {
         inputPWD = binding.loginPwd.getText().toString();
         if (TextUtils.isEmpty(inputPWD)) {
-            Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.input_password_empty), Toast.LENGTH_SHORT).show();
             return false;
         }
         if (inputPWD.length() < 6 || inputPWD.length() > 16) {
-            Toast.makeText(this, "您输入的密码不符合规范，请重新输入!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.input_password_error), Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -232,11 +237,12 @@ public class LoginActivity extends DataBindingBaseActivity implements View.OnCli
 
     /**
      * 微信登陆后返回，关闭当前activity
+     *
      * @param info
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onWXReturn(EventInfo info) {
-        if(null != info && info.getType() == EventInfo.LOGIN_WEIXIN){
+        if (null != info && info.getType() == EventInfo.LOGIN_WEIXIN) {
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             startActivity(intent);
             finish();
@@ -263,9 +269,33 @@ public class LoginActivity extends DataBindingBaseActivity implements View.OnCli
                 // 忘记密码
                 if (checkLoginNum()) {
                     binding.tvForgetPwd.setTextColor(Color.BLUE);
-                    intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
-                    intent.putExtra(NUMBER, inputNumber);
-                    startActivity(intent);
+                    // 调用登陆接口确认用户是否存在
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("username", inputNumber);
+                    params.put("password", Appconstant.User.DEFAULT_PASSWORD);
+                    ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_POST_LOGIN, ManBaRequestManager.TYPE_POST_JSON, params, new ReqCallBack<String>() {
+                        @Override
+                        public void onReqSuccess(String result) {
+                            BaseResultModel resultModel = new Gson().fromJson(result, BaseResultModel.class);
+                            if (!resultModel.isSuccess()) {
+                                if (resultModel.getCode().equals("14")) {
+                                    // 用户不存在
+                                    Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_user_not_exist), Toast.LENGTH_SHORT).show();
+                                } else if (resultModel.getCode().equals("15")) {
+                                    // 密码错误，前往忘记密码界面
+                                    Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
+                                    intent.putExtra(NUMBER, inputNumber);
+                                    startActivity(intent);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onReqFailed(String errorMsg) {
+
+                        }
+                    });
+
                 }
                 break;
             case R.id.tv_weixin:
@@ -292,8 +322,6 @@ public class LoginActivity extends DataBindingBaseActivity implements View.OnCli
         }
 
     }
-
-
 
 
     class MyIUiListener implements IUiListener {
@@ -368,7 +396,7 @@ public class LoginActivity extends DataBindingBaseActivity implements View.OnCli
                             if (userLoginModel != null && userLoginModel.getCode().equals("0")) { // 成功
                                 SharedPreferencesUtil.getInstance().putSP(Appconstant.LOGIN_LAST_TYPE, "2");
                                 SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, userLoginModel.getResult().getUserId() + "");
-                                SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_INFO,requestStr);
+                                SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_INFO, requestStr);
                                 SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getResult().getToken());
                                 SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getResult().getRefreshToken());
                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);

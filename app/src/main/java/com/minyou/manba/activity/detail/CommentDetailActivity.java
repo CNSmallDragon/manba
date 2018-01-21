@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -118,6 +119,15 @@ public class CommentDetailActivity extends DataBindingBaseActivity implements Vi
             }
         });
 
+        binding.commentScrollview.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                    LogUtil.i(TAG, "到底了，开始加载更多...");
+                    loadMoreComment();
+                }
+            }
+        });
 
         binding.recyclerCommentDetail.addOnScrollListener(new RecyclerView.OnScrollListener() {
             int lastVisibleItem ;
@@ -158,7 +168,7 @@ public class CommentDetailActivity extends DataBindingBaseActivity implements Vi
             public void onReqSuccess(String result) {
                 cancelLoading();
                 ReplyCommentListResultModel replyCommentListResultModel = new Gson().fromJson(result,ReplyCommentListResultModel.class);
-                if(replyCommentListResultModel.isSuccess() && replyCommentListResultModel.getResult().getResultList().size() > 0){
+                if(replyCommentListResultModel.isSuccess() && null != replyCommentListResultModel.getResult().getResultList()){
                     list.addAll(replyCommentListResultModel.getResult().getResultList());
                     mAdapter.notifyDataSetChanged();
                 }

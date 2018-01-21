@@ -36,6 +36,7 @@ public class FavoriteFragment extends DataBindingBaseFragment {
 
 	private MyMvvmAdapter<ZoneListResultModel.ResultBean.ZoneListBean> myMvvmAdapter;
 	private List<ZoneListResultModel.ResultBean.ZoneListBean> zoneList;
+	private View footView;
 
 	private int pageSize = 10;
 	private int pageNo = 1;
@@ -69,7 +70,8 @@ public class FavoriteFragment extends DataBindingBaseFragment {
 		myMvvmAdapter = new MyMvvmAdapter<>(getActivity(), zoneList, R.layout.item_home_new, BR.zoneBean);
 		// 底部刷新控件
 		binding.pcflRefreshFavorite.setHeaderView(new DefalutRefreshView(getActivity()));
-		binding.pcflRefreshFavorite.setFooterView(new DefalutRefreshView(getActivity()));
+		footView = new DefalutRefreshView(getActivity());
+		binding.pcflRefreshFavorite.setFooterView(footView);
 		binding.streetRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		binding.streetRecyclerView.setAdapter(myMvvmAdapter);
 
@@ -93,6 +95,7 @@ public class FavoriteFragment extends DataBindingBaseFragment {
 					zoneList.clear();
 					zoneList.addAll(zoneListResultModel.getResult().getResultList());
 					myMvvmAdapter.notifyDataSetChanged();
+					footView.setVisibility(View.GONE);
 				}else{
 					binding.pcflRefreshFavorite.setVisibility(View.GONE);
 					binding.tvEmptyText.setVisibility(View.VISIBLE);
@@ -125,6 +128,7 @@ public class FavoriteFragment extends DataBindingBaseFragment {
 					myMvvmAdapter.notifyDataSetChanged();
 					//结束后停止刷新
 					binding.pcflRefreshFavorite.refreshComplete();
+					footView.setVisibility(View.GONE);
 				} else {
 					//Toast.makeText(getActivity(), getResources().getString(R.string.no_more_2), Toast.LENGTH_SHORT).show();
 					binding.pcflRefreshFavorite.refreshComplete();

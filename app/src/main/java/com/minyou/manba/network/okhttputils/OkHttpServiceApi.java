@@ -6,8 +6,8 @@ package com.minyou.manba.network.okhttputils;
 public class OkHttpServiceApi {
 
     // 网络请求链接
-    //public static String BASE_URL = "http://www.mymanba.cn/";
-    public static String BASE_URL = "http://pre.mymanba.cn:8081/";
+    //public static String BASE_URL = "http://www.mymanba.cn";
+    public static String BASE_URL = "http://pre.mymanba.cn:8081";
 
     // 登陆
     public static String HTTP_POST_LOGIN = "api/auth/login";

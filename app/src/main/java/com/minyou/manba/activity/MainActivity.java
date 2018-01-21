@@ -24,15 +24,11 @@ import com.minyou.manba.R;
 import com.minyou.manba.databinding.ActivityMainBinding;
 import com.minyou.manba.manager.UserManager;
 import com.minyou.manba.network.api.ManBaApi;
-import com.minyou.manba.network.okhttputils.ManBaRequestManager;
-import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
-import com.minyou.manba.network.okhttputils.ReqCallBack;
 import com.minyou.manba.network.resultModel.UserLoginResultModel;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Random;
 
 import okhttp3.Call;
@@ -180,20 +176,20 @@ public class MainActivity extends DataBindingBaseActivity implements OnClickList
 
     private void autoLogin() {
 
-        HashMap<String,String> params = new HashMap<String,String>();
-
-
-        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_POST_LOGIN, ManBaRequestManager.TYPE_POST_JSON, params, new ReqCallBack<String>() {
-            @Override
-            public void onReqSuccess(String result) {
-
-            }
-
-            @Override
-            public void onReqFailed(String errorMsg) {
-
-            }
-        });
+//        HashMap<String,String> params = new HashMap<String,String>();
+//
+//
+//        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_POST_LOGIN, ManBaRequestManager.TYPE_POST_JSON, params, new ReqCallBack<String>() {
+//            @Override
+//            public void onReqSuccess(String result) {
+//
+//            }
+//
+//            @Override
+//            public void onReqFailed(String errorMsg) {
+//
+//            }
+//        });
 
         OkHttpClient client = new OkHttpClient();
         RequestBody body = null;

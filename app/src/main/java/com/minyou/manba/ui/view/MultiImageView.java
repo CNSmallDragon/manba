@@ -10,9 +10,8 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.minyou.manba.R;
-import com.minyou.manba.model.CustomImageModelLoader;
-import com.minyou.manba.model.CustomImageSizeModelImp;
 import com.minyou.manba.util.CommonUtil;
+import com.minyou.manba.util.GlideUtil;
 
 import java.util.List;
 
@@ -212,15 +211,16 @@ public class MultiImageView extends LinearLayout {
 
 		imageView.setId(url.hashCode());
 		imageView.setOnClickListener(new ImageOnClickListener(position));
-		imageView.setBackgroundColor(getResources().getColor(R.color.grey));
-//		Glide.with(getContext()).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
-		Glide.with(getContext())
-				.using(new CustomImageModelLoader(getContext()))
-				.load(new CustomImageSizeModelImp(url))
-				.skipMemoryCache(true)
-				.diskCacheStrategy(DiskCacheStrategy.NONE)
-				.error(R.drawable.default_w)
-				.into(imageView);
+		if(max_row_count == 1){
+			imageView.setBackgroundColor(getResources().getColor(R.color.grey));
+			String defaultUrl = url + "?imageslim";
+			Glide.with(getContext()).load(defaultUrl)
+					.diskCacheStrategy(DiskCacheStrategy.ALL)
+					.into(imageView);
+		}else{
+			GlideUtil.loadListImage(getContext(),url,imageView);
+		}
+		//Glide.with(getContext()).load(url).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
 		return imageView;
 	}
 

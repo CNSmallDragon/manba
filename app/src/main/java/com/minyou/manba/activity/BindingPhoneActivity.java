@@ -182,6 +182,8 @@ public class BindingPhoneActivity extends DataBindingBaseActivity implements Vie
                     login();
                 }else if(model.getCode().equals("21")){     //用户已存在
 
+                }else if(model.getCode().equals("18")){     // 验证码错误
+                    Toast.makeText(BindingPhoneActivity.this, model.getMsg(), Toast.LENGTH_SHORT).show();
                 }
                 LogUtil.d(TAG, "-----postRegist---------" + requestStr);
             }

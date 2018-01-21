@@ -74,6 +74,9 @@ public class Appconstant {
 		// 正常登陆用户信息
 		public static final String USER_PHONE = "phone" ;
 		public static final String USER_PWD = "password" ;
+
+		// 默认初始密码
+		public static final String DEFAULT_PASSWORD = "mymbLogin123456";
 	}
 
 	public static final class Config{

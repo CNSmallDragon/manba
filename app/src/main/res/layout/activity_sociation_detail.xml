@@ -41,8 +41,7 @@
                 <RelativeLayout
                     android:id="@+id/rl_gonghui"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/sociation_head_height"
-                    android:paddingBottom="@dimen/common_to_side">
+                    android:layout_height="@dimen/sociation_head_height">
 
                     <!--  公会头像  -->
                     <ImageView
@@ -63,12 +62,23 @@
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/common_textsize" />
 
-                    <LinearLayout
+                    <!--  公会宣言  -->
+                    <TextView
+                        android:id="@+id/tv_gonghui_desc"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tv_guild_name"
+                        android:padding="@dimen/common_to_side"
+                        android:gravity="center"
+                        android:textColor="@android:color/white"
+                        android:text="@{GuildDetailBean.declaration}" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_gonghui_desc"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="@dimen/common_to_side"
+                        android:visibility="gone"
                         android:gravity="center_horizontal">
 
                         <!--  成员数  -->
@@ -92,7 +102,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/common_to_side"
-                            android:text="@{String.format(@string/guild_liveness,String.valueOf(GuildDetailBean.liveness))}"
+                            android:text="@{String.format(@string/guild_zone_num,String.valueOf(GuildDetailBean.zoneNum))}"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/small_textsize" />
                     </LinearLayout>
@@ -114,7 +124,7 @@
                         android:button="@null"
                         android:clickable="true"
                         android:gravity="center"
-                        android:text="@string/gonghui_dongtai"
+                        android:text="@{String.format(@string/gonghui_dongtai,GuildDetailBean.zoneNum)}"
                         android:textColor="@color/bottom_text_color" />
 
                     <View
@@ -130,24 +140,9 @@
                         android:button="@null"
                         android:clickable="true"
                         android:gravity="center"
-                        android:text="@string/gonghui_chengyuan"
+                        android:text="@{String.format(@string/gonghui_chengyuan,GuildDetailBean.currentNum)}"
                         android:textColor="@color/bottom_text_color" />
                 </RadioGroup>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/common_to_side"
-                    android:background="@color/common_line_color"/>
-
-                <!--  公会宣言  -->
-                <TextView
-                    android:id="@+id/tv_gonghui_desc"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/background_light"
-                    android:padding="@dimen/common_to_side"
-                    android:gravity="center"
-                    android:text="@{GuildDetailBean.declaration}" />
 
                 <View
                     android:layout_width="match_parent"

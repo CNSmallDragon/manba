@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -59,6 +61,22 @@ public class ForgetPasswordActivity extends DataBindingBaseActivity implements V
 	private void initListener() {
 		binding.tvSendSms.setOnClickListener(this);
 		binding.btResetPwd.setOnClickListener(this);
+		binding.cbDisplayPwd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if (TextUtils.isEmpty(binding.loginPwd.getText())) {
+					return;
+				}
+				if (isChecked) {
+					binding.loginPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+				} else {
+					binding.loginPwd.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+				}
+				// 将光标移动到最后
+				binding.loginPwd.setSelection(binding.loginPwd.getText().toString().length());
+			}
+		});
 	}
 
 	@Override
@@ -92,8 +110,8 @@ public class ForgetPasswordActivity extends DataBindingBaseActivity implements V
 				if(baseResultModel.isSuccess()){
 					Toast.makeText(ForgetPasswordActivity.this, getResources().getString(R.string.login_resetpwd_success), Toast.LENGTH_SHORT).show();
 					finish();
-				}else{
-					Toast.makeText(ForgetPasswordActivity.this, getResources().getString(R.string.system_error), Toast.LENGTH_SHORT).show();
+				}else if(baseResultModel.getCode().equals("18")){ // 验证码错误
+					Toast.makeText(ForgetPasswordActivity.this, baseResultModel.getMsg(), Toast.LENGTH_SHORT).show();
 				}
 			}
 

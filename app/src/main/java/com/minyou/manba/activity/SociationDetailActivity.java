@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Gravity;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.minyou.manba.R;
 import com.minyou.manba.adapter.mvvm.MyMvvmAdapter;
 import com.minyou.manba.databinding.ActivitySociationDetailBinding;
 import com.minyou.manba.fragment.NewFragment;
+import com.minyou.manba.manager.UserManager;
 import com.minyou.manba.network.okhttputils.ManBaRequestManager;
 import com.minyou.manba.network.okhttputils.OkHttpServiceApi;
 import com.minyou.manba.network.okhttputils.ReqCallBack;
@@ -75,7 +77,8 @@ public class SociationDetailActivity extends DataBindingBaseActivity implements 
     private int pageSize = 20;
     private int pageNo = 1;
     private int memberPageNo = 1;
-    private String currentUserId = SharedPreferencesUtil.getInstance().getSP(Appconstant.User.USER_ID);
+    private String currentUserId = UserManager.getUserId();
+    private int recyclerViewType = 0;   // 当前加载的recyclerview类型，0 动态，1成员
 
     @Override
     public void setContentViewAndBindData() {
@@ -116,7 +119,7 @@ public class SociationDetailActivity extends DataBindingBaseActivity implements 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, statusBarHeight);
         params.gravity = Gravity.TOP;
         statusBarView.setLayoutParams(params);
-
+        binding.guildTitle.setBackground(null);
         person_bg_height = getResources().getDimension(R.dimen.sociation_head_height);
         common_title_height = getResources().getDimension(R.dimen.common_title_height);
 
@@ -202,7 +205,7 @@ public class SociationDetailActivity extends DataBindingBaseActivity implements 
 
         // 设置动态默认选中
         binding.llDongtaiChengyuan.check(R.id.rb_dongtai);
-
+        recyclerViewType = 0;
         // 加入还是退出公会
         LogUtil.d(TAG,"showUI====" + guildDetailBean.isGuildMember());
 //        if(guildDetailBean.isGuildMember()){    // 是该公会成员
@@ -224,20 +227,40 @@ public class SociationDetailActivity extends DataBindingBaseActivity implements 
 
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     private void initListener() {
         binding.tvJoin.setOnClickListener(this);
         binding.llDongtaiChengyuan.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 if(checkedId == R.id.rb_dongtai){
+                    recyclerViewType = 0;
                     binding.guildRecyclerView.setAdapter(zoneAdapter);
                     zoneAdapter.notifyDataSetChanged();
                 }else if(checkedId == R.id.rb_member){
+                    recyclerViewType = 1;
                     binding.guildRecyclerView.setAdapter(memberAdapter);
                     memberAdapter.notifyDataSetChanged();
                 }
             }
         });
+
+        binding.guildScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                    LogUtil.i(TAG, "到底了，开始加载更多...");
+                    if(recyclerViewType == 0 ){
+                        loadMoreZoneListData();
+                        zoneAdapter.notifyDataSetChanged();
+                    }else if(recyclerViewType == 1){
+                        loadMoreMemberInfo();
+                        memberAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        });
+
     }
 
     /**
@@ -316,7 +339,7 @@ public class SociationDetailActivity extends DataBindingBaseActivity implements 
             @Override
             public void onReqSuccess(String result) {
                 ZoneListResultModel zoneListResultModel = new Gson().fromJson(result, ZoneListResultModel.class);
-                if(zoneListResultModel.isSuccess()){
+                if(zoneListResultModel.isSuccess() && null != zoneListResultModel.getResult().getResultList()){
                     zoneList.addAll(zoneListResultModel.getResult().getResultList());
                     zoneAdapter.notifyDataSetChanged();
                 }
@@ -345,6 +368,7 @@ public class SociationDetailActivity extends DataBindingBaseActivity implements 
             public void onReqSuccess(String result) {
                 GuildMembersResultModel guildMembersResultModel = new Gson().fromJson(result,GuildMembersResultModel.class);
                 if(guildMembersResultModel.isSuccess()){
+                    memberList.clear();
                     for(GuildMembersResultModel.ResultBean.GuildMemberBean bean : guildMembersResultModel.getResult().getResultList()){
                         memberList.add(bean.toUserZanListInnerBean());
                     }
@@ -358,6 +382,32 @@ public class SociationDetailActivity extends DataBindingBaseActivity implements 
             }
         });
 
+    }
+
+    public void loadMoreMemberInfo(){
+        memberPageNo ++;
+        HashMap<String, String> params = new HashMap<>();
+        params.put("pageSize", String.valueOf(pageSize));
+        params.put("pageNo", String.valueOf(memberPageNo));
+        params.put("guildId", String.valueOf(guildId));
+        params.put("userId", String.valueOf(currentUserId));
+        ManBaRequestManager.getInstance().requestAsyn(OkHttpServiceApi.HTTP_GUILD_MEMBER, ManBaRequestManager.TYPE_GET, params, new ReqCallBack<String>() {
+            @Override
+            public void onReqSuccess(String result) {
+                GuildMembersResultModel guildMembersResultModel = new Gson().fromJson(result,GuildMembersResultModel.class);
+                if(guildMembersResultModel.isSuccess() && null != guildMembersResultModel.getResult().getResultList()){
+                    for(GuildMembersResultModel.ResultBean.GuildMemberBean bean : guildMembersResultModel.getResult().getResultList()){
+                        memberList.add(bean.toUserZanListInnerBean());
+                    }
+                    memberAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+
+            }
+        });
     }
 
     @Override

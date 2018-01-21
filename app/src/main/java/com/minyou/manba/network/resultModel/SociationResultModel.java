@@ -100,7 +100,25 @@ public class SociationResultModel extends BaseResultModel {
             private String declaration;
             private int createUser;
             private int currentNum;
+            private int zoneNum;
+            private boolean guildMember;
             private boolean isChecked = false;
+
+            public int getZoneNum() {
+                return zoneNum;
+            }
+
+            public void setZoneNum(int zoneNum) {
+                this.zoneNum = zoneNum;
+            }
+
+            public boolean isGuildMember() {
+                return guildMember;
+            }
+
+            public void setGuildMember(boolean guildMember) {
+                this.guildMember = guildMember;
+            }
 
             public int getGuildId() {
                 return guildId;

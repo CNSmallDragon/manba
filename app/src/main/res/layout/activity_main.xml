@@ -27,35 +27,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_alignParentBottom="true"
             android:gravity="center"
-            android:paddingBottom="20dp">
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true">
 
             <ImageView
                 android:id="@+id/iv_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_launcher" />
-
-            <TextView
-                android:id="@+id/tv_app_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/iv_logo"
-                android:text="@string/my_app_name"
-                android:textColor="@color/colorCommon" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_app_name"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_toRightOf="@id/iv_logo"
-                android:text="@string/my_app_desc"
-                android:textColor="@color/colorCommon"
-                android:typeface="monospace" />
+                android:src="@drawable/home_logo" />
 
         </RelativeLayout>
 

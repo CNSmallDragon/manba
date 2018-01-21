@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/background_light"
+        android:orientation="vertical">
+
+        <com.minyou.manba.ui.ActionTitleView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_title_height"
+            app:titleText="@string/setting_idea_fankui"
+            app:backIcon="true"
+            app:borderLine="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_to_side"
+            android:padding="@dimen/common_to_side"
+            android:textSize="@dimen/common_textsize"
+            android:text="@string/setting_service_qq"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_height"
+            android:background="@color/common_line_color"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_to_side"
+            android:padding="@dimen/common_to_side"
+            android:textSize="@dimen/common_textsize"
+            android:text="@string/setting_service_qqgroup"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_height"
+            android:background="@color/common_line_color"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_to_side"
+            android:padding="@dimen/common_to_side"
+            android:textSize="@dimen/common_textsize"
+            android:text="@string/setting_service_email"/>
+
+    </LinearLayout>
+</layout>

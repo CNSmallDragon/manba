@@ -20,7 +20,7 @@ import com.minyou.manba.R;
 import com.minyou.manba.databinding.ActivityRegistBinding;
 import com.minyou.manba.network.api.ManBaApi;
 import com.minyou.manba.network.resultModel.RegistResultModel;
-import com.minyou.manba.network.resultModel.UserLoginModel;
+import com.minyou.manba.network.resultModel.UserLoginResultModel;
 import com.minyou.manba.util.LogUtil;
 import com.minyou.manba.util.SharedPreferencesUtil;
 
@@ -100,11 +100,11 @@ public class RegistActivity extends DataBindingBaseActivity implements View.OnCl
                 //SharedPreferencesUtil.getInstance(LoginActivity.this.getApplicationContext()).putSP(Appconstant.User.USER_ID, openId);
                 String requestStr = response.body().string();
                 LogUtil.d(TAG, "-----response---------" + requestStr);
-                UserLoginModel userLoginModel = new Gson().fromJson(requestStr,UserLoginModel.class);
+                UserLoginResultModel userLoginModel = new Gson().fromJson(requestStr,UserLoginResultModel.class);
                 if(userLoginModel.getCode().equals("0")){  // 成功
-                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, userLoginModel.getUserId());
-                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getToken());
-                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getRefreshToken());
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_ID, String.valueOf(userLoginModel.getResult().getUserId()));
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN, "Manba " + userLoginModel.getResult().getToken());
+                    SharedPreferencesUtil.getInstance().putSP(Appconstant.User.TOKEN_REFRESH, userLoginModel.getResult().getRefreshToken());
                     SharedPreferencesUtil.getInstance().putSP(Appconstant.User.USER_INFO,requestStr);
                     // 注册登录完成后跳转首页
                     Intent intent = new Intent(RegistActivity.this,HomeActivity.class);
@@ -270,11 +270,11 @@ public class RegistActivity extends DataBindingBaseActivity implements View.OnCl
         etMimaStr = binding.etMima.getText().toString().trim();
         etMimaStr = binding.etMima.getText().toString();
         if (TextUtils.isEmpty(etMimaStr)) {
-            Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.input_password_empty), Toast.LENGTH_SHORT).show();
             return false;
         }
         if (etMimaStr.length() < 6 || etMimaStr.length() > 16) {
-            Toast.makeText(this, "您输入的密码不符合规范，请重新输入!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.input_password_error), Toast.LENGTH_SHORT).show();
             return false;
         }
 

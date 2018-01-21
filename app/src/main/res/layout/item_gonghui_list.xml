@@ -69,12 +69,12 @@
                     android:textColor="@android:color/darker_gray"
                     android:textSize="@dimen/small_textsize" />
 
-                <!-- 公会活跃度 -->
+                <!-- 公会动态数 -->
                 <TextView
                     android:id="@+id/tv_gonghui_hot_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.format(@string/guild_liveness,String.valueOf(SociationBean.liveness))}"
+                    android:text="@{String.format(@string/guild_zone_num,String.valueOf(SociationBean.zoneNum))}"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="@dimen/small_textsize" />
             </LinearLayout>

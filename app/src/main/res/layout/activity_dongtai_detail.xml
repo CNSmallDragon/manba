@@ -19,7 +19,6 @@
             android:id="@+id/atv_title"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/common_title_height"
-            android:background="@android:color/background_light"
             android:gravity="center_vertical"
             app:titleText="@string/detail_title"/>
 

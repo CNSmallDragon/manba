@@ -22,18 +22,15 @@
             android:indeterminateDrawable="@drawable/progressbar"
             android:indeterminate="false" />
 
-        <TextView
-            android:id="@+id/tvLoadText"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/common_text_side"
             android:layout_toRightOf="@id/pbLoad"
-            android:clickable="true"
-            android:text="@string/gonghui_loading"
-            android:textColor="#000000"
-            android:textSize="@dimen/common_textsize" />
+            android:src="@drawable/icon_refresh"/>
+
     </RelativeLayout>
 
 </LinearLayout>

@@ -8,7 +8,8 @@
     <string name="regist">注册</string>
     <string name="regist_now">马上注册 ></string>
     <string name="login_num">请输入手机号</string>
-    <string name="login_pwd">请输入6-16位数字密码</string>
+    <string name="login_pwd">请输入密码</string>
+    <!--<string name="login_pwd">请输入6-16位数字密码</string>-->
     <string name="login_forget_pwd">忘记密码？</string>
     <string name="login_reset_pwd">重置密码</string>
     <string name="login_thrid">其他登录方式</string>
@@ -16,6 +17,7 @@
     <string name="login_qq">QQ</string>
     <string name="login_xinlang">微博</string>
     <string name="login_resetpwd_success">已成功修改密码，请重新登录</string>
+    <string name="login_user_not_exist">用户不存在，请先注册</string>
 
     <!-- 注册 -->
     <string name="forget_password">忘记密码</string>
@@ -70,8 +72,8 @@
     <!-- 专区 -->
     <string name="gonghui_hot">热门专区</string>
     <string name="gonghui_join">加入</string>
-    <string name="gonghui_dongtai">动态</string>
-    <string name="gonghui_chengyuan">成员</string>
+    <string name="gonghui_dongtai">动态(%s)</string>
+    <string name="gonghui_chengyuan">成员(%s)</string>
     <string name="gonghui_shenqingjiaru">申请加入</string>
     <string name="gonghui_exit">退出专区</string>
     <string name="gonghui_loadmore">上拉加载更多...</string>
@@ -114,6 +116,7 @@
 
     <!--  专区界面   -->
     <string name="guild_liveness">活跃度: %s</string>
+    <string name="guild_zone_num">动态数: %s</string>
     <string name="gonghui_member_num" formatted="false">成员数：%s</string>
 
     <!--  专区详情   -->
@@ -143,6 +146,9 @@
     <string name="setting_exit">退出登录</string>
     <string name="setting_app_version">V%s</string>
     <string name="setting_clear_cache_ornot">确定清除缓存吗？</string>
+    <string name="setting_service_qq">客服QQ：2359972103</string>
+    <string name="setting_service_qqgroup">官方群：608246150</string>
+    <string name="setting_service_email">客服邮箱：yhservice@mymanba.com</string>
 
     <!-- 个人资料  -->
     <string name="setting_user_info">个人资料</string>
@@ -175,5 +181,7 @@
     <string name="empty_text">暂无最新动态</string>
     <string name="no_more_2">人家也是有底线的</string>
     <string name="system_error">系统错误</string>
+    <string name="input_password_error">您输入的密码不符合规范，请输入6-16位密码!</string>
+    <string name="input_password_empty">密码不能为空</string>
 
 </resources>

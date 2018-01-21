@@ -1,6 +1,7 @@
 package com.minyou.manba.activity;
 
 import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -50,6 +51,7 @@ public abstract class DataBindingBaseActivity extends AppCompatActivity {
      */
     public void setAllowFullScreen() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);//取消标题
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // 不允许横屏
     }
 
     /**

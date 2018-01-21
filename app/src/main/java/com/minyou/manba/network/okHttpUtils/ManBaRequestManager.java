@@ -37,8 +37,7 @@ public class ManBaRequestManager {
     private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");//mdiatype 这个需要和服务端保持一致
     private static final MediaType MEDIA_TYPE_MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8");//mdiatype 这个需要和服务端保持一致
     private static final String TAG = RequestManager.class.getSimpleName();
-    //private static final String BASE_URL = "http://www.mymanba.cn";//请求接口根地址
-    private static final String BASE_URL = "http://pre.mymanba.cn:8081";//请求接口根地址
+    private static final String BASE_URL = OkHttpServiceApi.BASE_URL;//请求接口根地址
     private static volatile ManBaRequestManager mInstance;//单利引用
     public static final int TYPE_GET = 0;//get请求
     public static final int TYPE_POST_JSON = 1;//post请求参数为json
@@ -288,6 +287,7 @@ public class ManBaRequestManager {
             });
             return call;
         } catch (Exception e) {
+            e.printStackTrace();
             LogUtil.e(TAG, e.toString());
         }
         return null;
@@ -316,7 +316,7 @@ public class ManBaRequestManager {
             RequestBody body = RequestBody.create(MEDIA_TYPE_JSON, params);
             String requestUrl = String.format("%s/%s", BASE_URL, actionUrl);
             final Request request = addHeadersWithToken().url(requestUrl).post(body).build();
-            LogUtil.d("params-->",params);
+            LogUtil.e("params-->",params);
             final Call call = mOkHttpClient.newCall(request);
             call.enqueue(new Callback() {
                 @Override
@@ -328,13 +328,13 @@ public class ManBaRequestManager {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    if (response.isSuccessful()) {
-                        String string = response.body().string();
-                        LogUtil.e(TAG, "response ----->" + string);
-                        successCallBack((T) string, callBack);
-                    } else {
-                        failedCallBack("服务器错误", callBack);
-                    }
+                    String string = response.body().string();
+                    LogUtil.e(TAG, "response ----->" + string);
+                    successCallBack((T) string, callBack);
+//                    if (response.isSuccessful()) {
+//                    } else {
+//                        failedCallBack("服务器错误", callBack);
+//                    }
                 }
             });
             return call;
